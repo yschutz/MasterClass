@@ -1,0 +1,14 @@
+[amiconfig]
+plugins=cernvm
+
+[cernvm]
+auto_login=off
+organisations=alice
+repositories=
+shell=/bin/bash
+config_url=http://cernvm.cern.ch/config
+users=masterclass
+edition=Desktop
+screenRes=1280x800
+keyboard=us-acentos
+startXDM=on
