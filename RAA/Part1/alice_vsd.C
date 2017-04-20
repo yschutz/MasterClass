@@ -23,8 +23,11 @@
 #include <TLegend.h>
 
 #include <TApplication.h>
-#include <TEveManager.h>
+
 #include <TEveEventManager.h>
+#include <TEveLine.h>
+#include <TEveManager.h>
+#include <TEvePointSet.h>
 #include <TEveWindowManager.h>
 #include <TEveVSD.h>
 #include <TEveVSDStructs.h>
