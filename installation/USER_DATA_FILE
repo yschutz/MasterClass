@@ -10,14 +10,14 @@ echo 'if [ "$PS1" ]; then
   if [ "x$CERNVM_ALICE_ENV" = "x" ]; then
     . /cvmfs/alice.cern.ch/etc/login.sh || true
     export CERNVM_ALICE_ENV=1
+	# download software and associated stuff from github 
+	git clone https://github.com/yschutz/MasterClass.git
+	cd MasterClass 
+	# download the data from cernbox
+	scp -r yschutz@lxplus.cern.ch:/eos/user/y/yschutz/MasterClass.data/* .
+	# or a link id /eos available 
   fi
 fi' >> /home/masterclass/.bashrc
-# download software and associated stuff from github 
-git clone https://github.com/yschutz/MasterClass.git
-cd MasterClass 
-# download the data from cernbox
-scp -r yschutz@lxplus.cern.ch:/eos/user/y/yschutz/MasterClass.data/* .
-# or a link id /eos available 
 exit 0
 
 [amiconfig]
