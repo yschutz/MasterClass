@@ -8,7 +8,7 @@
 #include <TRootHelpDialog.h>
 #include <TROOT.h>
 #include <TSystem.h>
-#include <TSTring.h>
+#include <TString.h>
 #include <string.h>
 
 class MasterClassFrame : public TGMainFrame {
