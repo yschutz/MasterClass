@@ -28,3 +28,12 @@
 *.exe
 *.out
 *.app
+
+# Produced by root
+*.d
+*.pcm
+*.so
+*.root
+
+autosave*
+data/*

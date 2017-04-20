@@ -1,6 +1,6 @@
 apiPort=22
 cernvmVersion=latest
-cpus=1
+cpus=2
 memory=2048
 disk=20000
 diskChecksum=

@@ -2,7 +2,7 @@
 plugins=cernvm
 
 [cernvm]
-auto_login=off
+auto_login=on
 organisations=alice
 repositories=
 shell=/bin/bash
