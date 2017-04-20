@@ -2,4 +2,5 @@
 git clone https://github.com/yschutz/MasterClass.git
 cd MasterClass 
 # download the data from cernbox
-scp -r yschutz@lxplus.cern.ch:/eos/user/y/yschutz/MasterClass.data/* .
+scp -r yschutz@lxplus.cern.ch:/eos/user/y/yschutz/MasterClass.data/* . 
+# or a link id /eos available 

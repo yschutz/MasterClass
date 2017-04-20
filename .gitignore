@@ -30,7 +30,6 @@
 *.app
 
 # Produced by root
-<<<<<<< HEAD
 *.d
 *.pcm
 *.so
@@ -38,8 +37,6 @@
 
 autosave*
 data/*
-=======
 *.pcm
 *.d
 *.so
->>>>>>> 80ea50db0c198503cd4fe38d1a9c9017dd2f9705
