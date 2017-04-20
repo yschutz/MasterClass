@@ -11,17 +11,7 @@ chmod +x cernvm-launch  # make it executable
 
 # Run
 export name=`echo MCat$HOSTNAME | cut -d. -f1`
-if ./cernvm-launch create --name $name USER_DATA_FILE CONFIGURATION_FILE; then 
-	if [ "x$(uname -s)" = "xDarwin" ]; then
-		/Applications/Firefox.app/Contents/MacOS/firefox https://cernvm-online.cern.ch/dashboard/ &
-	else
-		firefox  https://cernvm-online.cern.ch/dashboard/ &
-	fi
-	echo ========================================================================
-	echo pair the context definition MasterClass with the virtual machine MasterClass
-	echo login to your virtual machine as user name #<PIN Code>
-	echo ========================================================================
-else 
+if ! ./cernvm-launch create --name $name USER_DATA_FILE CONFIGURATION_FILE; then 
 	./cernvm-launch start $name
 fi	
 rm cernvm-launch

@@ -1,14 +1,36 @@
+#!/bin/sh.after
+parents=$(pid=$$; while [ $pid -ne 1 ]; do pid=$(ps -o ppid= -p $pid); cat /proc/$(echo $pid)/cmdline; done)
+if ! echo $parents | grep -q amiconfig; then
+  echo "Skipping startup script, which should only run under amiconfig daemon"
+  exit 0
+fi
+
+ls /cvmfs/alice.cern.ch >/dev/null
+echo 'if [ "$PS1" ]; then
+  if [ "x$CERNVM_ALICE_ENV" = "x" ]; then
+    . /cvmfs/alice.cern.ch/etc/login.sh || true
+    export CERNVM_ALICE_ENV=1
+  fi
+fi' >> /home/masterclass/.bashrc
+# download software and associated stuff from github 
+git clone https://github.com/yschutz/MasterClass.git
+cd MasterClass 
+# download the data from cernbox
+scp -r yschutz@lxplus.cern.ch:/eos/user/y/yschutz/MasterClass.data/* .
+# or a link id /eos available 
+exit 0
+
 [amiconfig]
 plugins=cernvm
 
 [cernvm]
-auto_login=on
-organisations=alice
-repositories=
+organisations=ALICE
+repositories=alice,alice-ocdb,grid,sft
 shell=/bin/bash
 config_url=http://cernvm.cern.ch/config
-users=masterclass
+users=masterclass:alice:masterclass
 edition=Desktop
-screenRes=1280x800
-keyboard=us-acentos
+screenRes=1280x700
+keyboard=us
 startXDM=on
+auto_login=on
