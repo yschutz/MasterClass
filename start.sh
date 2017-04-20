@@ -52,7 +52,8 @@ if [ "x$(uname -s)" = "xDarwin" ]; then
  . /Applications/root_v6.08.06/bin/thisroot.sh
 elif [ "x$(uname -s)" = "xLinux" ]; then
  export PATH=/cvmfs/sft.cern.ch/lcg/releases/gcc/4.8.4/x86_64-slc6/bin/:$PATH	
- source /cvmfs/sft.cern.ch/lcg/app/releases/ROOT/6.06-08/x86_64-slc6-gcc48-opt/root/bin/thisroot.sh	
+ export LD_LIBRARY_PATH=/cvmfs/sft.cern.ch/lcg/releases/gcc/4.8.4/x86_64-slc6/lib64:$LD_LIBRARY_PATH
+ source /cvmfs/sft.cern.ch/lcg/app/releases/ROOT/6.06.08/x86_64-slc6-gcc48-opt/root/bin/thisroot.sh	
 echo $PART
 if [[ $PART = "Part1/" ]]; then 
 	root start.C
