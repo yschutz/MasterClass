@@ -2,7 +2,11 @@
 if ! virtualbox; then
  echo "you need to instal VirtualBox first from: https://www.virtualbox.org"
 if [ "x$(uname -s)" = "xLinux" ]; then
-  echo "goto: https://www.virtualbox.org/wiki/Linux_Downloads download and install"
+  echo "you need to download and install VMBox"
+  if !firefox https://www.virtualbox.org/wiki/Linux_Downloads; then
+    echo "firefoy not found on your computer"
+    exit 1
+  fi
 elif [ "x$(uname -s)" = "xDarwin" ]; then
  wget http://download.virtualbox.org/virtualbox/5.1.20/VirtualBox-5.1.20-114629-OSX.dmg
  hdiutil attach VirtualBox-5.1.20-114629-OSX.dmg
