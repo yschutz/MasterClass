@@ -7243,7 +7243,7 @@ void alice_vsd(Int_t choice, Int_t mode, Int_t dataset)
 
   TString vsd_file_name;
   
-  vsd_file_name = Form("AliVSD_Masterclass_%i.root", dataset);
+  vsd_file_name = Form("AliVSD_MasterClass_%i.root", dataset);
   vsd_file_name.Prepend(gSystem->Getenv("PART")); 
   vsd_file_name.Prepend(gSystem->Getenv("EVTPATH")); 
 
