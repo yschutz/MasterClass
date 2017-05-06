@@ -44,7 +44,7 @@ do
 shift
 done
 export EXPATH="$EXPATH/"
-export DATAPATH="root::/eospublic.cern.ch/experiment/alice/MasterClass.data/data/"
+export DATAPATH="root://eospublic.cern.ch//eos/experiment/alice/MasterClass.data/data/"
 export IMPATH="$DATAPATH/images/"
 export EVTPATH="$DATAPATH/events/$EXPATH"
 export GEOPATH="$DATAPATH/geometry/"
