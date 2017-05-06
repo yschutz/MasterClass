@@ -16,9 +16,6 @@ if [ ! -d MasterClass ]; then
 fi
 cd MasterClass
 git pull
-# download the data from cernbox
-scp -r yschutz@lxplus.cern.ch:/eos/user/y/yschutz/MasterClass.data/* .
-# or a link id /eos available
 fi
 fi' >> /home/masterclass/.bashrc
 exit 0
