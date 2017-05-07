@@ -45,11 +45,11 @@ shift
 done
 export EXPATH="$EXPATH/"
 export DATAPATH="root://eospublic.cern.ch//eos/experiment/alice/MasterClass.data/data/"
-export IMPATH="$DATAPATH/images/"
+export IMPATH="images/"
 export EVTPATH="$DATAPATH/events/$EXPATH"
 export GEOPATH="$DATAPATH/geometry/"
 if [ "x$(uname -s)" = "xDarwin" ]; then
- . /Applications/root_v6.08.06/bin/thisroot.sh
+ . /Applications/root_v6.09.02/bin/thisroot.sh
 elif [ "x$(uname -s)" = "xLinux" ]; then
  # export PATH=/cvmfs/sft.cern.ch/lcg/releases/gcc/4.8.4/x86_64-slc6/bin/:$PATH
  # export LD_LIBRARY_PATH=/cvmfs/sft.cern.ch/lcg/releases/gcc/4.8.4/x86_64-slc6/lib64:$LD_LIBRARY_PATH
@@ -62,4 +62,6 @@ elif [[ $PART = "Part2/" ]]; then
 	cd $EXPATH$PART$ROLE
 	root start.C	
 fi
-rm *.pcm *.d *so
+cd $EXPATH/$PART
+rm *.pcm *.d
+cd -

@@ -30,6 +30,7 @@
 
 #include <TCanvas.h>
 
+#include <TEveElement.h>
 #include <TEveTrack.h>
 #include <TEveTrackPropagator.h>
 #include <TEveGeoShape.h>
@@ -72,35 +73,35 @@ namespace
   const char *gMasterClassOutputPictue[] = {"MasterClass Histograms", "*.png", 0, 0}; //for loading results
 }
 
-MultiView* gMultiView = 0;
+MultiView* gMultiView = nullptr; 
 
-TH1D* gKRapHist = 0;
-TH1D* gXRapHist = 0;
-TH1D* gLRapHist = 0;
-TH1D* gALRapHist = 0;
-TH1D* gAllRapHist = 0;
+TH1D* gKRapHist = nullptr; 
+TH1D* gXRapHist = nullptr; 
+TH1D* gLRapHist = nullptr; 
+TH1D* gALRapHist = nullptr; 
+TH1D* gAllRapHist = nullptr; 
 
-TH1D* gKMinvHist = 0;
-TH1D* gXMinvHist = 0;
-TH1D* gLMinvHist = 0;
-TH1D* gALMinvHist = 0;
-TH1D* gAllMinvHist = 0;
+TH1D* gKMinvHist = nullptr; 
+TH1D* gXMinvHist = nullptr; 
+TH1D* gLMinvHist = nullptr; 
+TH1D* gALMinvHist = nullptr; 
+TH1D* gAllMinvHist = nullptr; 
 
-TCanvas* pad1 = 0;
-TCanvas* pad2 = 0;
+TCanvas* pad1 = nullptr; 
+TCanvas* pad2 = nullptr; 
 
-TGCheckButton* gCheckVertex = 0;
-TGCheckButton* gCheckClusters = 0;
-TGCheckButton* gCheckITSClusters = 0;
-TGCheckButton* gCheckTPCClusters = 0;
-TGCheckButton* gCheckTRDClusters = 0;
-TGCheckButton* gCheckTOFClusters = 0;
-TGCheckButton* gCheckESDTracks = 0;
-TGCheckButton* gCheckV0s = 0;
-TGCheckButton* gCheckCascades = 0;
+TGCheckButton* gCheckVertex = nullptr; 
+TGCheckButton* gCheckClusters = nullptr; 
+TGCheckButton* gCheckITSClusters = nullptr; 
+TGCheckButton* gCheckTPCClusters = nullptr; 
+TGCheckButton* gCheckTRDClusters = nullptr; 
+TGCheckButton* gCheckTOFClusters = nullptr; 
+TGCheckButton* gCheckESDTracks = nullptr; 
+TGCheckButton* gCheckV0s = nullptr; 
+TGCheckButton* gCheckCascades = nullptr; 
 
-TGLabel* gEventNumber = 0;
-TGLabel* gEventAnalysed = 0;
+TGLabel* gEventNumber = nullptr; 
+TGLabel* gEventAnalysed = nullptr; 
 
 TEveLine* pointingLine[10] = {0};
 TEveLine* pointingLine1[10] = {0};
@@ -224,9 +225,9 @@ public:
 
     DontCallClose();
 
-    b1 = 0;
-    TGGroupFrame* groupFrame = 0;
-    TGHorizontalFrame *hframe00 = 0;
+    b1 = nullptr; 
+    TGGroupFrame* groupFrame = nullptr; 
+    TGHorizontalFrame *hframe00 = nullptr; 
 
     switch (detector)
       {
@@ -287,7 +288,7 @@ public:
 };
 
 //--------------------------------------------------------------
-PatternsInfoWindow* gPatternsInfoWindow = 0;
+PatternsInfoWindow* gPatternsInfoWindow = nullptr; 
 
 class AlicePatternInfo : public TGMainFrame
 {
@@ -306,9 +307,9 @@ public:
 
     DontCallClose();
 
-    b1 = 0;
+    b1 = nullptr; 
 
-    TGTextButton *b2 = 0;
+    TGTextButton *b2 = nullptr; 
 
     TGGroupFrame* gf = new TGGroupFrame(this, "Patterns");
 
@@ -383,7 +384,7 @@ public:
 	  b1->SetPicture(gClient->GetPicture(fileName.Prepend(gSystem->Getenv("IMPATH"))));
 	  b1->Draw();
 
-	  detector = 0;
+	  detector = 0 ; 
 
   }
 
@@ -438,7 +439,7 @@ public:
 
 };
 
-AlicePatternInfo* gAlicePatternInfo = 0;
+AlicePatternInfo* gAlicePatternInfo = nullptr; 
 
 
 //----------------KASIA--------------
@@ -459,9 +460,9 @@ public:
 
     DontCallClose();
 
-    b1 = 0;
+    b1 = nullptr; 
 
-    TGTextButton *b2 = 0;
+    TGTextButton *b2 = nullptr; 
 
     TGGroupFrame* gf = new TGGroupFrame(this, "Patterns");
 
@@ -534,7 +535,7 @@ public:
 
 	  b1->Draw();
 
-	  detector = 0;
+	  detector = 0 ; 
 
   }
 
@@ -578,7 +579,7 @@ public:
 
 };
 
-AlicePatternInfo2* gAlicePatternInfo2 = 0;
+AlicePatternInfo2* gAlicePatternInfo2 = nullptr; 
 
 
 //----------------KASIA-------------------
@@ -598,10 +599,10 @@ public:
 
     DontCallClose();
 
-    b1 = 0;
+    b1 = nullptr; 
 
-    TGGroupFrame* gf = 0;
-    TGHorizontalFrame *hf = 0;
+    TGGroupFrame* gf = nullptr; 
+    TGHorizontalFrame *hf = nullptr; 
 
     TString fileName;			
 
@@ -691,7 +692,7 @@ public:
 
 };
 
-AliceDetectorInfoWindow* gAliceDetectorInfoWindow = 0;
+AliceDetectorInfoWindow* gAliceDetectorInfoWindow = nullptr; 
 
 	//--------------------------------------------------------------
 class AliceDetectorInfo : public TGMainFrame
@@ -710,9 +711,9 @@ public:
 
     DontCallClose();
 
-    b1 = 0;
+    b1 = nullptr; 
 
-    TGTextButton *b2 = 0;
+    TGTextButton *b2 = nullptr; 
 
     TGGroupFrame* gf = new TGGroupFrame(this, "ALICE Detector");
 
@@ -794,7 +795,7 @@ public:
 	  b1->SetPicture(gClient->GetPicture(fileName.Prepend(gSystem->Getenv("IMPATH"))));
 	  b1->Draw();
 
-	  detector = 0;
+	  detector = 0 ; 
 
   }
 
@@ -876,7 +877,7 @@ public:
 
 };
 
-AliceDetectorInfo* gAliceDetectorInfo = 0;
+AliceDetectorInfo* gAliceDetectorInfo = nullptr; 
 
 	//--------------------------------------------------------------
 class AliceCalculator : public TGMainFrame
@@ -938,8 +939,8 @@ public:
 	else if (strncmp(gSystem->Getenv("BLA"), "FR", 2) == 0)
 	    gf = new TGGroupFrame(this, "Tableau des Particules");
 
-    TGLabel *val1 = 0;
-    TGLabel *val2 = 0;
+    TGLabel *val1 = nullptr; 
+    TGLabel *val2 = nullptr; 
 
     hf = new TGHorizontalFrame(gf, 250, 20, kFixedWidth);
 	if (strncmp(gSystem->Getenv("BLA"), "EN", 2) == 0) {
@@ -1110,7 +1111,7 @@ public:
 
     hf = new TGHorizontalFrame(gf, 250, 20, kFixedWidth);
 
-    TGTextButton* b; 
+    TGTextButton* b = nullptr; 
 	if (strncmp(gSystem->Getenv("BLA"), "EN", 2) == 0)
 	    b = new TGTextButton(hf, "Invariant Mass");
 	else if (strncmp(gSystem->Getenv("BLA"), "FR", 2) == 0)
@@ -1682,7 +1683,7 @@ void Background()
 
 };
 
-AliceCalculator* gAliceCalculator = 0;
+AliceCalculator* gAliceCalculator = nullptr; 
 
 //---------------------------------------------------------------------------
 
@@ -1774,7 +1775,7 @@ public:
     TGLCamera& dpCam2 = eve_v2->GetGLViewer()->CurrentCamera();
     dpCam2.Truck(pcaZ[n],pcaY[n]);
 
-    TGPictureButton* b = 0;
+    TGPictureButton* b = nullptr; 
     TString icondir(TString::Format("%s/icons/", gSystem->Getenv("ROOTSYS")) );
     b = new TGPictureButton(mf, gClient->GetPicture(icondir + "ed_delete.png"));
     mf->AddFrame(b, new TGLayoutHints(kLHintsNormal |kLHintsExpandX));
@@ -1867,7 +1868,7 @@ public:
 
 	}
 
-      TGTextButton* b = 0;
+      TGTextButton* b = nullptr; 
 
       if(charge < 0)
 	{
@@ -2180,7 +2181,7 @@ public:
 
 };
 
-SigTestSpitter* gSigTestSpitter = 0;
+SigTestSpitter* gSigTestSpitter = nullptr; 
 
 //---------------------------------------------------------------------------
 
@@ -2206,7 +2207,7 @@ public:
 		gf = new TGGroupFrame(this, "Statistique Particules Etranges");
 	new TGGroupFrame(this, "Strange Particle Statistics");
 
-	TGLabel *label = 0;
+	TGLabel *label = nullptr; 
 
     Int_t nLoads = 1;
 
@@ -2403,7 +2404,7 @@ public:
 
 };
 
-StrangeStatisticsPopup* gStrangeStatisticsPopup = 0;
+StrangeStatisticsPopup* gStrangeStatisticsPopup = nullptr; 
 
 //---------------------------------------------------------------------------
 
@@ -2425,7 +2426,7 @@ public:
   //  TGGroupFrame* gf = new TGGroupFrame(this, "Particle Ratios");
 	TGGroupFrame* gf = new TGGroupFrame(this, "Strange Particle Statistics");
 
-    TGLabel *label = 0;
+    TGLabel *label = nullptr; 
 
     Int_t nPions = 148;
 
@@ -2647,7 +2648,7 @@ hf = new TGHorizontalFrame(gf, 450, 20, kFixedWidth);
 
 };
 
-ParticleRatioPopup* gParticleRatioPopup = 0;
+ParticleRatioPopup* gParticleRatioPopup = nullptr; 
 
 
 //---------------------------------------------------------------------------
@@ -2821,6 +2822,7 @@ public:
     delete fFile;
 	
 	TString fileName("AliVSD_example.root"); 
+    fileName.Prepend(gSystem->Getenv("PART")); 
 	fileName.Prepend(gSystem->Getenv("EVTPATH")); 
 
     fFile = TFile::Open(fileName);
@@ -2894,90 +2896,10 @@ public:
 
 	TString fileName(Form("AliVSD_MasterClass_%i.root", globalDataset)); 
 	fileName.Prepend(gSystem->Getenv("EVTPATH")); 
-
+	
     fFile = TFile::Open(fileName);
-/*    switch(globalDataset)
-    {
 
-    case 1:
-      fFile = TFile::Open("eve_files/data/AliVSD_MasterClass_1.root");
-      break;
-
-    case 2:
-      fFile = TFile::Open("eve_files/data/AliVSD_MasterClass_2.root");
-      break;
-
-    case 3:
-      fFile = TFile::Open("eve_files/data/AliVSD_MasterClass_3.root");
-      break;
-
-    case 4:
-      fFile = TFile::Open("eve_files/data/AliVSD_MasterClass_4.root");
-      break;
-
-    case 5:
-      fFile = TFile::Open("eve_files/data/AliVSD_MasterClass_5.root");
-      break;
-
-    case 6:
-      fFile = TFile::Open("eve_files/data/AliVSD_MasterClass_6.root");
-      break;
-
-    case 7:
-      fFile = TFile::Open("eve_files/data/AliVSD_MasterClass_7.root");
-      break;
-
-    case 8:
-      fFile = TFile::Open("eve_files/data/AliVSD_MasterClass_8.root");
-      break;
-
-    case 9:
-      fFile = TFile::Open("eve_files/data/AliVSD_MasterClass_9.root");
-      break;
-
-    case 10:
-      fFile = TFile::Open("eve_files/data/AliVSD_MasterClass_10.root");
-      break;
-
-    case 11:
-      fFile = TFile::Open("eve_files/data/AliVSD_MasterClass_11.root");
-      break;
-
-    case 12:
-      fFile = TFile::Open("eve_files/data/AliVSD_MasterClass_12.root");
-      break;
-
-    case 13:
-      fFile = TFile::Open("eve_files/data/AliVSD_MasterClass_13.root");
-      break;
-
-    case 14:
-      fFile = TFile::Open("eve_files/data/AliVSD_MasterClass_14.root");
-      break;
-
-    case 15:
-      fFile = TFile::Open("eve_files/data/AliVSD_MasterClass_15.root");
-      break;
-
-    case 16:
-      fFile = TFile::Open("eve_files/data/AliVSD_MasterClass_16.root");
-      break;
-
-    case 17:
-      fFile = TFile::Open("eve_files/data/AliVSD_MasterClass_17.root");
-      break;
-
-    case 18:
-      fFile = TFile::Open("eve_files/data/AliVSD_MasterClass_18.root");
-      break;
-
-    default:
-      fFile = TFile::Open("eve_files/data/AliVSD_MasterClass_1.root");
-      break;
-
-    }
-*/
-//    fFile = TFile::Open("AliVSD.root");
+	 TFile::Open("AliVSD.root");
 
     if (!fFile)
       {
@@ -3049,7 +2971,7 @@ public:
 	//--------------------------------------------------------------
   void DetectorInfo(){
 
-    detector = 0;
+    detector = 0 ; 
 
     gAliceDetectorInfo = new AliceDetectorInfo(gClient->GetRoot(), 100, 100);
 
@@ -3058,7 +2980,7 @@ public:
 	//--------------------------------------------------------------
   void PatternInfo(){
 
-    detector = 0;
+    detector = 0 ; 
 
     gAlicePatternInfo = new AlicePatternInfo(gClient->GetRoot(),100,100);
 
@@ -3067,7 +2989,7 @@ public:
 	//--------------------------------------------------------------
   void PatternInfo2(){
 
-    detector = 0;
+    detector = 0 ; 
 
     gAlicePatternInfo2 = new AlicePatternInfo2(gClient->GetRoot(),100,100);
 
@@ -3837,12 +3759,12 @@ Comment fusionner et analyser les resultats obtenus en mode <Etudiant>\n\n\
 	  frmMain->SetCleanup(kDeepCleanup);
 
 	  TString icondir(TString::Format("%s/icons/", gSystem->Getenv("ROOTSYS")) );
-	  TGPictureButton* b1 = 0;
-	  TGTextButton* b = 0;
-	  TGLabel* label = 0;
-	  TGGroupFrame* gf = 0;
-	  TGVerticalFrame* vf = 0;
-	  TGHorizontalFrame* hf = 0;
+	  TGPictureButton* b1 = nullptr; 
+	  TGTextButton* b = nullptr; 
+	  TGLabel* label = nullptr; 
+	  TGGroupFrame* gf = nullptr; 
+	  TGVerticalFrame* vf = nullptr; 
+	  TGHorizontalFrame* hf = nullptr; 
 	  ULong_t buttonRedColor, buttonBlueColor;
 	  
 	  if (strncmp(gSystem->Getenv("BLA"), "EN", 2) == 0)
@@ -5001,7 +4923,7 @@ Comment fusionner et analyser les resultats obtenus en mode <Etudiant>\n\n\
     TEveSceneList* sceneList4 = (TEveSceneList*) *i;
     sceneList4->RemoveElements();
 
-    TEveGeoShape *gentle_geom = 0;
+    TEveGeoShape *gentle_geom = nullptr; 
 
     TFile* geom = TFile::Open(gMiniGeom);
     if (!geom)
@@ -5158,7 +5080,7 @@ Comment fusionner et analyser les resultats obtenus en mode <Etudiant>\n\n\
     TEveSceneList* sceneList4 = (TEveSceneList*) *i;
     sceneList4->RemoveElements();
 
-    TEveGeoShape *gentle_geom = 0;
+    TEveGeoShape *gentle_geom = nullptr; 
 
     TFile* geom = TFile::Open(gMiniGeom);
     if (!geom)
@@ -5321,7 +5243,7 @@ Comment fusionner et analyser les resultats obtenus en mode <Etudiant>\n\n\
     TEveSceneList* sceneList4 = (TEveSceneList*) *i;
     sceneList4->RemoveElements();
 
-    TEveGeoShape *gentle_geom = 0;
+    TEveGeoShape *gentle_geom = nullptr; 
 
     TFile* geom = TFile::Open(gMiniGeom);
     if (!geom)
@@ -5461,7 +5383,7 @@ Comment fusionner et analyser les resultats obtenus en mode <Etudiant>\n\n\
     TEveSceneList* sceneList4 = (TEveSceneList*) *i;
     sceneList4->RemoveElements();
 
-    TEveGeoShape *gentle_geom = 0;
+    TEveGeoShape *gentle_geom = nullptr; 
 
     TFile* geom = TFile::Open(gMiniGeom);
     if (!geom)
@@ -5619,7 +5541,7 @@ Comment fusionner et analyser les resultats obtenus en mode <Etudiant>\n\n\
     TEveSceneList* sceneList4 = (TEveSceneList*) *i;
     sceneList4->RemoveElements();
 
-    TEveGeoShape *gentle_geom = 0;
+    TEveGeoShape *gentle_geom = nullptr; 
 
     TFile* geom = TFile::Open(gMiniGeom);
     if (!geom)
@@ -5845,7 +5767,7 @@ Comment fusionner et analyser les resultats obtenus en mode <Etudiant>\n\n\
 
     fVSD->DeleteTrees();
     delete fDirectory;
-    fDirectory = 0;
+    fDirectory = nullptr; 
   }
 
   //---------------------------------------------------------------------------
@@ -7184,7 +7106,7 @@ void CountEvents()
   ClassDef(TVSDReader, 0);
 };
 
-TVSDReader* gVSDReader = 0;
+TVSDReader* gVSDReader = nullptr; 
 /*
   class TVSDModeSwitch {
   public:
@@ -7231,7 +7153,7 @@ TVSDReader* gVSDReader = 0;
 
   };
 
-  TVSDModeSwitch* gVSDModeSwitch = 0;
+  TVSDModeSwitch* gVSDModeSwitch = nullptr; 
 */
 
 // Forward declaration.
@@ -7240,7 +7162,7 @@ TVSDReader* gVSDReader = 0;
 //______________________________________________________________________________
 void alice_vsd(Int_t choice, Int_t mode, Int_t dataset)
 {
-
+	
   TString vsd_file_name;
   
   vsd_file_name = Form("AliVSD_MasterClass_%i.root", dataset);
@@ -7267,7 +7189,7 @@ void alice_vsd(Int_t choice, Int_t mode, Int_t dataset)
 
   TEveManager::Create(kTRUE,"FV");
 
-  TEveGeoShape *gentle_geom = 0;
+  TEveGeoShape *gentle_geom = nullptr; 
 /*
   TFile* geom = TFile::Open(gMiniGeom);
 
@@ -7294,7 +7216,7 @@ void alice_vsd(Int_t choice, Int_t mode, Int_t dataset)
     TEveSceneList* sceneList4 = (TEveSceneList*) *i;
     sceneList4->RemoveElements();
 
-    TEveGeoShape *gentle_geom = 0;
+    TEveGeoShape *gentle_geom = nullptr; 
 */
     TFile* geom = TFile::Open(gMiniGeom);
     if (!geom)
@@ -7488,6 +7410,7 @@ void alice_vsd(Int_t choice, Int_t mode, Int_t dataset)
   //   pad->Divide(2,2);
 
   //   pad->cd(1);
+  
   gKRapHist = new TH1D("Statistics","Kaons",20,-1.5,1.5);
   gKRapHist->SetLineColor(2);
   gKRapHist->GetXaxis()->SetTitle("Rapidity");
@@ -7570,12 +7493,12 @@ void alice_vsd(Int_t choice, Int_t mode, Int_t dataset)
   frmMain->SetCleanup(kDeepCleanup);
 
   TString icondir(TString::Format("%s/icons/", gSystem->Getenv("ROOTSYS")) );
-  TGPictureButton* b1 = 0;
-  TGTextButton* b = 0;
-  TGLabel* label = 0;
-  TGGroupFrame* gf = 0;
-  TGVerticalFrame* vf = 0;
-  TGHorizontalFrame* hf = 0;
+  TGPictureButton* b1 = nullptr; 
+  TGTextButton* b = nullptr; 
+  TGLabel* label = nullptr; 
+  TGGroupFrame* gf = nullptr; 
+  TGVerticalFrame* vf = nullptr; 
+  TGHorizontalFrame* hf = nullptr; 
   ULong_t buttonRedColor, buttonBlueColor;
 
   gf = new TGGroupFrame(frmMain, "Student Instructions");
