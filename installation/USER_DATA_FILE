@@ -13,10 +13,9 @@ echo 'if [ "$PS1" ]; then
 	# download software and associated stuff from github 
 	git clone https://github.com/yschutz/MasterClass.git
 	cd MasterClass 
-	# or a link id /eos available 
   fi
 fi
-echo "***** WELCOME TO ALICE MASTER CLASS EXERCICES *****" ' >> /home/masterclass/.bashrc
+echo "***** WELCOME TO ALICE MASTER CLASS EXERCICES *****"' >> /home/masterclass/.bashrc
 exit 0
 
 [amiconfig]
