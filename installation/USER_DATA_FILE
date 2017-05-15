@@ -16,9 +16,15 @@ echo 'if [ "$PS1" ]; then
   fi
 fi' >> /home/masterclass/.bashrc
 if [[ $LANG == *"fr"*  ]]; then 
-	echo 'echo "***** BIENVENNU.E POUR LES EXERCICES MASTER CLASS ALICE *****"' >> /home/masterclass/.bashrc
+	echo 'echo "***** BIENVENNU.E POUR LES EXERCICES MASTER CLASS ALICE *****"
+          echo "***** *************************************** *****"
+          echo "** To start type: "
+          echo "> start -h"' >> /home/masterclass/.bashrc
 else	
-	echo 'echo "***** WELCOME TO ALICE MASTER CLASS EXERCICES *****"' >> /home/masterclass/.bashrc
+	echo 'echo "***** WELCOME TO ALICE MASTER CLASS EXERCICES *****"
+	      echo "***** *************************************** *****"
+	      echo "** To start type: "
+	      echo "> start -h"' >> /home/masterclass/.bashrc
 fi	
 exit 0
 
