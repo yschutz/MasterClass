@@ -1,32 +1,29 @@
 #!/bin/sh.after
 parents=$(pid=$$; while [ $pid -ne 1 ]; do pid=$(ps -o ppid= -p $pid); cat /proc/$(echo $pid)/cmdline; done)
 if ! echo $parents | grep -q amiconfig; then
-echo "Skipping startup script, which should only run under amiconfig daemon"
-exit 0
+  echo "Skipping startup script, which should only run under amiconfig daemon"
+  exit 0
 fi
 
 ls /cvmfs/alice.cern.ch >/dev/null
 echo 'if [ "$PS1" ]; then
-if [ "x$CERNVM_ALICE_ENV" = "x" ]; then
-. /cvmfs/alice.cern.ch/etc/login.sh || true
-export CERNVM_ALICE_ENV=1
-# download software and associated stuff from github
-if [ ! -d MasterClass ]; then
- git clone https://github.com/yschutz/MasterClass.git
-fi
-cd MasterClass
-git pull
-fi
-fi
-echo '***** You are now ready to strat the ALICE Master Classe Exercices *****'
-' >> /home/masterclass/.bashrc
+  if [ "x$CERNVM_ALICE_ENV" = "x" ]; then
+    . /cvmfs/alice.cern.ch/etc/login.sh || true
+    export CERNVM_ALICE_ENV=1
+	# download software and associated stuff from github 
+	git clone https://github.com/yschutz/MasterClass.git
+	cd MasterClass 
+	# download the data from cernbox
+	scp -r yschutz@lxplus.cern.ch:/eos/user/y/yschutz/MasterClass.data/* .
+	# or a link id /eos available 
+  fi
+fi' >> /home/masterclass/.bashrc
 exit 0
 
 [amiconfig]
 plugins=cernvm
 
 [cernvm]
-eos-server=eosuser.cern.ch
 organisations=ALICE
 repositories=alice,alice-ocdb,grid,sft
 shell=/bin/bash
