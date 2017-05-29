@@ -10,7 +10,7 @@ echo 'if [ "$PS1" ]; then
   if [ "x$CERNVM_ALICE_ENV" = "x" ]; then
     . /cvmfs/alice.cern.ch/etc/login.sh || true
     export CERNVM_ALICE_ENV=1
-	if [ -d "MasterClass"]; then
+	if [ -d "MasterClass" ]; then
 		# get the latest version
 		cd MasterClass 
 		git pull 
