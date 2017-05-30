@@ -1,4 +1,4 @@
-powershell -command "& { iwr https://raw.githubusercontent.com/yschutz/MasterClass/master/installation/install.sh -OutFile install.bat }"
+powershell -command "& { iwr https://raw.githubusercontent.com/yschutz/MasterClass/master/installation/install.bat -OutFile install.bat }"
 
 REM the configuration files
 
