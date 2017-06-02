@@ -3132,7 +3132,7 @@ Comment analyser un evenement :\n\n\
      et les traves des autres particules (principalement des pions) sont marquees en gris.\n\n\
 \
    2. Regardez attentivement la visualisation de l'evenement. Reconnaissez-vous un motif interessant\n\
-      qui ressemble à une decroissance V0 ou cascade ?\n\
+      qui ressemble a une decroissance V0 ou cascade ?\n\
       Si vous avez des difficultes pour identifier les traves des particules etranges, supprimer l'affichage des autres particules.\n\
      2.1 Si vous avez trouve une topologie V0, cliquant chacune des deux traces\n\
          resultant de la decroissance. Vous obtientrez alors une fenetre avec la quantite de mouvement,\n\
@@ -3150,7 +3150,7 @@ Comment analyser un evenement :\n\n\
 \
    Cliquez ensuite <Masse Invariante>. La masse invariante\n\
    de la particule mere sera calculee. Est-ce que la masse invariante correspon à l'une\n\
-   des masses dans le tableau des particules ?Si oui, vous avez trouve une particule etrange ! (Si non, c'est du bruit de fond).\n\n\
+   des masses dans le tableau des particules ? Si oui, vous avez trouve une particule etrange ! (Si non, c'est du bruit de fond).\n\n\
 \
    Confirmez en cliquant <Ceci est un XXX>, ou XXX est le nom de la particule que vous avez trouvee.\n\n\
 \
@@ -3177,7 +3177,7 @@ Comment analyser un evenement :\n\n\
 \
    6. Cliquez <Sauvegarder> dans l'outil Calculateur.\n\n\
 \
-   7. Transmettez le fichier avec vos rsultats a votre tuteur : Copier le fichier avec vos resultats\n\
+   7. Transmettez le fichier avec vos resultats a votre tuteur : Copier le fichier avec vos resultats\n\
       sur la cle memoire\n\n\
 \
       ");	
@@ -3862,7 +3862,7 @@ Comment fusionner et analyser les resultats obtenus en mode <Etudiant>\n\n\
 			  if (strncmp(gSystem->Getenv("BLA"), "EN", 2) == 0)
 				  text = "Previous";
 			  else if (strncmp(gSystem->Getenv("BLA"), "FR", 2) == 0)
-				  text = "Précédent";
+				  text = "Precedent";
 
 			  label = new TGLabel(hf, text);
 			  hf->AddFrame(label, new TGLayoutHints(kLHintsExpandX, 1, 1, 1, 1));
@@ -3879,7 +3879,7 @@ Comment fusionner et analyser les resultats obtenus en mode <Etudiant>\n\n\
 			  else if (strncmp(gSystem->Getenv("BLA"), "FR", 2) == 0)
 				  text = "Suivant";
 
-			  label = new TGLabel(hf, "Next");
+			  label = new TGLabel(hf, text);
 			  hf->AddFrame(label, new TGLayoutHints(kLHintsExpandX, 1, 1, 1, 1));
 
 		  }
@@ -3913,7 +3913,7 @@ Comment fusionner et analyser les resultats obtenus en mode <Etudiant>\n\n\
 			  if (strncmp(gSystem->Getenv("BLA"), "EN", 2) == 0)
 				  text = "Event analysed!";
 			  else if (strncmp(gSystem->Getenv("BLA"), "FR", 2) == 0)
-				  text = "Evenement analysé !";
+				  text = "Evenement analyse !";
 			  b = new TGTextButton(hf, text);
 			  hf->AddFrame(b, new TGLayoutHints(kLHintsExpandX, 1, 1, 1, 1));
 			  b->Connect("Clicked()", "TVSDReader", this, "CountEvents()");
