@@ -63,15 +63,15 @@
 
 using namespace std;
 
-namespace
-{
+//namespace
+//{
   const char *gMasterClassOutputData[] = {"MasterClass Output Data", "*.masterclass", 0, 0}; //for loading results
-}
+//}
 
-namespace
-{
+//namespace
+//{
   const char *gMasterClassOutputPictue[] = {"MasterClass Histograms", "*.png", 0, 0}; //for loading results
-}
+//}
 
 MultiView* gMultiView = nullptr; 
 
@@ -908,7 +908,7 @@ public:
   {
     // Create main frame
 
-    DontCallClose();
+   DontCallClose();
 
     TGGroupFrame* gf = nullptr; 
 	if (strncmp(gSystem->Getenv("BLA"), "EN", 2) == 0)
@@ -1297,7 +1297,8 @@ public:
 
     TRootHelpDialog* instructions = new TRootHelpDialog(gClient->GetRoot(), "CALCULATOR INSTRUCTIONS", 700, 400);
 
-    instructions->SetText("\
+    if (strncmp(gSystem->Getenv("BLA"), "EN", 2) == 0)
+      instructions->SetText("\
 Calculator Instructions \n\n\
 \
 The Calculator is provided to allow you to calculate rapidity and invariant mass\n\
@@ -1316,9 +1317,34 @@ into 3 segments:\n\n\
       result is displayed below the button\n\
       That's a Kaon/Lambda/antiLambda/Xi!- If you have found a particle click on its button\n\
       Clear - Clear all Number Fields \n\
-      Load- Load your results\n\
-      Save- Save your results (autosave at the end of each event)\n\
-      Close- close the Calculator\n\n\
+      Load  - Load your results\n\
+      Save  - Save your results (autosave at the end of each event)\n\
+      Close - close the Calculator\n\n\
+\
+      ");
+    else if (strncmp(gSystem->Getenv("BLA"), "FR", 2) == 0)
+      instructions->SetText("\
+Instructions Calculateur \n\n\
+\
+Le calculateur vous permet de calculer la rapidite et la masse invariante\n\
+de la particule mere connaissant les caracteristiques des particules filles.\n\
+Il est divise en 3 segments :\n\n\
+\
+   Instructions\n\n\
+\
+   Table des particules - liste divers types de particules avec leur masse, utilisez cette table\n\
+   pour verifier l'identite des traces des decroissances V0 et Cascade \n\n\
+\
+   Calculateur - avec:\n\n\
+      12 champs de nombre (4 lignes : px, py, pz et masse, 3 colonnes: (-), (+), Celibataire) - \n\
+      les parametres de la trace selectionne seront copies ici\n\
+      Masse Invariante - calcule la masse invariantes de la particule mere, le\n\
+      resultat est affiche sous le bouton\n\
+      Ceci est un Kaon/Lambda/antiLambda/Xi!- Si vous avez trouve une particule cliquez bouton correspondant\n\
+      Effacer     - Efface tous les champs de nombre \n\
+      Enregistrer - Enregistre vos resultats\n\
+      Sauvegarder - Sauvegarde vos resultats (sauvegarde automatique a la fin de chaque evenement)\n\
+      Fermer      - Ferme le calculateur\n\n\
 \
       ");
 
