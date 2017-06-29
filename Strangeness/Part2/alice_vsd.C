@@ -574,10 +574,11 @@ public:
 		fFitGaus->SetLineColor(kGreen+1);
 		fMinvHisto->Fit(fFitGaus,"rme");
 
-		if (gLabels2)
-			delete gLabels2; 
+		if (gLabels2) {
+			delete gLabels2;
+			fMinvHisto->Draw();
+		}
 		gLabels2 = new TLatex();
-		fPad->Update();
 		gLabels2->SetTextSize(0.045);
 		gLabels2->SetTextColor(kBlack);
 		gLabels2->SetNDC(kTRUE);
