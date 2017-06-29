@@ -94,7 +94,7 @@ Int_t gLoads        = 0;
 Bool_t foundNeg = kFALSE;
 Bool_t foundPos = kFALSE;
 
-TLatex *gLabels2 = 0;
+TLatex *ggLabels2 = 0;
 
 Int_t AC = 0;
 
@@ -574,12 +574,12 @@ public:
 		fFitGaus->SetLineColor(kGreen+1);
 		fMinvHisto->Fit(fFitGaus,"rme");
 
-		if (gLabels2)
-			delete gLabels2; 
-		gLabels2 = new TLatex();
-		labels2->SetTextSize(0.045);
-		labels2->SetTextColor(kBlack);
-		labels2->SetNDC(kTRUE);
+		if (ggLabels2)
+			delete ggLabels2; 
+		ggLabels2 = new TLatex();
+		gLabels2->SetTextSize(0.045);
+		gLabels2->SetTextColor(kBlack);
+		gLabels2->SetNDC(kTRUE);
 		Double_t LabelX = 0.5;
 		Double_t LabelY = 0.8;
 		Double_t LabelYstep = 0.05;
@@ -588,17 +588,17 @@ public:
 		Int_t Bck_Fit = (Int_t)(Background_Integral(fFitRangeGaus->GetMin(),fFitRangeGaus->GetMax())/fMinvHisto->GetBinWidth(1));
 
 		if (strncmp(gSystem->Getenv("BLA"), "EN", 2) == 0) {
-			labels2->DrawLatex(LabelX, LabelY,Form("Total: %d",Total_Fit));
-			labels2->DrawLatex(LabelX, LabelY-LabelYstep,Form("Background: %d",Bck_Fit));
-			labels2->DrawLatex(LabelX, LabelY-2.*LabelYstep,Form("Signal: %d",Total_Fit-Bck_Fit));
-			labels2->DrawLatex(LabelX, LabelY-3.*LabelYstep,Form("Mean: %f#pm%f",fFitGaus->GetParameter(1)*1000., fFitGaus->GetParError(1)*1000.));
-			labels2->DrawLatex(LabelX, LabelY-4.*LabelYstep,Form("#sigma: %f#pm%f",fFitGaus->GetParameter(2)*1000., fFitGaus->GetParError(2)*1000.));
+			gLabels2->DrawLatex(LabelX, LabelY,Form("Total: %d",Total_Fit));
+			gLabels2->DrawLatex(LabelX, LabelY-LabelYstep,Form("Background: %d",Bck_Fit));
+			gLabels2->DrawLatex(LabelX, LabelY-2.*LabelYstep,Form("Signal: %d",Total_Fit-Bck_Fit));
+			gLabels2->DrawLatex(LabelX, LabelY-3.*LabelYstep,Form("Mean: %f#pm%f",fFitGaus->GetParameter(1)*1000., fFitGaus->GetParError(1)*1000.));
+			gLabels2->DrawLatex(LabelX, LabelY-4.*LabelYstep,Form("#sigma: %f#pm%f",fFitGaus->GetParameter(2)*1000., fFitGaus->GetParError(2)*1000.));
 		} else if (strncmp(gSystem->Getenv("BLA"), "FR", 2) == 0) {
-			labels2->DrawLatex(LabelX, LabelY,Form("Total: %d",Total_Fit));
-			labels2->DrawLatex(LabelX, LabelY-LabelYstep,Form("Fond: %d",Bck_Fit));
-			labels2->DrawLatex(LabelX, LabelY-2.*LabelYstep,Form("Signal: %d",Total_Fit-Bck_Fit));
-			labels2->DrawLatex(LabelX, LabelY-3.*LabelYstep,Form("Moyenne: %f#pm%f",fFitGaus->GetParameter(1)*1000., fFitGaus->GetParError(1)*1000.));
-			labels2->DrawLatex(LabelX, LabelY-4.*LabelYstep,Form("#sigma: %f#pm%f",fFitGaus->GetParameter(2)*1000., fFitGaus->GetParError(2)*1000.));
+			gLabels2->DrawLatex(LabelX, LabelY,Form("Total: %d",Total_Fit));
+			gLabels2->DrawLatex(LabelX, LabelY-LabelYstep,Form("Fond: %d",Bck_Fit));
+			gLabels2->DrawLatex(LabelX, LabelY-2.*LabelYstep,Form("Signal: %d",Total_Fit-Bck_Fit));
+			gLabels2->DrawLatex(LabelX, LabelY-3.*LabelYstep,Form("Moyenne: %f#pm%f",fFitGaus->GetParameter(1)*1000., fFitGaus->GetParError(1)*1000.));
+			gLabels2->DrawLatex(LabelX, LabelY-4.*LabelYstep,Form("#sigma: %f#pm%f",fFitGaus->GetParameter(2)*1000., fFitGaus->GetParError(2)*1000.));
 		}
     
 		if(!fFitPolynomial) fFitPolynomial = new TF1("fitPoly","[0]*x*x+[1]*x+[2]",MinRange,MaxRange);
