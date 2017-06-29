@@ -125,7 +125,7 @@ public:
 	fFile(0), fEvDirKeys(0),
 	fVSD(0), fMaxEv(-1), fCurEv(-1), fMaxR(400), 
 	fTimer(0), fMinvHisto(0), fPad(0), fFitRangeGaus(0), fFitRangePoly(0),
-	fFitGaus(0), fFitPolynomial(0)
+	fFitgaus(0), fFitPolynomial(0)
 	{
 		fFile = TFile::Open(file_name);
 		if (!fFile)
@@ -574,8 +574,8 @@ public:
 		fFitGaus->SetLineColor(kGreen+1);
 		fMinvHisto->Fit(fFitGaus,"rme");
 
-		if (ggLabels2)
-			delete ggLabels2; 
+		if (gLabels2)
+			delete gLabels2; 
 		gLabels2 = new TLatex();
 		gLabels2->SetTextSize(0.045);
 		gLabels2->SetTextColor(kBlack);
