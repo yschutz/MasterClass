@@ -255,15 +255,18 @@ public:
 			return;
 		}
 		fMinvHisto->SetLineColor(2);
-		float max = 1.0; 
-		if (type == 1)
+		float max = 1.0;
+		float min = 0.25; 
+		if (type == 1) {
 			max = 2.0;
+			min = 1.0;
+		}
 		if (strncmp(gSystem->Getenv("BLA"), "EN", 2) == 0) {
-			fMinvHisto = new TH1D("fMinvHisto","InvariantMass ",400,0.0,max);
+			fMinvHisto = new TH1D("fMinvHisto","InvariantMass ",400,min,max);
 			fMinvHisto->GetXaxis()->SetTitle("Invariant Mass (GeV/c^{2})");
 			fMinvHisto->GetYaxis()->SetTitle("Counts");
 		} else if (strncmp(gSystem->Getenv("BLA"), "FR", 2) == 0) {
-			fMinvHisto = new TH1D("fMinvHisto","Masse Invariante ",400,0.0,max);
+			fMinvHisto = new TH1D("fMinvHisto","Masse Invariante ",400,min,max);
 			fMinvHisto->GetXaxis()->SetTitle("Masse Invariante (GeV/c^{2})");
 			fMinvHisto->GetYaxis()->SetTitle("Coups");
 		}
