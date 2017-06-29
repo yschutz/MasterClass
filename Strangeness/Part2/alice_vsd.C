@@ -220,31 +220,38 @@ public:
 		TString fn(fileName); 
 		fn.Prepend(gSystem->Getenv("PART")); 
 		fn.Prepend(gSystem->Getenv("EVTPATH")); 
-		cout << "************* file = " << fn << endl; 
 		
-		ifstream file;
+		// ifstream file;
+		TFile *file; 
+
 		Double_t minv;
-		if(AC<4) {
-			AC=AC+1;
-			cout << AC << endl; 
-		} else  {
-			AC=1;
-			cout << AC <<endl; 
-		}	
+		// if(AC<4) {
+		// 	AC=AC+1;
+		// 	cout << AC << endl; 
+		// } else  {
+		// 	AC=1;
+		// 	cout << AC <<endl; 
+		// }	
 	
-		fPad->cd(AC);
+		// fPad->cd(AC);
 
 		fFitPolynomial = nullptr;
 		fFitGaus       = nullptr;
 
       
-		file.open(fn);
+		// file.open(fn);
+		fn.Append("?filetype=raw");
+		file = TFile::Open(fn);       
+		Long64_t bufsize = 1024; 
+		Long64_t filesize = file->GetSize(); 
+		if (filesize < bufsize)
+			bufsize = filesize;
+		char *buf    = new char[bufsize];
        
-      
-       
-		if( file.good() == false )
+		// if( file.good() == false )
+		if (!file)
 		{
-			cout << "No file" << endl;
+			cout << "Cannot open file: " << fn << endl;
 			return;
 		}
 		fMinvHisto->SetLineColor(2);
@@ -262,16 +269,32 @@ public:
 		}
 		fMinvHisto->SetFillColor(0);
 
-		while(!file.eof() )
-		{
-			file>>minv;
-			// cout<<"Invariant Mass : "<<minv<<endl;
-			fMinvHisto->Fill(minv);
+		// while(!file.eof() )
+		// {
+		// 	file>>minv;
+		// 	// cout<<"Invariant Mass : "<<minv<<endl;
+		// 	fMinvHisto->Fill(minv);
 
-		}
+		// }
+		while (bufsize && !file->ReadBuffer(buf, bufsize)) {
+			TString temp; 
+			for (int index =0; index < bufsize; index++) { 
+				if (buf[index] != '\n')
+					temp.Append(buf[index]); 
+				else {
+					minv = temp.Atof();
+					fMinvHisto->Fill(minv);
+					temp.Clear(); 
+				} 
+			}
+			Long64_t bytesleft = filesize - file->GetBytesRead(); 
+			if (bytesleft < bufsize)
+				bufsize = (int)bytesleft;
+		} 
 		fMinvHisto->Draw();
 		fPad->Update();
-		file.close();
+		// file.close();
+		file->Close();
 		
 	}
 
@@ -985,8 +1008,8 @@ public:
 		browser->StartEmbedding(TRootBrowser::kRight);
 
 		fPad = new TCanvas();
-		fPad->Divide(2, 2);
-		fPad->cd(1);
+		// fPad->Divide(2, 2);
+		// fPad->cd(1);
 
 		if (strncmp(gSystem->Getenv("BLA"), "EN", 2) == 0) {
 			fMinvHisto = new TH1D("Invariant Mass","Invariant Mass",400,0.0,2.0);
@@ -994,18 +1017,18 @@ public:
 			fMinvHisto = new TH1D("Masse Invariante","Masse Invariante",400,0.0,2.0);
 		}
 
-		if(AC<=4) {
-			AC=AC+1; 
-			cout << AC << endl;
-		}
+		// if(AC<=4) {
+		// 	AC=AC+1; 
+		// 	cout << AC << endl;
+		// }
 
 	
-		else {
-			AC=1; 
-			cout << AC << endl;
-		}
+		// else {
+		// 	AC=1; 
+		// 	cout << AC << endl;
+		// }
 
-		fPad->cd(AC);
+		// fPad->cd(AC);
 		fMinvHisto->SetLineColor(2);
 		if (strncmp(gSystem->Getenv("BLA"), "EN", 2) == 0) {
 			fMinvHisto->GetXaxis()->SetTitle("Invariant Mass (GeV/c^{2})");
