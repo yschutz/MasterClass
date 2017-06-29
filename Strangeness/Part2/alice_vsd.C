@@ -94,7 +94,7 @@ Int_t gLoads        = 0;
 Bool_t foundNeg = kFALSE;
 Bool_t foundPos = kFALSE;
 
-TLatex *ggLabels2 = 0;
+TLatex *gLabels2 = 0;
 
 Int_t AC = 0;
 
@@ -576,7 +576,7 @@ public:
 
 		if (ggLabels2)
 			delete ggLabels2; 
-		ggLabels2 = new TLatex();
+		gLabels2 = new TLatex();
 		gLabels2->SetTextSize(0.045);
 		gLabels2->SetTextColor(kBlack);
 		gLabels2->SetNDC(kTRUE);
