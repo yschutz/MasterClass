@@ -94,6 +94,8 @@ Int_t gLoads        = 0;
 Bool_t foundNeg = kFALSE;
 Bool_t foundPos = kFALSE;
 
+TLatex *gLabels2 = 0;
+
 Int_t AC = 0;
 
 class TVSDReader
@@ -549,7 +551,9 @@ public:
 		fFitGaus->SetLineColor(kGreen+1);
 		fMinvHisto->Fit(fFitGaus,"rme");
 
-		TLatex *labels2 = new TLatex();
+		if (gLabels2)
+			delete gLabels2; 
+		gLabels2 = new TLatex();
 		labels2->SetTextSize(0.045);
 		labels2->SetTextColor(kBlack);
 		labels2->SetNDC(kTRUE);
