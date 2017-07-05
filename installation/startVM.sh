@@ -3,7 +3,7 @@ if ! which virtualbox > /dev/null; then
  echo "you need to instal VirtualBox first from: https://www.virtualbox.org"
   if [ "x$(uname -s)" = "xLinux" ]; then
     echo "you need to download and install VMBox"
-    if !firefox https://www.virtualbox.org/wiki/Linux_Downloads; then
+    if ! firefox https://www.virtualbox.org/wiki/Linux_Downloads; then
       echo "firefox not found on your computer"
       exit 1
     fi
