@@ -7,6 +7,8 @@ fi
 
 ls /cvmfs/alice.cern.ch >/dev/null
 echo 'if [ "$PS1" ]; then
+git config --global user.email "schutz@in2p3.fr"
+git config --global user.name "yschutz"
   if [ "x$CERNVM_ALICE_ENV" = "x" ]; then
     . /cvmfs/alice.cern.ch/etc/login.sh || true
     export CERNVM_ALICE_ENV=1
