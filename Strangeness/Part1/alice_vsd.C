@@ -1533,7 +1533,7 @@ void Background()
     TGFileInfo fi;
     fi.fFileTypes   = gMasterClassOutputData;
 //      fi.fIniDir      = StrDup(""); // current directory
-      fi.fIniDir      = gSystem->Getenv("EVTPATH"); // current directory
+      fi.fIniDir      = (char*)gSystem->Getenv("EVTPATH"); // current directory
     fi.fFileTypeIdx = 0;
     fi.fOverwrite   = kTRUE;
     new TGFileDialog(gClient->GetDefaultRoot(),gEve->GetMainWindow(), kFDSave, &fi);
