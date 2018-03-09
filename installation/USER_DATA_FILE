@@ -19,6 +19,7 @@ echo 'if [ "$PS1" ]; then
 		git clone https://github.com/yschutz/MasterClass.git
 		cd MasterClass
 	fi 
+	chmod +x *.sh
   fi
 fi' >> /home/masterclass/.bashrc
 if [[ $LANG == *"fr"*  ]]; then 
