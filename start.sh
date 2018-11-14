@@ -60,10 +60,8 @@ elif [ "x$(uname -s)" = "xLinux" ]; then
  # export LD_LIBRARY_PATH=/cvmfs/sft.cern.ch/lcg/releases/gcc/4.8.4/x86_64-slc6/lib64:$LD_LIBRARY_PATH
   if [ -d /cvmfs/sft.cern.ch ]
   then 
-#      source /cvmfs/sft.cern.ch/lcg/contrib/gcc/4.8/x86_64-slc6-gcc48-opt/setup.sh
-      source /cvmfs/sft.cern.ch/lcg/contrib/gcc/7.3.0/x86_64-slc6/setup.sh
-#      source /cvmfs/sft.cern.ch/lcg/app/releases/ROOT/6.04.02/x86_64-slc6-gcc48-opt/root/bin/thisroot.sh	
-      source /cvmfs/sft.cern.ch/lcg/app/releases/ROOT/6.14.00/x86_64-ubuntu18-gcc73-opt/root/bin/thisroot.sh	
+      source /cvmfs/sft.cern.ch/lcg/contrib/gcc/4.8/x86_64-slc6-gcc48-opt/setup.sh
+      source /cvmfs/sft.cern.ch/lcg/app/releases/ROOT/6.04.02/x86_64-slc6-gcc48-opt/root/bin/thisroot.sh	
   else 
       eval `/usr/local/etc/use/chenv  cern2017`
   fi
