@@ -33,7 +33,7 @@ else
 	echo 'echo "***** WELCOME TO ALICE MASTER CLASS EXERCICES *****"
 	      echo "***** *************************************** *****"
 	      echo "** To start type: "
-	      echo "> ./start -h"' >> /home/masterclass/.bashrc
+	      echo "> ./start.sh -h"' >> /home/masterclass/.bashrc
 fi	
 exit 0
 
