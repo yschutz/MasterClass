@@ -69,10 +69,10 @@ elif [ "x$(uname -s)" = "xLinux" ]; then
   fi
 fi
 if [[ $PART = "Part1/" ]]; then 
-	root start.C
+	root -l start.C
 elif [[ $PART = "Part2/" ]]; then 
 	cd $EXPATH$PART$ROLE
-	root start.C	
+	root -l start.C	
 fi
 cd $EXPATH/$PART
 rm *.pcm *.d
