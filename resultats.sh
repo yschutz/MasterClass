@@ -1,3 +1,3 @@
 #! /bin/bash
-firefox https://docs.google.com/spreadsheets/d/1MOsd83bhkezTmOtcrBvocwcSS0zVy-aNYDX-qNbtbhc/edit#gid=1853595180 &
+firefox https://docs.google.com/spreadsheets/d/16O43sHQNpa5-I8t8yO8jgomLojRO483bfNhXXijaTl8/edit#gid=842615283 &
 exit
