@@ -38,16 +38,33 @@ do
 	esac
 shift
 done
+
+
 export EXPATH="$EXPATH/"
+# Switch between RAA or Strangeness exercise
+
+
 if [ -d Data-Masterclass ]
 then 
      export DATAPATH="Data-Masterclass"
+     # The data should be made available via linux CERN machine for manual download
+     #  lxplus.cern.ch: /eos/experiment/alice/MasterClass.data/data/
+     # NOTE :
+     #      The Strangeness parts (Data-Masterclass/events/Strangeness) counts for 9.7 Mb
+     #      It can be stored on GitHub without much trouble
+     #      The RAA parts (Data-Masterclass/events/RAA) is way heavier (747 Mb)
+     #          --> Either use EOS on-the-fly (see below) 
+     #              or download the data manually beforehand to local working directory
 else 
      export DATAPATH="root://eospublic.cern.ch//eos/experiment/alice/MasterClass.data/data/"
 fi
+
+
 export IMPATH="images/"
 export EVTPATH="$DATAPATH/events/$EXPATH"
 export GEOPATH="$DATAPATH/geometry/"
+
+
 if [ "x$(uname -s)" = "xDarwin" ]; then
  . /Applications/root_v6.09.02/bin/thisroot.sh
 elif [ "x$(uname -s)" = "xLinux" ]; then
@@ -66,17 +83,18 @@ elif [ "x$(uname -s)" = "xLinux" ]; then
         echo ""
   fi
 fi
+
+
 if [[ $PART = "Part1/" ]]; then
         echo "Launch part 1..."
-# 	root -l start.C
 elif [[ $PART = "Part2/" ]]; then 
         echo "Launch part 2..."
-# 	cd $EXPATH$PART
 fi
 
-	root -l start.C	
+    root -l start.C	
 
 
+# Clean leftovers from compilations
 cd $EXPATH/$PART
 rm *.pcm *.d
 cd -
