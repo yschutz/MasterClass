@@ -1,9 +1,23 @@
-{
-	TString path(gSystem->Getenv("EXPATH")); 
-	path.Append(gSystem->Getenv("PART")); 
-	path.Append(gSystem->Getenv("ROLE")); 
-    gSystem->CompileMacro( path + "/alice_vsd.C");
+
+
+void start(){
+     TString lPath("");    
+    lPath.Append( gSystem->Getenv("EXPATH") ); 
+    lPath.Append( gSystem->Getenv("PART") ); 
+
+    gSystem->CompileMacro( lPath + "alice_vsd.C");
     gSystem->Load("alice_vsd_C.so");
-	path = gSystem->Getenv("EXPATH"); 
-    gROOT->Macro(path + "masterclass.C");
+    
+    
+    TString lExPart( gSystem->Getenv("PART") );
+    if( lExPart.EqualTo("Part1/")) gROOT->Macro( lPath + "masterclass.C");
+    else
+    if( lExPart.EqualTo("Part2/")) gROOT->Macro( lPath + "masterclassExtended.C");
+    else{
+       Printf(" ");
+       Printf("Pb, unknown part (%s ?) of exercise to be treated... Nothing to be done, exit", lExPart.Data());
+    }
+    
 }
+
+

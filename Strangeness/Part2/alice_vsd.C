@@ -294,7 +294,7 @@ public:
 			if (bytesleft < bufsize)
 				bufsize = (int)bytesleft;
 		} 
-		fMinvHisto->Draw();
+		fMinvHisto->DrawCopy();
 		fPad->Update();
 		// file.close();
 		file->Close();
@@ -311,7 +311,7 @@ public:
 	}
 
 	// ----------------------------------------------------------
-	void CombineK0PpPp()
+	void CombineK0PbPb()
 	{
 		const char * file = "PbPb-K0.txt";
 		Combine(file, 0); 
@@ -575,7 +575,7 @@ public:
 		fFitGaus->SetParLimits(2,0.,(fFitRangeGaus->GetMax()-fFitRangeGaus->GetMin())/2.);
 
 		fFitGaus->SetLineColor(kGreen+1);
-		fMinvHisto->Fit(fFitGaus,"rme");
+		fMinvHisto->Fit(fFitGaus,"rime");
 
 		if (gLabels2) {
 			delete gLabels2;
@@ -664,7 +664,7 @@ public:
 		fTextButton2153->SetWrapLength(-1);
 		fCompositeFrame1593->AddFrame(fTextButton2153, new TGLayoutHints(kLHintsLeft | kLHintsTop,2,2,2,2));
 		TGCheckButton *fTextButton2190 = new TGCheckButton(fCompositeFrame1593,"PbPb");
-		fTextButton2190->Connect("Clicked()", "TVSDReader", this, "CombineK0PpPp()");
+		fTextButton2190->Connect("Clicked()", "TVSDReader", this, "CombineK0PbPb()");
 		fTextButton2190->SetTextJustify(36);
 		fTextButton2190->SetMargins(0,0,0,0);
 		fTextButton2190->SetWrapLength(-1);

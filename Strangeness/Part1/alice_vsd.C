@@ -2849,7 +2849,7 @@ public:
     delete fFile;
 	
 	TString fileName("AliVSD_example.root"); 
-    fileName.Prepend(gSystem->Getenv("PART")); 
+        fileName.Prepend(gSystem->Getenv("PART")); 
 	fileName.Prepend(gSystem->Getenv("EVTPATH")); 
 
     fFile = TFile::Open(fileName);
@@ -2921,16 +2921,20 @@ public:
     fFile->Close();
     delete fFile;
 
-	TString fileName(Form("AliVSD_MasterClass_%i.root", globalDataset)); 
+        TString fileName("");
+        
+        if( globalDataset < 100  )          fileName = Form("AliVSD_MasterClass_pp_%i.root",   globalDataset); 
+        else if( globalDataset == 101  )    fileName = Form("AliVSD_MasterClass_PbPb_%i.root", globalDataset); 
+        else{  Printf("Unknown choice of dataset... will crash now..."); return;}
+        
+        fileName.Prepend(gSystem->Getenv("PART")); 
 	fileName.Prepend(gSystem->Getenv("EVTPATH")); 
 	
     fFile = TFile::Open(fileName);
 
-	 TFile::Open("AliVSD.root");
-
     if (!fFile)
       {
-	Error("VSD_Reader", "Can not open the demo file ... terminating.");
+	Error("VSD_Reader", "Can not open the student file ... terminating.");
 	gSystem->Exit(1);
       }
 
@@ -5859,7 +5863,14 @@ Comment fusionner et analyser les resultats obtenus en mode <Etudiant>\n\n\
     AttachEvent();
 
     //      if(gEventNumber)
-    gEventNumber->SetText(TString::Format("%i / %i",fCurEv+1,globalDataset));
+    
+    if(globalMode == 1) gEventNumber->SetText(TString::Format("%02i / Demo",fCurEv+1)); 
+    else{ 
+            if (strncmp(gSystem->Getenv("BLA"), "EN", 2) == 0)
+                    gEventNumber->SetText(TString::Format("%02i / Set %i",fCurEv+1,globalDataset));
+            else if (strncmp(gSystem->Getenv("BLA"), "FR", 2) == 0)
+                    gEventNumber->SetText(TString::Format("%02i / Lot %i",fCurEv+1,globalDataset));
+    }
 
     // Load event data into visualization structures.
 
@@ -5942,11 +5953,9 @@ Comment fusionner et analyser les resultats obtenus en mode <Etudiant>\n\n\
 
 void CountEvents()
   {
- 
-		
-		gEventAnalysed->SetText(TString::Format("%i",fCount+1));
-	fCount++;		
-//gEventAnalysed++;
+        gEventAnalysed->SetText(TString::Format("%i",fCount+1));
+        fCount++;		
+        //gEventAnalysed++;
    Autosave();
 
   }
@@ -7192,12 +7201,14 @@ void alice_vsd(Int_t choice, Int_t mode, Int_t dataset)
 	
   TString vsd_file_name;
   
-  vsd_file_name = Form("AliVSD_MasterClass_%i.root", dataset);
+    if( dataset < 100  )          vsd_file_name = Form("AliVSD_MasterClass_pp_%i.root",   dataset); 
+    else if( dataset == 101  )    vsd_file_name = Form("AliVSD_MasterClass_PbPb_%i.root", dataset); 
+   
+
   vsd_file_name.Prepend(gSystem->Getenv("PART")); 
   vsd_file_name.Prepend(gSystem->Getenv("EVTPATH")); 
-
- // vsd_file_name = "AliVSD.root";
-
+  
+  
   globalChoice = choice;
   globalMode = mode;
   globalDataset = dataset;
