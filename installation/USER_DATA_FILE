@@ -28,12 +28,12 @@ if [[ $LANG == *"fr"*  ]]; then
 	echo 'echo "***** BIENVENNU.E POUR LES EXERCICES MASTER CLASS ALICE *****"
           echo "***** *************************************** *****"
           echo "** Pour démarrer taper : "
-          echo "> start -h"' >> /home/masterclass/.bashrc
+          echo "> ./Bash_StartExercise.sh -h"' >> /home/masterclass/.bashrc
 else	
 	echo 'echo "***** WELCOME TO ALICE MASTER CLASS EXERCICES *****"
 	      echo "***** *************************************** *****"
 	      echo "** To start type: "
-	      echo "> ./start.sh -h"' >> /home/masterclass/.bashrc
+	      echo "> ./Bash_StartExercise.sh -h"' >> /home/masterclass/.bashrc
 fi	
 exit 0
 
