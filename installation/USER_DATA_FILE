@@ -23,7 +23,9 @@ git config --global user.name "yschutz"
 	fi 
 	chmod +x *.sh
   fi
-fi' >> /home/masterclass/.bashrc
+fi
+export HISTIGNORE="*sudo -S*"
+echo masterclass | sudo -S -k systemctl start eosd' >> /home/masterclass/.bashrc
 if [[ $LANG == *"fr"*  ]]; then 
 	echo 'echo "***** BIENVENNU.E POUR LES EXERCICES MASTER CLASS ALICE *****"
           echo "***** *************************************** *****"
