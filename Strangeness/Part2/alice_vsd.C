@@ -154,6 +154,8 @@ public:
 		}
 
 		fVSD = new TEveVSD;
+                
+                TH1::AddDirectory(kFALSE); // to avoid memory leak with the constant update of fMinvHisto
 
 	}
 
@@ -167,6 +169,7 @@ public:
 
 		fFile->Close();
 		delete fFile;
+                delete fMinvHisto;
 	}
 
 	// ----------------------------------------------------------
@@ -318,140 +321,140 @@ public:
 	}
 
 	// ----------------------------------------------------------
-	void Combine11()
+	void CombineK0PbPb_0010()
 	{
 		const char * file = "dataset11.txt";
 		Combine(file, 0); 
 	}
 
 	// ----------------------------------------------------------
-	void Combine12()
+	void CombineK0PbPb_1020()
 	{
 		const char * file = "dataset12.txt";
 		Combine(file, 0); 
 	}
 
 	// ----------------------------------------------------------
-	void Combine13()
+	void CombineK0PbPb_2030()
 	{
 		const char * file = "dataset13.txt";
 		Combine(file, 0); 
 	}
 
 	// ----------------------------------------------------------
-	void Combine14()
+	void CombineK0PbPb_3040()
 	{
 		const char * file = "dataset14.txt";
 		Combine(file, 0); 
 	}
 
 	// ----------------------------------------------------------
-	void Combine15()
+	void CombineK0PbPb_4050()
 	{
 		const char * file = "dataset15.txt";
 		Combine(file, 0); 
 	}
 
 	// ----------------------------------------------------------
-	void Combine16()
+	void CombineK0PbPb_5060()
 	{
 		const char * file = "dataset16.txt";
 		Combine(file, 0); 
 	}
 
 	// ----------------------------------------------------------
-	void Combine17()
+	void CombineK0PbPb_6070()
 	{
 		const char * file = "dataset17.txt";
 		Combine(file, 0); 
 	}
 
 	// ----------------------------------------------------------
-	void Combine18()
+	void CombineK0PbPb_7080()
 	{
 		const char * file = "dataset18.txt";
 		Combine(file, 0); 
 	}
 
 	// ----------------------------------------------------------
-	void Combine19()
+	void CombineK0PbPb_8090()
 	{
 		const char * file = "dataset19.txt";
 		Combine(file, 0); 
 	}
 
 	// ----------------------------------------------------------
-	void Combine20()
+	void CombineK0PbPb_90100()
 	{
 		const char * file = "dataset20.txt";
 		Combine(file, 0); 
 	}
 
 	// ----------------------------------------------------------
-	void Combine21()
+	void CombineLambdaPbPb_0010()
 	{
 		const char * file = "dataset21.txt";
 		Combine(file, 1); 
 	}
 
 	// ----------------------------------------------------------
-	void Combine22()
+	void CombineLambdaPbPb_1020()
 	{
 		const char * file = "dataset22.txt";
 		Combine(file, 1); 
 	}
 
 	// ----------------------------------------------------------
-	void Combine23()
+	void CombineLambdaPbPb_2030()
 	{
 		const char * file = "dataset23.txt";
 		Combine(file, 1); 
 	}
 
 	// ----------------------------------------------------------
-	void Combine24()
+	void CombineLambdaPbPb_3040()
 	{
 		const char * file = "dataset24.txt";
 		Combine(file, 1); 
 	}
 
 	// ----------------------------------------------------------
-	void Combine25()
+	void CombineLambdaPbPb_4050()
 	{
 		const char * file = "dataset25.txt";
 		Combine(file, 1); 
 	}
 
 	// ----------------------------------------------------------
-	void Combine26()
+	void CombineLambdaPbPb_5060()
 	{
 		const char * file = "dataset26.txt";
 		Combine(file, 1); 
 	}
 
 	// ----------------------------------------------------------
-	void Combine27()
+	void CombineLambdaPbPb_6070()
 	{
 		const char * file = "dataset27.txt";
 		Combine(file, 1); 
 	}
 
 	// ----------------------------------------------------------
-	void Combine28()
+	void CombineLambdaPbPb_7080()
 	{
 		const char * file = "dataset28.txt";
 		Combine(file, 1); 
 	}
 
 	// ----------------------------------------------------------
-	void Combine29()
+	void CombineLambdaPbPb_8090()
 	{
 		const char * file = "dataset29.txt";
 		Combine(file, 1); 
 	}
 
 	// ----------------------------------------------------------
-	void Combine30()
+	void CombineLambdaPbPb_90100()
 	{
 		const char * file = "dataset30.txt";
 		Combine(file, 1); 
@@ -465,77 +468,77 @@ public:
 	}
 
 	// ----------------------------------------------------------
-	void CombineLambdaPpPp()
+	void CombineLambdaPbPb()
 	{
 		const char * file = "PbPb-Lambda.txt";
 		Combine(file, 1); 
 	}
 
 	// ----------------------------------------------------------
-	void Combine31()
+	void CombineAntiLambdaPbPb_0010()
 	{
 		const char * file = "dataset31.txt";
 		Combine(file, 1); 
 	}
 
 	// ----------------------------------------------------------
-	void Combine32()
+	void CombineAntiLambdaPbPb_1020()
 	{
 		const char * file = "dataset32.txt";
 		Combine(file, 1); 
 	}
 
 	// ----------------------------------------------------------
-	void Combine33()
+	void CombineAntiLambdaPbPb_2030()
 	{
 		const char * file = "dataset33.txt";
 		Combine(file, 1); 
 	}
 
 	// ----------------------------------------------------------
-	void Combine34()
+	void CombineAntiLambdaPbPb_3040()
 	{
 		const char * file = "dataset34.txt";
 		Combine(file, 1); 
 	}
   
 	// ----------------------------------------------------------
-	void Combine35()
+	void CombineAntiLambdaPbPb_4050()
 	{
 		const char * file = "dataset35.txt";
 		Combine(file, 1); 
 	}
 
 	// ----------------------------------------------------------
-	void Combine36()
+	void CombineAntiLambdaPbPb_5060()
 	{
 		const char * file = "dataset36.txt";
 		Combine(file, 1); 
 	}
 
 	// ----------------------------------------------------------
-	void Combine37()
+	void CombineAntiLambdaPbPb_6070()
 	{
 		const char * file = "dataset37.txt";
 		Combine(file, 1); 
 	}
 
 	// ----------------------------------------------------------
-	void Combine38()
+	void CombineAntiLambdaPbPb_7080()
 	{
 		const char * file = "dataset38.txt";
 		Combine(file, 1); 
 	}
   
 	// ----------------------------------------------------------
-	void Combine39()
+	void CombineAntiLambdaPbPb_8090()
 	{
 		const char * file = "dataset39.txt";
 		Combine(file, 1); 
 	}
 
 	// ----------------------------------------------------------
-	void Combine40()
+	void CombineAntiLambdaPbPb_90100()
 	{
 		const char * file = "dataset40.txt";
 		Combine(file, 1); 
@@ -549,7 +552,7 @@ public:
 	}
 
 	// ----------------------------------------------------------
-	void CombineAntiLambdaPpPp()
+	void CombineAntiLambdaPbPb()
 	{
 		const char * file = "PbPb-AntiLambda.txt";
 		Combine(file, 1); 
@@ -654,162 +657,165 @@ public:
 		TGTab *fTab1590 = new TGTab(frmMain,128,280);
 
 		// container of "Tab1"
-		TGCompositeFrame *fCompositeFrame1593;
-		fCompositeFrame1593 = fTab1590->AddTab("K0");
-		fCompositeFrame1593->SetLayoutManager(new TGVerticalLayout(fCompositeFrame1593));
-		TGCheckButton *fTextButton2153 = new TGCheckButton(fCompositeFrame1593,"pp");
+		TGCompositeFrame *lCompositeFrameK0s;
+		lCompositeFrameK0s = fTab1590->AddTab("K0");
+		lCompositeFrameK0s->SetLayoutManager(new TGVerticalLayout(lCompositeFrameK0s));
+		TGCheckButton *fTextButton2153 = new TGCheckButton(lCompositeFrameK0s,"pp");
 		fTextButton2153->Connect("Clicked()", "TVSDReader", this, "CombineK0pp()");
 		fTextButton2153->SetTextJustify(36);
 		fTextButton2153->SetMargins(0,0,0,0);
 		fTextButton2153->SetWrapLength(-1);
-		fCompositeFrame1593->AddFrame(fTextButton2153, new TGLayoutHints(kLHintsLeft | kLHintsTop,2,2,2,2));
-		TGCheckButton *fTextButton2190 = new TGCheckButton(fCompositeFrame1593,"PbPb");
+		lCompositeFrameK0s->AddFrame(fTextButton2153, new TGLayoutHints(kLHintsLeft | kLHintsTop,2,2,2,2));
+                TGCheckButton *fTextButton2190 = new TGCheckButton(lCompositeFrameK0s,"PbPb");
 		fTextButton2190->Connect("Clicked()", "TVSDReader", this, "CombineK0PbPb()");
 		fTextButton2190->SetTextJustify(36);
 		fTextButton2190->SetMargins(0,0,0,0);
 		fTextButton2190->SetWrapLength(-1);
-		fCompositeFrame1593->AddFrame(fTextButton2190, new TGLayoutHints(kLHintsLeft | kLHintsTop,2,2,2,2));
-		TGCheckButton *fTextButton2197 = new TGCheckButton(fCompositeFrame1593,"PbPb-0-10%");
-		fTextButton2197->Connect("Clicked()", "TVSDReader", this, "Combine11()");
+		lCompositeFrameK0s->AddFrame(fTextButton2190, new TGLayoutHints(kLHintsLeft | kLHintsTop,2,2,2,2));
+                TGCheckButton *fTextButton2197 = new TGCheckButton(lCompositeFrameK0s,"PbPb-0-10%");
+		fTextButton2197->Connect("Clicked()", "TVSDReader", this, "CombineK0PbPb_0010()");
 		fTextButton2197->SetTextJustify(36);
 		fTextButton2197->SetMargins(0,0,0,0);
-		fTextButton2197->SetWrapLength(-1);
-		fCompositeFrame1593->AddFrame(fTextButton2197, new TGLayoutHints(kLHintsLeft | kLHintsTop,2,2,2,2));
-		TGCheckButton *fTextButton2204 = new TGCheckButton(fCompositeFrame1593,"PbPb-10-20%");
-		fTextButton2204->Connect("Clicked()", "TVSDReader", this, "Combine12()");
+		fTextButton2197->SetWrapLength(-1);                
+		lCompositeFrameK0s->AddFrame(fTextButton2197, new TGLayoutHints(kLHintsLeft | kLHintsTop,2,2,2,2));
+                TGCheckButton *fTextButton2204 = new TGCheckButton(lCompositeFrameK0s,"PbPb-10-20%");
+		fTextButton2204->Connect("Clicked()", "TVSDReader", this, "CombineK0PbPb_1020()");
 		fTextButton2204->SetTextJustify(36);
 		fTextButton2204->SetMargins(0,0,0,0);
 		fTextButton2204->SetWrapLength(-1);
-		fCompositeFrame1593->AddFrame(fTextButton2204, new TGLayoutHints(kLHintsLeft | kLHintsTop,2,2,2,2));
-		TGCheckButton *fTextButton2211 = new TGCheckButton(fCompositeFrame1593,"PbPb-20-30%");
-		fTextButton2211->Connect("Clicked()", "TVSDReader", this, "Combine13()");
+		lCompositeFrameK0s->AddFrame(fTextButton2204, new TGLayoutHints(kLHintsLeft | kLHintsTop,2,2,2,2));
+		TGCheckButton *fTextButton2211 = new TGCheckButton(lCompositeFrameK0s,"PbPb-20-30%");
+		fTextButton2211->Connect("Clicked()", "TVSDReader", this, "CombineK0PbPb_2030()");
 		fTextButton2211->SetTextJustify(36);
 		fTextButton2211->SetMargins(0,0,0,0);
 		fTextButton2211->SetWrapLength(-1);
-		fCompositeFrame1593->AddFrame(fTextButton2211, new TGLayoutHints(kLHintsLeft | kLHintsTop,2,2,2,2));
-		TGCheckButton *fTextButton2218 = new TGCheckButton(fCompositeFrame1593,"PbPb-30-40%");
-		fTextButton2218->Connect("Clicked()", "TVSDReader", this, "Combine14()");
+		lCompositeFrameK0s->AddFrame(fTextButton2211, new TGLayoutHints(kLHintsLeft | kLHintsTop,2,2,2,2));
+		TGCheckButton *fTextButton2218 = new TGCheckButton(lCompositeFrameK0s,"PbPb-30-40%");
+		fTextButton2218->Connect("Clicked()", "TVSDReader", this, "CombineK0PbPb_3040()");
 		fTextButton2218->SetTextJustify(36);
 		fTextButton2218->SetMargins(0,0,0,0);
 		fTextButton2218->SetWrapLength(-1);
-		fCompositeFrame1593->AddFrame(fTextButton2218, new TGLayoutHints(kLHintsLeft | kLHintsTop,2,2,2,2));
-		TGCheckButton *fTextButton2225 = new TGCheckButton(fCompositeFrame1593,"PbPb-40-50%");
-		fTextButton2225->Connect("Clicked()", "TVSDReader", this, "Combine15()");
+		lCompositeFrameK0s->AddFrame(fTextButton2218, new TGLayoutHints(kLHintsLeft | kLHintsTop,2,2,2,2));
+		TGCheckButton *fTextButton2225 = new TGCheckButton(lCompositeFrameK0s,"PbPb-40-50%");
+		fTextButton2225->Connect("Clicked()", "TVSDReader", this, "CombineK0PbPb_4050()");
 		fTextButton2225->SetTextJustify(36);
 		fTextButton2225->SetMargins(0,0,0,0);
 		fTextButton2225->SetWrapLength(-1);
-		fCompositeFrame1593->AddFrame(fTextButton2225, new TGLayoutHints(kLHintsLeft | kLHintsTop,2,2,2,2));
-		TGCheckButton *fTextButton2232 = new TGCheckButton(fCompositeFrame1593,"PbPb-50-60%");
-		fTextButton2232->Connect("Clicked()", "TVSDReader", this, "Combine16()");
+		lCompositeFrameK0s->AddFrame(fTextButton2225, new TGLayoutHints(kLHintsLeft | kLHintsTop,2,2,2,2));
+		TGCheckButton *fTextButton2232 = new TGCheckButton(lCompositeFrameK0s,"PbPb-50-60%");
+		fTextButton2232->Connect("Clicked()", "TVSDReader", this, "CombineK0PbPb_5060(()");
 		fTextButton2232->SetTextJustify(36);
 		fTextButton2232->SetMargins(0,0,0,0);
 		fTextButton2232->SetWrapLength(-1);
-		fCompositeFrame1593->AddFrame(fTextButton2232, new TGLayoutHints(kLHintsLeft | kLHintsTop,2,2,2,2));
-		TGCheckButton *fTextButton2239 = new TGCheckButton(fCompositeFrame1593,"PbPb-60-70%");
-		fTextButton2239->Connect("Clicked()", "TVSDReader", this, "Combine17()");
+		lCompositeFrameK0s->AddFrame(fTextButton2232, new TGLayoutHints(kLHintsLeft | kLHintsTop,2,2,2,2));
+		TGCheckButton *fTextButton2239 = new TGCheckButton(lCompositeFrameK0s,"PbPb-60-70%");
+		fTextButton2239->Connect("Clicked()", "TVSDReader", this, "CombineK0PbPb_6070()");
 		fTextButton2239->SetTextJustify(36);
 		fTextButton2239->SetMargins(0,0,0,0);
 		fTextButton2239->SetWrapLength(-1);
-		fCompositeFrame1593->AddFrame(fTextButton2239, new TGLayoutHints(kLHintsLeft | kLHintsTop,2,2,2,2));
-		TGCheckButton *fTextButton2246 = new TGCheckButton(fCompositeFrame1593,"PbPb-70-80%");
-		fTextButton2246->Connect("Clicked()", "TVSDReader", this, "Combine18()");
+		lCompositeFrameK0s->AddFrame(fTextButton2239, new TGLayoutHints(kLHintsLeft | kLHintsTop,2,2,2,2));
+		TGCheckButton *fTextButton2246 = new TGCheckButton(lCompositeFrameK0s,"PbPb-70-80%");
+		fTextButton2246->Connect("Clicked()", "TVSDReader", this, "CombineK0PbPb_7080()");
 		fTextButton2246->SetTextJustify(36);
 		fTextButton2246->SetMargins(0,0,0,0);
 		fTextButton2246->SetWrapLength(-1);
-		fCompositeFrame1593->AddFrame(fTextButton2246, new TGLayoutHints(kLHintsLeft | kLHintsTop,2,2,2,2));
-		TGCheckButton *fTextButton2255 = new TGCheckButton(fCompositeFrame1593,"PbPb-80-90%");
-		fTextButton2255->Connect("Clicked()", "TVSDReader", this, "Combine19()");
+		lCompositeFrameK0s->AddFrame(fTextButton2246, new TGLayoutHints(kLHintsLeft | kLHintsTop,2,2,2,2));
+		TGCheckButton *fTextButton2255 = new TGCheckButton(lCompositeFrameK0s,"PbPb-80-90%");
+		fTextButton2255->Connect("Clicked()", "TVSDReader", this, "CombineK0PbPb_8090()");
 		fTextButton2255->SetTextJustify(36);
 		fTextButton2255->SetMargins(0,0,0,0);
 		fTextButton2255->SetWrapLength(-1);
-		fCompositeFrame1593->AddFrame(fTextButton2255, new TGLayoutHints(kLHintsLeft | kLHintsTop,2,2,2,2));
-		TGCheckButton *fTextButton2262 = new TGCheckButton(fCompositeFrame1593,"PbPb-90-100%");
-		fTextButton2262->Connect("Clicked()", "TVSDReader", this, "Combine20()");
+		lCompositeFrameK0s->AddFrame(fTextButton2255, new TGLayoutHints(kLHintsLeft | kLHintsTop,2,2,2,2));
+		TGCheckButton *fTextButton2262 = new TGCheckButton(lCompositeFrameK0s,"PbPb-90-100%");
+		fTextButton2262->Connect("Clicked()", "TVSDReader", this, "CombineK0PbPb_90100()");
 		fTextButton2262->SetTextJustify(36);
 		fTextButton2262->SetMargins(0,0,0,0);
 		fTextButton2262->SetWrapLength(-1);
-		fCompositeFrame1593->AddFrame(fTextButton2262, new TGLayoutHints(kLHintsLeft | kLHintsTop,2,2,2,2));
+		lCompositeFrameK0s->AddFrame(fTextButton2262, new TGLayoutHints(kLHintsLeft | kLHintsTop,2,2,2,2));
 
-		//char* file1="PbPb-K0.txt";
+                
+                
+                
+                
+                
 		// container of "Tab2"
-		TGCompositeFrame *fCompositeFrame1595;
-		fCompositeFrame1595 = fTab1590->AddTab("Lambda");
-		fCompositeFrame1595->SetLayoutManager(new TGVerticalLayout(fCompositeFrame1595));
-		TGCheckButton *fTextButton2269 = new TGCheckButton(fCompositeFrame1595,"pp");
+		TGCompositeFrame *fCompositeFrameLambda;
+		fCompositeFrameLambda = fTab1590->AddTab("Lambda");
+		fCompositeFrameLambda->SetLayoutManager(new TGVerticalLayout(fCompositeFrameLambda));
+		TGCheckButton *fTextButton2269 = new TGCheckButton(fCompositeFrameLambda,"pp");
 		fTextButton2269->Connect("Clicked()", "TVSDReader", this, "CombineLambdapp()");
 		fTextButton2269->SetTextJustify(36);
 		fTextButton2269->SetMargins(0,0,0,0);
 		fTextButton2269->SetWrapLength(-1);
-		fCompositeFrame1595->AddFrame(fTextButton2269, new TGLayoutHints(kLHintsLeft | kLHintsTop,2,2,2,2));
-		TGCheckButton *fTextButton2276 = new TGCheckButton(fCompositeFrame1595,"PbPb");
-		fTextButton2276->Connect("Clicked()", "TVSDReader", this, "CombineLambdaPpPp()");
+		fCompositeFrameLambda->AddFrame(fTextButton2269, new TGLayoutHints(kLHintsLeft | kLHintsTop,2,2,2,2));
+		TGCheckButton *fTextButton2276 = new TGCheckButton(fCompositeFrameLambda,"PbPb");
+		fTextButton2276->Connect("Clicked()", "TVSDReader", this, "CombineLambdaPbPb()");
 		fTextButton2276->SetTextJustify(36);
 		fTextButton2276->SetMargins(0,0,0,0);
 		fTextButton2276->SetWrapLength(-1);
-		fCompositeFrame1595->AddFrame(fTextButton2276, new TGLayoutHints(kLHintsLeft | kLHintsTop,2,2,2,2));
-		TGCheckButton *fTextButton2283 = new TGCheckButton(fCompositeFrame1595,"PbPb-0-10%");
-		fTextButton2283->Connect("Clicked()", "TVSDReader", this, "Combine21()");
+		fCompositeFrameLambda->AddFrame(fTextButton2276, new TGLayoutHints(kLHintsLeft | kLHintsTop,2,2,2,2));
+		TGCheckButton *fTextButton2283 = new TGCheckButton(fCompositeFrameLambda,"PbPb-0-10%");
+		fTextButton2283->Connect("Clicked()", "TVSDReader", this, "CombineLambdaPbPb_0010()");
 		fTextButton2283->SetTextJustify(36);
 		fTextButton2283->SetMargins(0,0,0,0);
 		fTextButton2283->SetWrapLength(-1);
-		fCompositeFrame1595->AddFrame(fTextButton2283, new TGLayoutHints(kLHintsLeft | kLHintsTop,2,2,2,2));
-		TGCheckButton *fTextButton2290 = new TGCheckButton(fCompositeFrame1595,"PbPb-10-20%");
-		fTextButton2290->Connect("Clicked()", "TVSDReader", this, "Combine22()");
+		fCompositeFrameLambda->AddFrame(fTextButton2283, new TGLayoutHints(kLHintsLeft | kLHintsTop,2,2,2,2));
+		TGCheckButton *fTextButton2290 = new TGCheckButton(fCompositeFrameLambda,"PbPb-10-20%");
+		fTextButton2290->Connect("Clicked()", "TVSDReader", this, "CombineLambdaPbPb_1020()");
 		fTextButton2290->SetTextJustify(36);
 		fTextButton2290->SetMargins(0,0,0,0);
 		fTextButton2290->SetWrapLength(-1);
-		fCompositeFrame1595->AddFrame(fTextButton2290, new TGLayoutHints(kLHintsLeft | kLHintsTop,2,2,2,2));
-		TGCheckButton *fTextButton2297 = new TGCheckButton(fCompositeFrame1595,"PbPb-20-30%");
-		fTextButton2297->Connect("Clicked()", "TVSDReader", this, "Combine23()");
+		fCompositeFrameLambda->AddFrame(fTextButton2290, new TGLayoutHints(kLHintsLeft | kLHintsTop,2,2,2,2));
+		TGCheckButton *fTextButton2297 = new TGCheckButton(fCompositeFrameLambda,"PbPb-20-30%");
+		fTextButton2297->Connect("Clicked()", "TVSDReader", this, "CombineLambdaPbPb_2030()");
 		fTextButton2297->SetTextJustify(36);
 		fTextButton2297->SetMargins(0,0,0,0);
 		fTextButton2297->SetWrapLength(-1);
-		fCompositeFrame1595->AddFrame(fTextButton2297, new TGLayoutHints(kLHintsLeft | kLHintsTop,2,2,2,2));
-		TGCheckButton *fTextButton2304 = new TGCheckButton(fCompositeFrame1595,"PbPb-30-40%");
-		fTextButton2304->Connect("Clicked()", "TVSDReader", this, "Combine24()");
+		fCompositeFrameLambda->AddFrame(fTextButton2297, new TGLayoutHints(kLHintsLeft | kLHintsTop,2,2,2,2));
+		TGCheckButton *fTextButton2304 = new TGCheckButton(fCompositeFrameLambda,"PbPb-30-40%");
+		fTextButton2304->Connect("Clicked()", "TVSDReader", this, "CombineLambdaPbPb_3040()");
 		fTextButton2304->SetTextJustify(36);
 		fTextButton2304->SetMargins(0,0,0,0);
 		fTextButton2304->SetWrapLength(-1);
-		fCompositeFrame1595->AddFrame(fTextButton2304, new TGLayoutHints(kLHintsLeft | kLHintsTop,2,2,2,2));
-		TGCheckButton *fTextButton2311 = new TGCheckButton(fCompositeFrame1595,"PbPb-40-50%");
-		fTextButton2311->Connect("Clicked()", "TVSDReader", this, "Combine25()");
+		fCompositeFrameLambda->AddFrame(fTextButton2304, new TGLayoutHints(kLHintsLeft | kLHintsTop,2,2,2,2));
+		TGCheckButton *fTextButton2311 = new TGCheckButton(fCompositeFrameLambda,"PbPb-40-50%");
+		fTextButton2311->Connect("Clicked()", "TVSDReader", this, "CombineLambdaPbPb_4050()");
 		fTextButton2311->SetTextJustify(36);
 		fTextButton2311->SetMargins(0,0,0,0);
 		fTextButton2311->SetWrapLength(-1);
-		fCompositeFrame1595->AddFrame(fTextButton2311, new TGLayoutHints(kLHintsLeft | kLHintsTop,2,2,2,2));
-		TGCheckButton *fTextButton2318 = new TGCheckButton(fCompositeFrame1595,"PbPb-50-60%");
-		fTextButton2318->Connect("Clicked()", "TVSDReader", this, "Combine26()");
+		fCompositeFrameLambda->AddFrame(fTextButton2311, new TGLayoutHints(kLHintsLeft | kLHintsTop,2,2,2,2));
+		TGCheckButton *fTextButton2318 = new TGCheckButton(fCompositeFrameLambda,"PbPb-50-60%");
+		fTextButton2318->Connect("Clicked()", "TVSDReader", this, "CombineLambdaPbPb_5060()");
 		fTextButton2318->SetTextJustify(36);
 		fTextButton2318->SetMargins(0,0,0,0);
 		fTextButton2318->SetWrapLength(-1);
-		fCompositeFrame1595->AddFrame(fTextButton2318, new TGLayoutHints(kLHintsLeft | kLHintsTop,2,2,2,2));
-		TGCheckButton *fTextButton2325 = new TGCheckButton(fCompositeFrame1595,"PbPb-60-70%");
-		fTextButton2325->Connect("Clicked()", "TVSDReader", this, "Combine27()");
+		fCompositeFrameLambda->AddFrame(fTextButton2318, new TGLayoutHints(kLHintsLeft | kLHintsTop,2,2,2,2));
+		TGCheckButton *fTextButton2325 = new TGCheckButton(fCompositeFrameLambda,"PbPb-60-70%");
+		fTextButton2325->Connect("Clicked()", "TVSDReader", this, "CombineLambdaPbPb_6070()");
 		fTextButton2325->SetTextJustify(36);
 		fTextButton2325->SetMargins(0,0,0,0);
 		fTextButton2325->SetWrapLength(-1);
-		fCompositeFrame1595->AddFrame(fTextButton2325, new TGLayoutHints(kLHintsLeft | kLHintsTop,2,2,2,2));
-		TGCheckButton *fTextButton2349 = new TGCheckButton(fCompositeFrame1595,"PbPb-70-80%");
-		fTextButton2349->Connect("Clicked()", "TVSDReader", this, "Combine28()");
+		fCompositeFrameLambda->AddFrame(fTextButton2325, new TGLayoutHints(kLHintsLeft | kLHintsTop,2,2,2,2));
+		TGCheckButton *fTextButton2349 = new TGCheckButton(fCompositeFrameLambda,"PbPb-70-80%");
+		fTextButton2349->Connect("Clicked()", "TVSDReader", this, "CombineLambdaPbPb_7080()");
 		fTextButton2349->SetTextJustify(36);
 		fTextButton2349->SetMargins(0,0,0,0);
 		fTextButton2349->SetWrapLength(-1);
-		fCompositeFrame1595->AddFrame(fTextButton2349, new TGLayoutHints(kLHintsLeft | kLHintsTop,2,2,2,2));
-		TGCheckButton *fTextButton2356 = new TGCheckButton(fCompositeFrame1595,"PbPb-80-90%");
-		fTextButton2356->Connect("Clicked()", "TVSDReader", this, "Combine29()");
+		fCompositeFrameLambda->AddFrame(fTextButton2349, new TGLayoutHints(kLHintsLeft | kLHintsTop,2,2,2,2));
+		TGCheckButton *fTextButton2356 = new TGCheckButton(fCompositeFrameLambda,"PbPb-80-90%");
+		fTextButton2356->Connect("Clicked()", "TVSDReader", this, "CombineLambdaPbPb_8090()");
 		fTextButton2356->SetTextJustify(36);
 		fTextButton2356->SetMargins(0,0,0,0);
 		fTextButton2356->SetWrapLength(-1);
-		fCompositeFrame1595->AddFrame(fTextButton2356, new TGLayoutHints(kLHintsLeft | kLHintsTop,2,2,2,2));
-		TGCheckButton *fTextButton2363 = new TGCheckButton(fCompositeFrame1595,"PbPb-90-100%");
-		fTextButton2363->Connect("Clicked()", "TVSDReader", this, "Combine30()");
+		fCompositeFrameLambda->AddFrame(fTextButton2356, new TGLayoutHints(kLHintsLeft | kLHintsTop,2,2,2,2));
+		TGCheckButton *fTextButton2363 = new TGCheckButton(fCompositeFrameLambda,"PbPb-90-100%");
+		fTextButton2363->Connect("Clicked()", "TVSDReader", this, "CombineLambdaPbPb_90100()");
 		fTextButton2363->SetTextJustify(36);
 		fTextButton2363->SetMargins(0,0,0,0);
 		fTextButton2363->SetWrapLength(-1);
-		fCompositeFrame1595->AddFrame(fTextButton2363, new TGLayoutHints(kLHintsLeft | kLHintsTop,2,2,2,2));
+		fCompositeFrameLambda->AddFrame(fTextButton2363, new TGLayoutHints(kLHintsLeft | kLHintsTop,2,2,2,2));
 
-		//char* file1="PbPb-K0.txt";
-		// container of "Tab2"
+		// container of "Tab3"
 		TGCompositeFrame *fCompositeFrameAntiLambda;
 		fCompositeFrameAntiLambda = fTab1590->AddTab("AntiLambda");
 		fCompositeFrameAntiLambda->SetLayoutManager(new TGVerticalLayout(fCompositeFrameAntiLambda));
@@ -820,67 +826,67 @@ public:
 		fTextButtonALpp->SetWrapLength(-1);
 		fCompositeFrameAntiLambda->AddFrame(fTextButtonALpp, new TGLayoutHints(kLHintsLeft | kLHintsTop,2,2,2,2));
 		TGCheckButton *fTextButtonALPbPb = new TGCheckButton(fCompositeFrameAntiLambda,"PbPb");
-		fTextButtonALPbPb->Connect("Clicked()", "TVSDReader", this, "CombineAntiLambdaPpPp()");
+		fTextButtonALPbPb->Connect("Clicked()", "TVSDReader", this, "CombineAntiLambdaPbPb()");
 		fTextButtonALPbPb->SetTextJustify(36);
 		fTextButtonALPbPb->SetMargins(0,0,0,0);
 		fTextButtonALPbPb->SetWrapLength(-1);
 		fCompositeFrameAntiLambda->AddFrame(fTextButtonALPbPb, new TGLayoutHints(kLHintsLeft | kLHintsTop,2,2,2,2));
 		TGCheckButton *fTextButtonALPbPb0_10 = new TGCheckButton(fCompositeFrameAntiLambda,"PbPb-0-10%");
-		fTextButtonALPbPb0_10->Connect("Clicked()", "TVSDReader", this, "Combine31()");
+		fTextButtonALPbPb0_10->Connect("Clicked()", "TVSDReader", this, "CombineAntiLambdaPbPb_0010()");
 		fTextButtonALPbPb0_10->SetTextJustify(36);
 		fTextButtonALPbPb0_10->SetMargins(0,0,0,0);
 		fTextButtonALPbPb0_10->SetWrapLength(-1);
 		fCompositeFrameAntiLambda->AddFrame(fTextButtonALPbPb0_10, new TGLayoutHints(kLHintsLeft | kLHintsTop,2,2,2,2));
 		TGCheckButton *fTextButtonALPbPb10_20 = new TGCheckButton(fCompositeFrameAntiLambda,"PbPb-10-20%");
-		fTextButtonALPbPb10_20->Connect("Clicked()", "TVSDReader", this, "Combine32()");
+		fTextButtonALPbPb10_20->Connect("Clicked()", "TVSDReader", this, "CombineAntiLambdaPbPb_1020()");
 		fTextButtonALPbPb10_20->SetTextJustify(36);
 		fTextButtonALPbPb10_20->SetMargins(0,0,0,0);
 		fTextButtonALPbPb10_20->SetWrapLength(-1);
 		fCompositeFrameAntiLambda->AddFrame(fTextButtonALPbPb10_20, new TGLayoutHints(kLHintsLeft | kLHintsTop,2,2,2,2));
 		TGCheckButton *fTextButtonALPbPb20_30 = new TGCheckButton(fCompositeFrameAntiLambda,"PbPb-20-30%");
-		fTextButtonALPbPb20_30->Connect("Clicked()", "TVSDReader", this, "Combine33()");
+		fTextButtonALPbPb20_30->Connect("Clicked()", "TVSDReader", this, "CombineAntiLambdaPbPb_2030()");
 		fTextButtonALPbPb20_30->SetTextJustify(36);
 		fTextButtonALPbPb20_30->SetMargins(0,0,0,0);
 		fTextButtonALPbPb20_30->SetWrapLength(-1);
 		fCompositeFrameAntiLambda->AddFrame(fTextButtonALPbPb20_30, new TGLayoutHints(kLHintsLeft | kLHintsTop,2,2,2,2));
 		TGCheckButton *fTextButtonALPbPb30_40 = new TGCheckButton(fCompositeFrameAntiLambda,"PbPb-30-40%");
-		fTextButtonALPbPb30_40->Connect("Clicked()", "TVSDReader", this, "Combine34()");
+		fTextButtonALPbPb30_40->Connect("Clicked()", "TVSDReader", this, "CombineAntiLambdaPbPb_3040()");
 		fTextButtonALPbPb30_40->SetTextJustify(36);
 		fTextButtonALPbPb30_40->SetMargins(0,0,0,0);
 		fTextButtonALPbPb30_40->SetWrapLength(-1);
 		fCompositeFrameAntiLambda->AddFrame(fTextButtonALPbPb30_40, new TGLayoutHints(kLHintsLeft | kLHintsTop,2,2,2,2));
 		TGCheckButton *fTextButtonALPbPb40_50 = new TGCheckButton(fCompositeFrameAntiLambda,"PbPb-40-50%");
-		fTextButtonALPbPb40_50->Connect("Clicked()", "TVSDReader", this, "Combine35()");
+		fTextButtonALPbPb40_50->Connect("Clicked()", "TVSDReader", this, "CombineAntiLambdaPbPb_4050()");
 		fTextButtonALPbPb40_50->SetTextJustify(36);
 		fTextButtonALPbPb40_50->SetMargins(0,0,0,0);
 		fTextButtonALPbPb40_50->SetWrapLength(-1);
 		fCompositeFrameAntiLambda->AddFrame(fTextButtonALPbPb40_50, new TGLayoutHints(kLHintsLeft | kLHintsTop,2,2,2,2));
 		TGCheckButton *fTextButtonALPbPb50_60 = new TGCheckButton(fCompositeFrameAntiLambda,"PbPb-50-60%");
-		fTextButtonALPbPb50_60->Connect("Clicked()", "TVSDReader", this, "Combine36()");
+		fTextButtonALPbPb50_60->Connect("Clicked()", "TVSDReader", this, "CombineAntiLambdaPbPb_5060()");
 		fTextButtonALPbPb50_60->SetTextJustify(36);
 		fTextButtonALPbPb50_60->SetMargins(0,0,0,0);
 		fTextButtonALPbPb50_60->SetWrapLength(-1);
 		fCompositeFrameAntiLambda->AddFrame(fTextButtonALPbPb50_60, new TGLayoutHints(kLHintsLeft | kLHintsTop,2,2,2,2));
 		TGCheckButton *fTextButtonALPbPb60_70 = new TGCheckButton(fCompositeFrameAntiLambda,"PbPb-60-70%");
-		fTextButtonALPbPb60_70->Connect("Clicked()", "TVSDReader", this, "Combine37()");
+		fTextButtonALPbPb60_70->Connect("Clicked()", "TVSDReader", this, "CombineAntiLambdaPbPb_6070()");
 		fTextButtonALPbPb60_70->SetTextJustify(36);
 		fTextButtonALPbPb60_70->SetMargins(0,0,0,0);
 		fTextButtonALPbPb60_70->SetWrapLength(-1);
 		fCompositeFrameAntiLambda->AddFrame(fTextButtonALPbPb60_70, new TGLayoutHints(kLHintsLeft | kLHintsTop,2,2,2,2));
 		TGCheckButton *fTextButtonALPbPb70_80 = new TGCheckButton(fCompositeFrameAntiLambda,"PbPb-70-80%");
-		fTextButtonALPbPb70_80 ->Connect("Clicked()", "TVSDReader", this, "Combine38()");
+		fTextButtonALPbPb70_80 ->Connect("Clicked()", "TVSDReader", this, "CombineAntiLambdaPbPb_7080()");
 		fTextButtonALPbPb70_80 ->SetTextJustify(36);
 		fTextButtonALPbPb70_80 ->SetMargins(0,0,0,0);
 		fTextButtonALPbPb70_80 ->SetWrapLength(-1);
 		fCompositeFrameAntiLambda->AddFrame(fTextButtonALPbPb70_80 , new TGLayoutHints(kLHintsLeft | kLHintsTop,2,2,2,2));
 		TGCheckButton *fTextButtonALPbPb80_90 = new TGCheckButton(fCompositeFrameAntiLambda,"PbPb-80-90%");
-		fTextButtonALPbPb80_90->Connect("Clicked()", "TVSDReader", this, "Combine39()");
+		fTextButtonALPbPb80_90->Connect("Clicked()", "TVSDReader", this, "CombineAntiLambdaPbPb_8090()");
 		fTextButtonALPbPb80_90->SetTextJustify(36);
 		fTextButtonALPbPb80_90->SetMargins(0,0,0,0);
 		fTextButtonALPbPb80_90->SetWrapLength(-1);
 		fCompositeFrameAntiLambda->AddFrame(fTextButtonALPbPb80_90, new TGLayoutHints(kLHintsLeft | kLHintsTop,2,2,2,2));
 		TGCheckButton *fTextButtonALPbPb90_100 = new TGCheckButton(fCompositeFrameAntiLambda,"PbPb-90-100%");
-		fTextButtonALPbPb90_100->Connect("Clicked()", "TVSDReader", this, "Combine40()");
+		fTextButtonALPbPb90_100->Connect("Clicked()", "TVSDReader", this, "CombineAntiLambdaPbPb_90100()");
 		fTextButtonALPbPb90_100->SetTextJustify(36);
 		fTextButtonALPbPb90_100->SetMargins(0,0,0,0);
 		fTextButtonALPbPb90_100->SetWrapLength(-1);
@@ -1104,11 +1110,11 @@ void alice_vsd(Int_t dataset)
 
 	if (strncmp(gSystem->Getenv("BLA"), "EN", 2) == 0) {
 		gKMinvHist = new TH1D("Statistics","Kaons",50,0.0,2.0);
-		gKMinvHist->GetXaxis()->SetTitle("Invariant Mass (GeV/c^{2})");
+		gKMinvHist->GetXaxis()->SetTitle("K0s invariant Mass (GeV/c^{2})");
 		gKMinvHist->GetYaxis()->SetTitle("Counts");
 	} else if (strncmp(gSystem->Getenv("BLA"), "FR", 2) == 0) {
 		gKMinvHist = new TH1D("Statistique","Kaons",50,0.0,2.0);
-		gKMinvHist->GetXaxis()->SetTitle("Masse Invariante (GeV/c^{2})");
+		gKMinvHist->GetXaxis()->SetTitle("Masse Invariante K0S (GeV/c^{2})");
 		gKMinvHist->GetYaxis()->SetTitle("Coups");
 	}
 	gKMinvHist->SetLineColor(2);
@@ -1116,11 +1122,11 @@ void alice_vsd(Int_t dataset)
   
 	if (strncmp(gSystem->Getenv("BLA"), "EN", 2) == 0) {
 		gXMinvHist = new TH1D("Statistics","Xis",50,0.0,2.0);
-		gXMinvHist->GetXaxis()->SetTitle("Invariant Mass (GeV/c^{2})");
+		gXMinvHist->GetXaxis()->SetTitle("#Xi invariant Mass (GeV/c^{2})");
 		gXMinvHist->GetYaxis()->SetTitle("Counts");
 	} else if (strncmp(gSystem->Getenv("BLA"), "FR", 2) == 0) {
 		gXMinvHist = new TH1D("Statistique","Xis",50,0.0,2.0);
-		gXMinvHist->GetXaxis()->SetTitle("Masse Invariante (GeV/c^{2})");
+		gXMinvHist->GetXaxis()->SetTitle("Masse invariante #Xi (GeV/c^{2})");
 		gXMinvHist->GetYaxis()->SetTitle("Coups");
 	}
 	gXMinvHist->SetLineColor(3);
@@ -1128,11 +1134,11 @@ void alice_vsd(Int_t dataset)
  
 	if (strncmp(gSystem->Getenv("BLA"), "EN", 2) == 0) {
 		gLMinvHist = new TH1D("Statistics","Lambdas",50,0.0,2.0);
-		gLMinvHist->GetXaxis()->SetTitle("Invariant Mass (GeV/c^{2})");
+		gLMinvHist->GetXaxis()->SetTitle("#Lambda invariant Mass (GeV/c^{2})");
 		gLMinvHist->GetYaxis()->SetTitle("Counts");
 	} else if (strncmp(gSystem->Getenv("BLA"), "FR", 2) == 0) {
 		gLMinvHist = new TH1D("Statistique","Lambdas",50,0.0,2.0);
-		gLMinvHist->GetXaxis()->SetTitle("Masse Invariante (GeV/c^{2})");
+		gLMinvHist->GetXaxis()->SetTitle("Masse Invariante #Lambda (GeV/c^{2})");
 		gLMinvHist->GetYaxis()->SetTitle("Coups");
 	}
 	gLMinvHist->SetLineColor(4);
@@ -1140,11 +1146,11 @@ void alice_vsd(Int_t dataset)
 
 	if (strncmp(gSystem->Getenv("BLA"), "EN", 2) == 0) {
 		gALMinvHist = new TH1D("Statistics","Anti-Lambdas",50,0.0,2.0);
-		gALMinvHist->GetXaxis()->SetTitle("Invariant Mass (GeV/c^{2})");
+		gALMinvHist->GetXaxis()->SetTitle("#overline{#Lambda} invariant Mass (GeV/c^{2})");
 		gALMinvHist->GetYaxis()->SetTitle("Counts");
 	} else if (strncmp(gSystem->Getenv("BLA"), "FR", 2) == 0) {
 		gALMinvHist = new TH1D("Statistique","Anti-Lambdas",50,0.0,2.0);
-		gALMinvHist->GetXaxis()->SetTitle("Masse Invariante (GeV/c^{2})");
+		gALMinvHist->GetXaxis()->SetTitle("Masse invariante #overline{#Lambda} (GeV/c^{2})");
 		gALMinvHist->GetYaxis()->SetTitle("Coups");
 	}
 	gALMinvHist->SetLineColor(9);
