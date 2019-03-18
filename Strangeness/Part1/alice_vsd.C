@@ -29,6 +29,8 @@
 #include <TEveVSDStructs.h>
 
 #include <TCanvas.h>
+#include <TColor.h>
+
 
 #include <TEveElement.h>
 #include <TEveTrack.h>
@@ -38,7 +40,6 @@
 #include <TEveSelection.h>
 
 #include <TGLEmbeddedViewer.h>
-#include <TCanvas.h>
 #include <TParticlePDG.h>
 
 #include <TH1D.h>
@@ -921,10 +922,8 @@ public:
     {
       const TGFont *font = gClient->GetFont("-*-times-bold-r-*-*-16-*-*-*-*-*-*-*");
       FontStruct_t buttonFont = font->GetFontStruct();
-      ULong_t buttonRedColor;
-      gClient->GetColorByName("red", buttonRedColor);
       TGTextButton *b = new TGTextButton(hf,"Instructions");
-      b->SetTextColor(buttonRedColor);
+      b->SetTextColor( TColor::Number2Pixel( kRed+2  ) ); // Color expected in decimal format after Hexadecimal ID
       b->SetFont(buttonFont);
       hf->AddFrame(b, new TGLayoutHints(kLHintsExpandX, 1, 1, 1, 1));
       b->Connect("Clicked()", "AliceCalculator", this, "Instructions()");
@@ -1458,14 +1457,35 @@ Il est divise en 3 segments :\n\n\
     raphist->Fill(rap);
   }
 
+  
+  
+  
+  void InvMassWarning(TString strPartType){
+        TRootHelpDialog* InvMassMessage = new TRootHelpDialog(gClient->GetRoot(), Form("%s invariant mass warning", strPartType.Data()), 450, 50);
+        InvMassMessage->SetText(
+            Form("%s candidate invariant mass almost 0 (below 1e-13)... \n It is suspicious... \n Did you actually compute some inv. mass based on 2 tracks ?",
+                strPartType.Data() )
+            );
+        InvMassMessage->Popup();  
+    }
+  
+  
 	//--------------------------------------------------------------
   void FoundLambda()
   {
 
     if(change)
     {
-      FillHistogram(gLMinvHist, gLRapHist, finvariant_masscalc->GetNumber(), 0/*frapiditycalc->GetNumber()*/);
-      minvLambda[countLambdas] = finvariant_masscalc->GetNumber();
+        Double_t lInvMass = finvariant_masscalc->GetNumber();
+        
+        if( lInvMass < 1e-13)  {
+            Printf("Lambda inv mass at 0. Doing nothing.");
+            InvMassWarning("Lambda");
+            return;
+        }            
+        
+      FillHistogram(gLMinvHist, gLRapHist, lInvMass, 0/*frapiditycalc->GetNumber()*/);
+      minvLambda[countLambdas] = lInvMass;
       //rapLambda[countLambdas] = frapiditycalc->GetNumber();
       countLambdas++;
     }
@@ -1479,8 +1499,16 @@ Il est divise en 3 segments :\n\n\
   {
     if(change)
     {
-      FillHistogram(gALMinvHist, gALRapHist, finvariant_masscalc->GetNumber(), 0/*frapiditycalc->GetNumber()*/);
-      minvALambda[countALambdas] = finvariant_masscalc->GetNumber();
+        Double_t lInvMass = finvariant_masscalc->GetNumber();
+        
+        if( lInvMass < 1e-13)  {
+            Printf("ALambda inv mass at 0. Doing nothing.");
+            InvMassWarning("ALambda"); 
+            return;
+        }        
+        
+      FillHistogram(gALMinvHist, gALRapHist, lInvMass, 0/*frapiditycalc->GetNumber()*/);
+      minvALambda[countALambdas] = lInvMass;
       //rapALambda[countALambdas] = frapiditycalc->GetNumber();
       countALambdas++;
     }
@@ -1494,9 +1522,16 @@ Il est divise en 3 segments :\n\n\
   {
     if(change)
     {
-
-      FillHistogram(gKMinvHist, gKRapHist, finvariant_masscalc->GetNumber(), 0/*frapiditycalc->GetNumber()*/);
-      minvKaon[countKaons] = finvariant_masscalc->GetNumber();
+        Double_t lInvMass = finvariant_masscalc->GetNumber();
+        
+        if( lInvMass < 1e-13)  {
+            Printf("K0s inv mass at 0. Doing nothing.");
+            InvMassWarning("K0s");
+            return;
+        }   
+        
+      FillHistogram(gKMinvHist, gKRapHist, lInvMass, 0/*frapiditycalc->GetNumber()*/);
+      minvKaon[countKaons] = lInvMass;
       //rapKaon[countKaons] = frapiditycalc->GetNumber();
       countKaons++;
     }
@@ -1510,9 +1545,17 @@ Il est divise en 3 segments :\n\n\
   {
     if(change)
     {
-
-      FillHistogram(gXMinvHist, gXRapHist, finvariant_masscalc->GetNumber(), 0/*frapiditycalc->GetNumber()*/);
-      minvXi[countXis] = finvariant_masscalc->GetNumber();
+    
+      Double_t lInvMass = finvariant_masscalc->GetNumber();
+        
+        if( lInvMass < 1e-13)  {
+            Printf("Xi inv mass at 0. Doing nothing.");
+            InvMassWarning("Xi");
+            return;
+        }   
+        
+      FillHistogram(gXMinvHist, gXRapHist, lInvMass, 0/*frapiditycalc->GetNumber()*/);
+      minvXi[countXis] = lInvMass;
       //rapXi[countXis] = frapiditycalc->GetNumber();
       countXis++;
     }
@@ -1523,7 +1566,8 @@ Il est divise en 3 segments :\n\n\
 //-------------------!!!!!!!!!!!!!!!--------------------------------
 void Background()
   {
-
+    Printf("Background event... ok, noted. Nothing to do.");
+      
   }
 
 	//--------------------------------------------------------------
@@ -3796,7 +3840,6 @@ Comment fusionner et analyser les resultats obtenus en mode <Etudiant>\n\n\
 	  TGGroupFrame* gf = nullptr; 
 	  TGVerticalFrame* vf = nullptr; 
 	  TGHorizontalFrame* hf = nullptr; 
-	  ULong_t buttonRedColor, buttonBlueColor;
 	  
 	  if (strncmp(gSystem->Getenv("BLA"), "EN", 2) == 0)
 		text = "Student Instructions";
@@ -3809,9 +3852,8 @@ Comment fusionner et analyser les resultats obtenus en mode <Etudiant>\n\n\
 	  {
 		  const TGFont *font = gClient->GetFont("-*-times-bold-r-*-*-16-*-*-*-*-*-*-*");
 		  FontStruct_t buttonFont = font->GetFontStruct();
-		  gClient->GetColorByName("red", buttonRedColor);
 		  b = new TGTextButton(vf,"Instructions");
-		  b->SetTextColor(buttonRedColor);
+		  b->SetTextColor( TColor::Number2Pixel( kRed+2  ) ); // Color expected in decimal format after Hexadecimal ID
 		  b->SetFont(buttonFont);
 		  vf->AddFrame(b, new TGLayoutHints(kLHintsExpandX, 1, 1, 1, 1));
 		  b->Connect("Clicked()", "TVSDReader", this, "Instructions()");
@@ -3870,7 +3912,7 @@ Comment fusionner et analyser les resultats obtenus en mode <Etudiant>\n\n\
 				  text = "Precedent";
 
 			  label = new TGLabel(hf, text);
-			  hf->AddFrame(label, new TGLayoutHints(kLHintsExpandX, 1, 1, 1, 1));
+			  hf->AddFrame(label, new TGLayoutHints(kLHintsLeft, 1, 1, 1, 1));
 
 			  if (strncmp(gSystem->Getenv("BLA"), "EN", 2) == 0)
 				  text = "Current";
@@ -3885,7 +3927,7 @@ Comment fusionner et analyser les resultats obtenus en mode <Etudiant>\n\n\
 				  text = "Suivant";
 
 			  label = new TGLabel(hf, text);
-			  hf->AddFrame(label, new TGLayoutHints(kLHintsExpandX, 1, 1, 1, 1));
+			  hf->AddFrame(label, new TGLayoutHints(kLHintsRight, 1, 1, 1, 1));
 
 		  }
 
@@ -3895,7 +3937,7 @@ Comment fusionner et analyser les resultats obtenus en mode <Etudiant>\n\n\
 		  {
 
 			  b1 = new TGPictureButton(hf, gClient->GetPicture(icondir + "GoBack.gif"));
-			  hf->AddFrame(b1, new TGLayoutHints(kLHintsExpandX, 1, 1, 1, 1));
+			  hf->AddFrame(b1, new TGLayoutHints(kLHintsLeft, 1, 1, 1, 1));
 			  b1->Connect("Clicked()", "TVSDReader", this, "PrevEvent()");
 
 			  gEventNumber = new TGLabel(hf);
@@ -3903,7 +3945,7 @@ Comment fusionner et analyser les resultats obtenus en mode <Etudiant>\n\n\
 			  hf->AddFrame(gEventNumber, new TGLayoutHints(kLHintsExpandX, 1, 1, 1, 1));
 
 			  b1 = new TGPictureButton(hf, gClient->GetPicture(icondir + "GoForward.gif"));
-			  hf->AddFrame(b1, new TGLayoutHints(kLHintsExpandX, 1, 1, 1, 1));
+			  hf->AddFrame(b1, new TGLayoutHints(kLHintsRight, 1, 1, 1, 1));
 			  b1->Connect("Clicked()", "TVSDReader", this, "NextEvent()");
 		  }
 
@@ -3916,9 +3958,9 @@ Comment fusionner et analyser les resultats obtenus en mode <Etudiant>\n\n\
 		  {
 	
 			  if (strncmp(gSystem->Getenv("BLA"), "EN", 2) == 0)
-				  text = "Event analysed!";
+				  text = "Event, analysed!";
 			  else if (strncmp(gSystem->Getenv("BLA"), "FR", 2) == 0)
-				  text = "Evenement analyse !";
+				  text = "Evenement, revu !";
 			  b = new TGTextButton(hf, text);
 			  hf->AddFrame(b, new TGLayoutHints(kLHintsExpandX, 1, 1, 1, 1));
 			  b->Connect("Clicked()", "TVSDReader", this, "CountEvents()");
@@ -3930,11 +3972,11 @@ Comment fusionner et analyser les resultats obtenus en mode <Etudiant>\n\n\
 		  {
 
 			  if (strncmp(gSystem->Getenv("BLA"), "EN", 2) == 0)
-				  text = "Event done:";
+				  text = "Event already done:";
 			  else if (strncmp(gSystem->Getenv("BLA"), "FR", 2) == 0)
-				  text = "Evenements traites :";
+				  text = "Evenements deja traites :";
 			  label = new TGLabel(hf, text);
-			  hf->AddFrame(label, new TGLayoutHints(kLHintsExpandX, 1, 1, 1, 1));	
+			  hf->AddFrame(label, new TGLayoutHints(kLHintsLeft, 1, 1, 1, 1));	
 
 			  gEventAnalysed = new TGLabel(hf);
 			  gEventAnalysed->SetText(0);
@@ -4002,9 +4044,8 @@ Comment fusionner et analyser les resultats obtenus en mode <Etudiant>\n\n\
 
 		  const TGFont *font = gClient->GetFont("-*-times-bold-r-*-*-16-*-*-*-*-*-*-*");
 		  FontStruct_t buttonFont = font->GetFontStruct();
-		  gClient->GetColorByName("blue", buttonBlueColor);
 		  b = new TGTextButton(vf, text);
-		  b->SetTextColor(buttonBlueColor);
+		  b->SetTextColor( TColor::Number2Pixel( kGreen+2  ) ); // Color expected in decimal format after Hexadecimal ID
 		  b->SetFont(buttonFont);
 		  b->Connect("Clicked()", "TVSDReader", this, "Calculator()");
 		  vf->AddFrame(b, new TGLayoutHints(kLHintsExpandX, 1, 1, 1, 1));
@@ -4243,13 +4284,12 @@ Comment fusionner et analyser les resultats obtenus en mode <Etudiant>\n\n\
 	  if(globalChoice == 1)
 	  {
 
-		  gClient->GetColorByName("navy", buttonRedColor);
 		  if (strncmp(gSystem->Getenv("BLA"), "EN", 2) == 0)
 			  text = "I'm ready! Start Exercise";
 		  else if (strncmp(gSystem->Getenv("BLA"), "FR", 2) == 0)
 			  text = "Je suis pret ! Demarrer l'exercice";
 		  b = new TGTextButton(frmMain, text);
-		  b->SetTextColor(buttonRedColor);
+		  b->SetTextColor( TColor::Number2Pixel( kGreen+2  ) ); // Color expected in decimal format after Hexadecimal ID
 		  b->SetFont(buttonFont);
 		  //     hf->AddFrame(b, new TGLayoutHints(kLHintsExpandX | kLHintsExpandY , 1, 1, 1, 1));
 		  b->Connect("Clicked()", "TVSDReader", this, "ToStudent()");
@@ -4260,12 +4300,11 @@ Comment fusionner et analyser les resultats obtenus en mode <Etudiant>\n\n\
 	  else
 	  {
 
-		  gClient->GetColorByName("navy", buttonRedColor);
 		  if (strncmp(gSystem->Getenv("BLA"), "EN", 2) == 0)
 			  b = new TGTextButton(frmMain, "Back To Demo");
 		  else if (strncmp(gSystem->Getenv("BLA"), "FR", 2) == 0)
 			  b = new TGTextButton(frmMain, "Retour Mode Demo");
-		  b->SetTextColor(buttonRedColor);
+		  b->SetTextColor( TColor::Number2Pixel( kGreen+2  ) ); // Color expected in decimal format after Hexadecimal ID
 		  b->SetFont(buttonFont);
 		  //      hf->AddFrame(b, new TGLayoutHints(kLHintsExpandX | kLHintsExpandY , 1, 1, 1, 1));
 		  b->Connect("Clicked()", "TVSDReader", this, "ToDemo()");
@@ -4275,12 +4314,11 @@ Comment fusionner et analyser les resultats obtenus en mode <Etudiant>\n\n\
 		  if(teacher && globalChoice != 1)
 		  {
 
-			  gClient->GetColorByName("navy", buttonRedColor);
 			  if (strncmp(gSystem->Getenv("BLA"), "EN", 2) == 0)
 				  b = new TGTextButton(frmMain,"Teacher Mode");
 			  else if (strncmp(gSystem->Getenv("BLA"), "FR", 2) == 0)
 				  b = new TGTextButton(frmMain,"Mode Tuteur");
-			  b->SetTextColor(buttonRedColor);
+			  b->SetTextColor( TColor::Number2Pixel( kViolet-1 ) ); // Color expected in decimal format after Hexadecimal ID
 			  b->SetFont(buttonFont);
 			  //         hf->AddFrame(b, new TGLayoutHints(kLHintsExpandX | kLHintsExpandY , 1, 1, 1, 1));
 			  b->Connect("Clicked()", "TVSDReader", this, "ToTeacher()");
@@ -4291,13 +4329,12 @@ Comment fusionner et analyser les resultats obtenus en mode <Etudiant>\n\n\
 
 	  }
 
-	  gClient->GetColorByName("red", buttonRedColor);
 	  if (strncmp(gSystem->Getenv("BLA"), "EN", 2) == 0)
 		  text = "Exit";
 	  else if (strncmp(gSystem->Getenv("BLA"), "FR", 2) == 0)
 		  text = "Sortie";  
 	  b = new TGTextButton(frmMain, text);
-	  b->SetTextColor(buttonRedColor);
+	  b->SetTextColor( TColor::Number2Pixel( kRed+2  ) ); // Color expected in decimal format after Hexadecimal ID
 	  b->SetFont(buttonFont);
 	  //   hf->AddFrame(b, new TGLayoutHints(kLHintsExpandX | kLHintsExpandY , 1, 1, 1, 1));
 	  b->Connect("Clicked()", "TApplication", gApplication, "Terminate()");
@@ -4494,8 +4531,8 @@ Comment fusionner et analyser les resultats obtenus en mode <Etudiant>\n\n\
     TGTextButton* b = nullptr;
     TGGroupFrame* gf = nullptr;
     TGVerticalFrame* vf = nullptr;
-    ULong_t buttonRedColor;
 
+    
 	if (strncmp(gSystem->Getenv("BLA"), "EN", 2) == 0)
 		text = "Teacher Instructions";
 	else if (strncmp(gSystem->Getenv("BLA"), "FR", 2) == 0)
@@ -4508,14 +4545,12 @@ Comment fusionner et analyser les resultats obtenus en mode <Etudiant>\n\n\
 
       const TGFont *font = gClient->GetFont("-*-times-bold-r-*-*-16-*-*-*-*-*-*-*");
       FontStruct_t buttonFont = font->GetFontStruct();
-      ULong_t buttonRedColor;
-      gClient->GetColorByName("red", buttonRedColor);
 	  if (strncmp(gSystem->Getenv("BLA"), "EN", 2) == 0)
 		text = "Global Instructions";
 	  else if (strncmp(gSystem->Getenv("BLA"), "FR", 2) == 0)
 		text = "Instructions Globales";
       b = new TGTextButton(vf, text);
-      b->SetTextColor(buttonRedColor);
+      b->SetTextColor( TColor::Number2Pixel( kRed+2  ) ); // Color expected in decimal format after Hexadecimal ID
       b->SetFont(buttonFont);
       vf->AddFrame(b, new TGLayoutHints(kLHintsExpandX, 1, 1, 1, 1));
       b->Connect("Clicked()", "TVSDReader", this, "Instructions()");
@@ -4693,21 +4728,18 @@ Comment fusionner et analyser les resultats obtenus en mode <Etudiant>\n\n\
     const TGFont *font = gClient->GetFont("-*-helvetica-bold-r-normal-*-20-*-*-*-*-*-*-*");
     FontStruct_t buttonFont = font->GetFontStruct();
 
-	gClient->GetColorByName("navy", buttonRedColor);
-
 	if (strncmp(gSystem->Getenv("BLA"), "EN", 2) == 0)
 		b = new TGTextButton(frmMain, "Student Mode");
 	else if (strncmp(gSystem->Getenv("BLA"), "FR", 2) == 0)
 		b = new TGTextButton(frmMain, "Mode Etudiant");
-	b->SetTextColor(buttonRedColor);
+	b->SetTextColor( TColor::Number2Pixel( kAzure+2  ) ); // Color expected in decimal format after Hexadecimal ID
 	b->SetFont(buttonFont);
 	b->Connect("Clicked()", "TVSDReader", this, "ToStudent()");
 
     frmMain->AddFrame(b, new TGLayoutHints(kLHintsExpandX | kLHintsExpandY , 1, 1, 1, 1));
 
-    gClient->GetColorByName("red", buttonRedColor);
     b = new TGTextButton(frmMain,"Exit");
-    b->SetTextColor(buttonRedColor);
+    b->SetTextColor( TColor::Number2Pixel( kRed+2  ) ); // Color expected in decimal format after Hexadecimal ID
     b->SetFont(buttonFont);
     b->Connect("Clicked()", "TApplication", gApplication, "Terminate()");
 
@@ -4754,7 +4786,7 @@ Comment fusionner et analyser les resultats obtenus en mode <Etudiant>\n\n\
   void Autosave()
   {
 
-    ofstream myresult(TString::Format("autosave.masterclass%i",fCurEv+1));
+    ofstream myresult(TString::Format("autosave_AfterEvt%02dinSet%02d.masterclass",fCurEv+1, globalDataset));
 
     myresult << "Kaons" << endl;
     myresult << countKaons << endl;
@@ -5816,8 +5848,6 @@ Comment fusionner et analyser les resultats obtenus en mode <Etudiant>\n\n\
     if(gAliceCalculator)
       gAliceCalculator->SetZero();
 
-    Autosave();
-
   }
 
 	//--------------------------------------------------------------
@@ -5864,12 +5894,12 @@ Comment fusionner et analyser les resultats obtenus en mode <Etudiant>\n\n\
 
     //      if(gEventNumber)
     
-    if(globalMode == 1) gEventNumber->SetText(TString::Format("%02i / Demo",fCurEv+1)); 
+    if(globalMode == 1) gEventNumber->SetText(TString::Format("Evt %02i / Demo",fCurEv+1)); 
     else{ 
             if (strncmp(gSystem->Getenv("BLA"), "EN", 2) == 0)
-                    gEventNumber->SetText(TString::Format("%02i / Set %i",fCurEv+1,globalDataset));
+                    gEventNumber->SetText(TString::Format("Evt %02i / Set %i",fCurEv+1,globalDataset));
             else if (strncmp(gSystem->Getenv("BLA"), "FR", 2) == 0)
-                    gEventNumber->SetText(TString::Format("%02i / Lot %i",fCurEv+1,globalDataset));
+                    gEventNumber->SetText(TString::Format("Evt %02i / Lot %i",fCurEv+1,globalDataset));
     }
 
     // Load event data into visualization structures.
@@ -5953,10 +5983,11 @@ Comment fusionner et analyser les resultats obtenus en mode <Etudiant>\n\n\
 
 void CountEvents()
   {
-        gEventAnalysed->SetText(TString::Format("%i",fCount+1));
+        gEventAnalysed->SetText(TString::Format("%02i",fCount+1));
         fCount++;		
         //gEventAnalysed++;
    Autosave();
+   NextEvent();
 
   }
 
@@ -7537,7 +7568,6 @@ void alice_vsd(Int_t choice, Int_t mode, Int_t dataset)
   TGGroupFrame* gf = nullptr; 
   TGVerticalFrame* vf = nullptr; 
   TGHorizontalFrame* hf = nullptr; 
-  ULong_t buttonRedColor, buttonBlueColor;
 
   gf = new TGGroupFrame(frmMain, "Student Instructions");
 
@@ -7546,9 +7576,8 @@ void alice_vsd(Int_t choice, Int_t mode, Int_t dataset)
   {
   const TGFont *font = gClient->GetFont("-*-times-bold-r-*-*-16-*-*-*-*-*-*-*");
   FontStruct_t buttonFont = font->GetFontStruct();
-  gClient->GetColorByName("red", buttonRedColor);
   b = new TGTextButton(vf,"Instructions");
-  b->SetTextColor(buttonRedColor);
+  b->SetTextColor( TColor::Number2Pixel( kRed+2  ) ); // Color expected in decimal format after Hexadecimal ID
   b->SetFont(buttonFont);
   vf->AddFrame(b, new TGLayoutHints(kLHintsExpandX, 1, 1, 1, 1));
   b->Connect("Clicked()", "TVSDReader", gVSDReader, "Instructions()");
@@ -7690,9 +7719,8 @@ void alice_vsd(Int_t choice, Int_t mode, Int_t dataset)
 
   const TGFont *font = gClient->GetFont("-*-times-bold-r-*-*-16-*-*-*-*-*-*-*");
   FontStruct_t buttonFont = font->GetFontStruct();
-  gClient->GetColorByName("blue", buttonBlueColor);
   b = new TGTextButton(vf, "Calculator");
-  b->SetTextColor(buttonBlueColor);
+  b->SetTextColor( TColor::Number2Pixel( kAzure+2  ) ); // Color expected in decimal format after Hexadecimal ID
   b->SetFont(buttonFont);
   b->Connect("Clicked()", "TVSDReader", gVSDReader, "Calculator()");
   vf->AddFrame(b, new TGLayoutHints(kLHintsExpandX, 1, 1, 1, 1));
