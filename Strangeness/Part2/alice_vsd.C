@@ -2,6 +2,7 @@
 #include <fstream>
 #include <string>
 #include <sstream>
+#include <map>
 
 #include <TGFileDialog.h>
 #include <TRootHelpDialog.h>
@@ -45,6 +46,7 @@
 
 #include <TGTab.h>
 #include <TGButton.h>
+#include <TGButtonGroup.h>
 #include <TTimer.h>
 
 #include <TFile.h>
@@ -112,13 +114,37 @@ public:
 	TTimer                  *fTimer;
 	TH1D                    *fMinvHisto;
 	TCanvas                 *fPad;
+        std::map< string,TGCheckButton* > fTabCheckButton;
+        vector<vector<TString> > fVecListHistos;
 	TEveGDoubleValuator 	*fFitRangeGaus;
 	TEveGDoubleValuator 	*fFitRangePoly;
 	TF1                     *fFitGaus;
 	TF1                     *fFitPolynomial;
-	TGComboBox              *fComboBoxAntiLambda;
-	TGComboBox              *fComboBoxK0;
-	TGComboBox              *fComboBoxLambda;
+        
+        enum gkPartType{
+            kK0s = 0,
+            kLambda = 1,
+            kALambda = 2,
+            kNbPart
+        };
+        
+        enum gkSystemAndEvtActivity{
+            kpp_MB = 0,
+            kPbPb_MB,
+            kPbPb_0010,
+            kPbPb_1020,
+            kPbPb_2030,
+            kPbPb_3040,
+            kPbPb_4050,
+            kPbPb_5060,
+            kPbPb_6070,
+            kPbPb_7080,
+            kPbPb_8090,
+            kPbPb_90100,
+            kNbSystemsAndEvtActivity                
+        };       
+        
+        
 
 	// ----------------------------------------------------------
 	TVSDReader(const char* file_name) :
@@ -156,20 +182,75 @@ public:
 		fVSD = new TEveVSD;
                 
                 TH1::AddDirectory(kFALSE); // to avoid memory leak with the constant update of fMinvHisto
+                               
 
-	}
+                // NOTE : set up the size of the 2D TString array  (kNbPart x kNbSystemsAndEvtActivity)
+                fVecListHistos.resize( kNbPart );
+                for (Int_t iPart = 0; iPart < kNbPart ; ++iPart) {
+                    fVecListHistos[iPart].resize( kNbSystemsAndEvtActivity );
+                }// end set-up size of the 2D array
+             
+                fVecListHistos[kK0s    ][kpp_MB     ] = "K0s_pp_MB"     ;
+                fVecListHistos[kK0s    ][kPbPb_MB   ] = "K0s_PbPb_MB"   ;
+                fVecListHistos[kK0s    ][kPbPb_0010 ] = "K0s_PbPb_0010" ;
+                fVecListHistos[kK0s    ][kPbPb_1020 ] = "K0s_PbPb_1020" ;
+                fVecListHistos[kK0s    ][kPbPb_2030 ] = "K0s_PbPb_2030" ;
+                fVecListHistos[kK0s    ][kPbPb_3040 ] = "K0s_PbPb_3040" ;
+                fVecListHistos[kK0s    ][kPbPb_4050 ] = "K0s_PbPb_4050" ;
+                fVecListHistos[kK0s    ][kPbPb_5060 ] = "K0s_PbPb_5060" ;
+                fVecListHistos[kK0s    ][kPbPb_6070 ] = "K0s_PbPb_6070" ;
+                fVecListHistos[kK0s    ][kPbPb_7080 ] = "K0s_PbPb_7080" ;
+                fVecListHistos[kK0s    ][kPbPb_8090 ] = "K0s_PbPb_8090" ;
+                fVecListHistos[kK0s    ][kPbPb_90100] = "K0s_PbPb_90100";
+                
+                fVecListHistos[kLambda ][kpp_MB     ] = "Lambda_pp_MB"     ;
+                fVecListHistos[kLambda ][kPbPb_MB   ] = "Lambda_PbPb_MB"   ;
+                fVecListHistos[kLambda ][kPbPb_0010 ] = "Lambda_PbPb_0010" ;
+                fVecListHistos[kLambda ][kPbPb_1020 ] = "Lambda_PbPb_1020" ;
+                fVecListHistos[kLambda ][kPbPb_2030 ] = "Lambda_PbPb_2030" ;
+                fVecListHistos[kLambda ][kPbPb_3040 ] = "Lambda_PbPb_3040" ;
+                fVecListHistos[kLambda ][kPbPb_4050 ] = "Lambda_PbPb_4050" ;
+                fVecListHistos[kLambda ][kPbPb_5060 ] = "Lambda_PbPb_5060" ;
+                fVecListHistos[kLambda ][kPbPb_6070 ] = "Lambda_PbPb_6070" ;
+                fVecListHistos[kLambda ][kPbPb_7080 ] = "Lambda_PbPb_7080" ;
+                fVecListHistos[kLambda ][kPbPb_8090 ] = "Lambda_PbPb_8090" ;
+                fVecListHistos[kLambda ][kPbPb_90100] = "Lambda_PbPb_90100";
+                
+                fVecListHistos[kALambda][kpp_MB     ] = "AntiLambda_pp_MB"     ;
+                fVecListHistos[kALambda][kPbPb_MB   ] = "AntiLambda_PbPb_MB"   ;
+                fVecListHistos[kALambda][kPbPb_0010 ] = "AntiLambda_PbPb_0010" ;
+                fVecListHistos[kALambda][kPbPb_1020 ] = "AntiLambda_PbPb_1020" ;
+                fVecListHistos[kALambda][kPbPb_2030 ] = "AntiLambda_PbPb_2030" ;
+                fVecListHistos[kALambda][kPbPb_3040 ] = "AntiLambda_PbPb_3040" ;
+                fVecListHistos[kALambda][kPbPb_4050 ] = "AntiLambda_PbPb_4050" ;
+                fVecListHistos[kALambda][kPbPb_5060 ] = "AntiLambda_PbPb_5060" ;
+                fVecListHistos[kALambda][kPbPb_6070 ] = "AntiLambda_PbPb_6070" ;
+                fVecListHistos[kALambda][kPbPb_7080 ] = "AntiLambda_PbPb_7080" ;
+                fVecListHistos[kALambda][kPbPb_8090 ] = "AntiLambda_PbPb_8090" ;
+                fVecListHistos[kALambda][kPbPb_90100] = "AntiLambda_PbPb_90100";
+
+
+	}// end constructor
 
 	// ----------------------------------------------------------
 	virtual ~TVSDReader()
 	{
 		// Destructor.
 
+                delete fFitPolynomial;
+                delete fFitGaus;
+                delete fFitRangePoly;
+                delete fFitRangeGaus;
+                delete fMinvHisto;
+            
 		delete fVSD;
 		delete fEvDirKeys;
+                delete fTimer;
+                delete fPad;
 
 		fFile->Close();
 		delete fFile;
-                delete fMinvHisto;
+                
 	}
 
 	// ----------------------------------------------------------
@@ -297,266 +378,382 @@ public:
 			if (bytesleft < bufsize)
 				bufsize = (int)bytesleft;
 		} 
-		fMinvHisto->DrawCopy();
+		fMinvHisto->Draw();
 		fPad->Update();
 		// file.close();
 		file->Close();
 		
 	}
+	
+	void CheckButtonUpAndTurnDown(){
+            
+            for(Short_t iPart = 0; iPart < kNbPart; ++iPart){
+                for(Int_t iHist = 0; iHist < kNbSystemsAndEvtActivity; ++iHist ){
 
+                    TString lStrID( fVecListHistos[iPart][iHist].Data() );
+                    
+                    // See TGButtonGroup::ReleaseButtons(), 
+                    // in https://root.cern.ch/doc/master/classTGButtonGroup.html
 
-	// ----------------------------------------------------------
-	void CombineK0pp()
+                    if( fTabCheckButton[ lStrID.Data() ]->IsOn() ){
+                        Printf("Button [%s] was on... switching it off now.", fTabCheckButton[ lStrID.Data() ]->GetTitle() );    
+                        fTabCheckButton[ lStrID.Data() ]->SetOn(kFALSE);
+                    }
+                    
+                }// end for iHist            
+            }// end for iPart
+        }
+
+        
+        	// ----------------------------------------------------------
+	void LoadHisto( Int_t iPart, Int_t iHist)
 	{
-      
+            CheckButtonUpAndTurnDown();
+            Printf("File to be open : dataset_%d_%d", iPart, iHist );
+            
+            
+            TString lStrID( fVecListHistos[iPart][iHist].Data() );
+            Printf("File to be open : dataset_%d_%d = dataset_%s", iPart, iHist, lStrID.Data()  );
+            
+            CheckButtonUpAndTurnDown();
+            fTabCheckButton[ lStrID.Data() ]->SetOn(kTRUE);
 		const char * file = "pp-K0.txt";
+		Combine(file, 0 );
+                fMinvHisto->SetTitle( lStrID.Data()  );
+            
+	}
+        
+
+	// ----------------------------------------------------------
+	void CombineK0s_pp_MB()
+	{
+            TString lStrID("K0s_pp_MB");
+            CheckButtonUpAndTurnDown();
+            fTabCheckButton[ lStrID.Data() ]->SetOn(kTRUE);
+		const char * file = "pp-K0.txt";
+		Combine(file, 0);
+                fMinvHisto->SetTitle( lStrID.Data()  );
+	}
+
+	// ----------------------------------------------------------
+	void CombineK0s_PbPb_MB()
+	{
+            CheckButtonUpAndTurnDown();
+            fTabCheckButton[ "K0s_PbPb_MB"  ]->SetOn(kTRUE);            
+            	const char * file = "PbPb-K0.txt";
 		Combine(file, 0); 
 	}
 
 	// ----------------------------------------------------------
-	void CombineK0PbPb()
+	void CombineK0s_PbPb_0010()
 	{
-		const char * file = "PbPb-K0.txt";
-		Combine(file, 0); 
-	}
-
-	// ----------------------------------------------------------
-	void CombineK0PbPb_0010()
-	{
+            CheckButtonUpAndTurnDown();
+            fTabCheckButton[ "K0s_PbPb_0010"  ]->SetOn(kTRUE); 
 		const char * file = "dataset11.txt";
 		Combine(file, 0); 
 	}
 
 	// ----------------------------------------------------------
-	void CombineK0PbPb_1020()
+	void CombineK0s_PbPb_1020()
 	{
+            CheckButtonUpAndTurnDown();
+            fTabCheckButton[ "K0s_PbPb_1020"  ]->SetOn(kTRUE);             
 		const char * file = "dataset12.txt";
 		Combine(file, 0); 
 	}
 
 	// ----------------------------------------------------------
-	void CombineK0PbPb_2030()
+	void CombineK0s_PbPb_2030()
 	{
+            CheckButtonUpAndTurnDown();
+            fTabCheckButton[ "K0s_PbPb_2030"  ]->SetOn(kTRUE);             
 		const char * file = "dataset13.txt";
 		Combine(file, 0); 
 	}
 
 	// ----------------------------------------------------------
-	void CombineK0PbPb_3040()
+	void CombineK0s_PbPb_3040()
 	{
+            CheckButtonUpAndTurnDown();
+            fTabCheckButton[ "K0s_PbPb_3040"  ]->SetOn(kTRUE);
 		const char * file = "dataset14.txt";
 		Combine(file, 0); 
 	}
 
 	// ----------------------------------------------------------
-	void CombineK0PbPb_4050()
+	void CombineK0s_PbPb_4050()
 	{
+            CheckButtonUpAndTurnDown();
+            fTabCheckButton[ "K0s_PbPb_4050"  ]->SetOn(kTRUE);
 		const char * file = "dataset15.txt";
 		Combine(file, 0); 
 	}
 
 	// ----------------------------------------------------------
-	void CombineK0PbPb_5060()
+	void CombineK0s_PbPb_5060()
 	{
+            CheckButtonUpAndTurnDown();
+            fTabCheckButton[ "K0s_PbPb_5060"  ]->SetOn(kTRUE);
 		const char * file = "dataset16.txt";
 		Combine(file, 0); 
 	}
 
 	// ----------------------------------------------------------
-	void CombineK0PbPb_6070()
+	void CombineK0s_PbPb_6070()
 	{
+            CheckButtonUpAndTurnDown();
+            fTabCheckButton[ "K0s_PbPb_6070"  ]->SetOn(kTRUE);
 		const char * file = "dataset17.txt";
 		Combine(file, 0); 
 	}
 
 	// ----------------------------------------------------------
-	void CombineK0PbPb_7080()
+	void CombineK0s_PbPb_7080()
 	{
-		const char * file = "dataset18.txt";
+            CheckButtonUpAndTurnDown();
+            fTabCheckButton[ "K0s_PbPb_7080"  ]->SetOn(kTRUE);	
+                const char * file = "dataset18.txt";
 		Combine(file, 0); 
 	}
 
 	// ----------------------------------------------------------
-	void CombineK0PbPb_8090()
+	void CombineK0s_PbPb_8090()
 	{
+            CheckButtonUpAndTurnDown();
+            fTabCheckButton[ "K0s_PbPb_8090"  ]->SetOn(kTRUE);
 		const char * file = "dataset19.txt";
 		Combine(file, 0); 
 	}
 
 	// ----------------------------------------------------------
-	void CombineK0PbPb_90100()
+	void CombineK0s_PbPb_90100()
 	{
+            CheckButtonUpAndTurnDown();
+            fTabCheckButton[ "K0s_PbPb_90100"  ]->SetOn(kTRUE);
 		const char * file = "dataset20.txt";
 		Combine(file, 0); 
 	}
 
+	
+	
 	// ----------------------------------------------------------
-	void CombineLambdaPbPb_0010()
+	void CombineLambda_pp_MB()
 	{
-		const char * file = "dataset21.txt";
-		Combine(file, 1); 
-	}
-
-	// ----------------------------------------------------------
-	void CombineLambdaPbPb_1020()
-	{
-		const char * file = "dataset22.txt";
-		Combine(file, 1); 
-	}
-
-	// ----------------------------------------------------------
-	void CombineLambdaPbPb_2030()
-	{
-		const char * file = "dataset23.txt";
-		Combine(file, 1); 
-	}
-
-	// ----------------------------------------------------------
-	void CombineLambdaPbPb_3040()
-	{
-		const char * file = "dataset24.txt";
-		Combine(file, 1); 
-	}
-
-	// ----------------------------------------------------------
-	void CombineLambdaPbPb_4050()
-	{
-		const char * file = "dataset25.txt";
-		Combine(file, 1); 
-	}
-
-	// ----------------------------------------------------------
-	void CombineLambdaPbPb_5060()
-	{
-		const char * file = "dataset26.txt";
-		Combine(file, 1); 
-	}
-
-	// ----------------------------------------------------------
-	void CombineLambdaPbPb_6070()
-	{
-		const char * file = "dataset27.txt";
-		Combine(file, 1); 
-	}
-
-	// ----------------------------------------------------------
-	void CombineLambdaPbPb_7080()
-	{
-		const char * file = "dataset28.txt";
-		Combine(file, 1); 
-	}
-
-	// ----------------------------------------------------------
-	void CombineLambdaPbPb_8090()
-	{
-		const char * file = "dataset29.txt";
-		Combine(file, 1); 
-	}
-
-	// ----------------------------------------------------------
-	void CombineLambdaPbPb_90100()
-	{
-		const char * file = "dataset30.txt";
-		Combine(file, 1); 
-	}
-
-	// ----------------------------------------------------------
-	void CombineLambdapp()
-	{
+            CheckButtonUpAndTurnDown();
+            fTabCheckButton[ "Lambda_pp_MB"  ]->SetOn(kTRUE);
 		const char * file = "pp-Lambda.txt";
 		Combine(file, 1); 
 	}
 
 	// ----------------------------------------------------------
-	void CombineLambdaPbPb()
+	void CombineLambda_PbPb_MB()
 	{
+            CheckButtonUpAndTurnDown();
+            fTabCheckButton[ "Lambda_PbPb_MB"  ]->SetOn(kTRUE);
 		const char * file = "PbPb-Lambda.txt";
 		Combine(file, 1); 
-	}
-
+	}	
+	
 	// ----------------------------------------------------------
-	void CombineAntiLambdaPbPb_0010()
+	void CombineLambda_PbPb_0010()
 	{
-		const char * file = "dataset31.txt";
+            CheckButtonUpAndTurnDown();
+            fTabCheckButton[ "Lambda_PbPb_0010"  ]->SetOn(kTRUE);
+		const char * file = "dataset21.txt";
 		Combine(file, 1); 
 	}
 
 	// ----------------------------------------------------------
-	void CombineAntiLambdaPbPb_1020()
+	void CombineLambda_PbPb_1020()
 	{
-		const char * file = "dataset32.txt";
+            CheckButtonUpAndTurnDown();
+            fTabCheckButton[ "Lambda_PbPb_1020"  ]->SetOn(kTRUE);
+		const char * file = "dataset22.txt";
 		Combine(file, 1); 
 	}
 
 	// ----------------------------------------------------------
-	void CombineAntiLambdaPbPb_2030()
+	void CombineLambda_PbPb_2030()
 	{
-		const char * file = "dataset33.txt";
+            CheckButtonUpAndTurnDown();
+            fTabCheckButton[ "Lambda_PbPb_2030"  ]->SetOn(kTRUE);
+		const char * file = "dataset23.txt";
 		Combine(file, 1); 
 	}
 
 	// ----------------------------------------------------------
-	void CombineAntiLambdaPbPb_3040()
+	void CombineLambda_PbPb_3040()
 	{
-		const char * file = "dataset34.txt";
-		Combine(file, 1); 
-	}
-  
-	// ----------------------------------------------------------
-	void CombineAntiLambdaPbPb_4050()
-	{
-		const char * file = "dataset35.txt";
+            CheckButtonUpAndTurnDown();
+            fTabCheckButton[ "Lambda_PbPb_3040"  ]->SetOn(kTRUE);
+		const char * file = "dataset24.txt";
 		Combine(file, 1); 
 	}
 
 	// ----------------------------------------------------------
-	void CombineAntiLambdaPbPb_5060()
+	void CombineLambda_PbPb_4050()
 	{
-		const char * file = "dataset36.txt";
+            CheckButtonUpAndTurnDown();
+            fTabCheckButton[ "Lambda_PbPb_4050"  ]->SetOn(kTRUE);
+		const char * file = "dataset25.txt";
 		Combine(file, 1); 
 	}
 
 	// ----------------------------------------------------------
-	void CombineAntiLambdaPbPb_6070()
+	void CombineLambda_PbPb_5060()
 	{
-		const char * file = "dataset37.txt";
+            CheckButtonUpAndTurnDown();
+            fTabCheckButton[ "Lambda_PbPb_5060"  ]->SetOn(kTRUE);
+		const char * file = "dataset26.txt";
 		Combine(file, 1); 
 	}
 
 	// ----------------------------------------------------------
-	void CombineAntiLambdaPbPb_7080()
+	void CombineLambda_PbPb_6070()
 	{
-		const char * file = "dataset38.txt";
-		Combine(file, 1); 
-	}
-  
-	// ----------------------------------------------------------
-	void CombineAntiLambdaPbPb_8090()
-	{
-		const char * file = "dataset39.txt";
+            CheckButtonUpAndTurnDown();
+            fTabCheckButton[ "Lambda_PbPb_6070"  ]->SetOn(kTRUE);
+		const char * file = "dataset27.txt";
 		Combine(file, 1); 
 	}
 
 	// ----------------------------------------------------------
-	void CombineAntiLambdaPbPb_90100()
+	void CombineLambda_PbPb_7080()
 	{
-		const char * file = "dataset40.txt";
+            CheckButtonUpAndTurnDown();
+            fTabCheckButton[ "Lambda_PbPb_7080"  ]->SetOn(kTRUE);
+		const char * file = "dataset28.txt";
 		Combine(file, 1); 
 	}
-  
+
 	// ----------------------------------------------------------
-	void CombineAntiLambdapp()
+	void CombineLambda_PbPb_8090()
 	{
+            CheckButtonUpAndTurnDown();
+            fTabCheckButton[ "Lambda_PbPb_8090"  ]->SetOn(kTRUE);
+		const char * file = "dataset29.txt";
+		Combine(file, 1); 
+	}
+
+	// ----------------------------------------------------------
+	void CombineLambda_PbPb_90100()
+	{
+            CheckButtonUpAndTurnDown();
+            fTabCheckButton[ "Lambda_PbPb_90100"  ]->SetOn(kTRUE);
+		const char * file = "dataset30.txt";
+		Combine(file, 1); 
+	}
+
+	
+		// ----------------------------------------------------------
+	void CombineAntiLambda_pp_MB()
+	{
+            CheckButtonUpAndTurnDown();
+            fTabCheckButton[ "AntiLambda_pp_MB"  ]->SetOn(kTRUE);
 		const char * file = "pp-AntiLambda.txt";
 		Combine(file, 1); 
 	}
 
 	// ----------------------------------------------------------
-	void CombineAntiLambdaPbPb()
+	void CombineAntiLambda_PbPb_MB()
 	{
+            CheckButtonUpAndTurnDown();
+            fTabCheckButton[ "AntiLambda_PbPb_MB"  ]->SetOn(kTRUE);
 		const char * file = "PbPb-AntiLambda.txt";
 		Combine(file, 1); 
 	}
+	
+	// ----------------------------------------------------------
+	void CombineAntiLambda_PbPb_0010()
+	{
+            CheckButtonUpAndTurnDown();
+            fTabCheckButton[ "AntiLambda_PbPb_0010"  ]->SetOn(kTRUE);
+		const char * file = "dataset31.txt";
+		Combine(file, 1); 
+	}
+
+	// ----------------------------------------------------------
+	void CombineAntiLambda_PbPb_1020()
+	{
+            CheckButtonUpAndTurnDown();
+            fTabCheckButton[ "AntiLambda_PbPb_1020"  ]->SetOn(kTRUE);
+		const char * file = "dataset32.txt";
+		Combine(file, 1); 
+	}
+
+	// ----------------------------------------------------------
+	void CombineAntiLambda_PbPb_2030()
+	{
+            CheckButtonUpAndTurnDown();
+            fTabCheckButton[ "AntiLambda_PbPb_2030"  ]->SetOn(kTRUE);
+		const char * file = "dataset33.txt";
+		Combine(file, 1); 
+	}
+
+	// ----------------------------------------------------------
+	void CombineAntiLambda_PbPb_3040()
+	{
+            CheckButtonUpAndTurnDown();
+            fTabCheckButton[ "AntiLambda_PbPb_3040"  ]->SetOn(kTRUE);
+		const char * file = "dataset34.txt";
+		Combine(file, 1); 
+	}
+  
+	// ----------------------------------------------------------
+	void CombineAntiLambda_PbPb_4050()
+	{
+            CheckButtonUpAndTurnDown();
+            fTabCheckButton[ "AntiLambda_PbPb_4050"  ]->SetOn(kTRUE);
+		const char * file = "dataset35.txt";
+		Combine(file, 1); 
+	}
+
+	// ----------------------------------------------------------
+	void CombineAntiLambda_PbPb_5060()
+	{
+            CheckButtonUpAndTurnDown();
+            fTabCheckButton[ "AntiLambda_PbPb_5060"  ]->SetOn(kTRUE);
+		const char * file = "dataset36.txt";
+		Combine(file, 1); 
+	}
+
+	// ----------------------------------------------------------
+	void CombineAntiLambda_PbPb_6070()
+	{
+            CheckButtonUpAndTurnDown();
+            fTabCheckButton[ "AntiLambda_PbPb_6070"  ]->SetOn(kTRUE);
+		const char * file = "dataset37.txt";
+		Combine(file, 1); 
+	}
+
+	// ----------------------------------------------------------
+	void CombineAntiLambda_PbPb_7080()
+	{
+            CheckButtonUpAndTurnDown();
+            fTabCheckButton[ "AntiLambda_PbPb_7080"  ]->SetOn(kTRUE);
+		const char * file = "dataset38.txt";
+		Combine(file, 1); 
+	}
+  
+	// ----------------------------------------------------------
+	void CombineAntiLambda_PbPb_8090()
+	{
+            CheckButtonUpAndTurnDown();
+            fTabCheckButton[ "AntiLambda_PbPb_8090"  ]->SetOn(kTRUE);
+		const char * file = "dataset39.txt";
+		Combine(file, 1); 
+	}
+
+	// ----------------------------------------------------------
+	void CombineAntiLambda_PbPb_90100()
+	{
+            CheckButtonUpAndTurnDown();
+            fTabCheckButton[ "AntiLambda_PbPb_90100"  ]->SetOn(kTRUE);
+		const char * file = "dataset40.txt";
+		Combine(file, 1);               
+	}
+	
+
 
   //______________________________________________________________________________
 	void FitInvariantMass()
@@ -653,250 +850,96 @@ public:
 		ULong_t buttonRedColor;
 
 		//-------------------New GUI--------------------------
-		// tab widget
-		TGTab *fTab1590 = new TGTab(frmMain,128,280);
+		// tab widget to select histograms to be fitted
+                
+                TGTab *lTabsV0s = new TGTab(frmMain,128,280);
 
-		// container of "Tab1"
-		TGCompositeFrame *lCompositeFrameK0s;
-		lCompositeFrameK0s = fTab1590->AddTab("K0");
-		lCompositeFrameK0s->SetLayoutManager(new TGVerticalLayout(lCompositeFrameK0s));
-		TGCheckButton *fTextButton2153 = new TGCheckButton(lCompositeFrameK0s,"pp");
-		fTextButton2153->Connect("Clicked()", "TVSDReader", this, "CombineK0pp()");
-		fTextButton2153->SetTextJustify(36);
-		fTextButton2153->SetMargins(0,0,0,0);
-		fTextButton2153->SetWrapLength(-1);
-		lCompositeFrameK0s->AddFrame(fTextButton2153, new TGLayoutHints(kLHintsLeft | kLHintsTop,2,2,2,2));
-                TGCheckButton *fTextButton2190 = new TGCheckButton(lCompositeFrameK0s,"PbPb");
-		fTextButton2190->Connect("Clicked()", "TVSDReader", this, "CombineK0PbPb()");
-		fTextButton2190->SetTextJustify(36);
-		fTextButton2190->SetMargins(0,0,0,0);
-		fTextButton2190->SetWrapLength(-1);
-		lCompositeFrameK0s->AddFrame(fTextButton2190, new TGLayoutHints(kLHintsLeft | kLHintsTop,2,2,2,2));
-                TGCheckButton *fTextButton2197 = new TGCheckButton(lCompositeFrameK0s,"PbPb-0-10%");
-		fTextButton2197->Connect("Clicked()", "TVSDReader", this, "CombineK0PbPb_0010()");
-		fTextButton2197->SetTextJustify(36);
-		fTextButton2197->SetMargins(0,0,0,0);
-		fTextButton2197->SetWrapLength(-1);                
-		lCompositeFrameK0s->AddFrame(fTextButton2197, new TGLayoutHints(kLHintsLeft | kLHintsTop,2,2,2,2));
-                TGCheckButton *fTextButton2204 = new TGCheckButton(lCompositeFrameK0s,"PbPb-10-20%");
-		fTextButton2204->Connect("Clicked()", "TVSDReader", this, "CombineK0PbPb_1020()");
-		fTextButton2204->SetTextJustify(36);
-		fTextButton2204->SetMargins(0,0,0,0);
-		fTextButton2204->SetWrapLength(-1);
-		lCompositeFrameK0s->AddFrame(fTextButton2204, new TGLayoutHints(kLHintsLeft | kLHintsTop,2,2,2,2));
-		TGCheckButton *fTextButton2211 = new TGCheckButton(lCompositeFrameK0s,"PbPb-20-30%");
-		fTextButton2211->Connect("Clicked()", "TVSDReader", this, "CombineK0PbPb_2030()");
-		fTextButton2211->SetTextJustify(36);
-		fTextButton2211->SetMargins(0,0,0,0);
-		fTextButton2211->SetWrapLength(-1);
-		lCompositeFrameK0s->AddFrame(fTextButton2211, new TGLayoutHints(kLHintsLeft | kLHintsTop,2,2,2,2));
-		TGCheckButton *fTextButton2218 = new TGCheckButton(lCompositeFrameK0s,"PbPb-30-40%");
-		fTextButton2218->Connect("Clicked()", "TVSDReader", this, "CombineK0PbPb_3040()");
-		fTextButton2218->SetTextJustify(36);
-		fTextButton2218->SetMargins(0,0,0,0);
-		fTextButton2218->SetWrapLength(-1);
-		lCompositeFrameK0s->AddFrame(fTextButton2218, new TGLayoutHints(kLHintsLeft | kLHintsTop,2,2,2,2));
-		TGCheckButton *fTextButton2225 = new TGCheckButton(lCompositeFrameK0s,"PbPb-40-50%");
-		fTextButton2225->Connect("Clicked()", "TVSDReader", this, "CombineK0PbPb_4050()");
-		fTextButton2225->SetTextJustify(36);
-		fTextButton2225->SetMargins(0,0,0,0);
-		fTextButton2225->SetWrapLength(-1);
-		lCompositeFrameK0s->AddFrame(fTextButton2225, new TGLayoutHints(kLHintsLeft | kLHintsTop,2,2,2,2));
-		TGCheckButton *fTextButton2232 = new TGCheckButton(lCompositeFrameK0s,"PbPb-50-60%");
-		fTextButton2232->Connect("Clicked()", "TVSDReader", this, "CombineK0PbPb_5060(()");
-		fTextButton2232->SetTextJustify(36);
-		fTextButton2232->SetMargins(0,0,0,0);
-		fTextButton2232->SetWrapLength(-1);
-		lCompositeFrameK0s->AddFrame(fTextButton2232, new TGLayoutHints(kLHintsLeft | kLHintsTop,2,2,2,2));
-		TGCheckButton *fTextButton2239 = new TGCheckButton(lCompositeFrameK0s,"PbPb-60-70%");
-		fTextButton2239->Connect("Clicked()", "TVSDReader", this, "CombineK0PbPb_6070()");
-		fTextButton2239->SetTextJustify(36);
-		fTextButton2239->SetMargins(0,0,0,0);
-		fTextButton2239->SetWrapLength(-1);
-		lCompositeFrameK0s->AddFrame(fTextButton2239, new TGLayoutHints(kLHintsLeft | kLHintsTop,2,2,2,2));
-		TGCheckButton *fTextButton2246 = new TGCheckButton(lCompositeFrameK0s,"PbPb-70-80%");
-		fTextButton2246->Connect("Clicked()", "TVSDReader", this, "CombineK0PbPb_7080()");
-		fTextButton2246->SetTextJustify(36);
-		fTextButton2246->SetMargins(0,0,0,0);
-		fTextButton2246->SetWrapLength(-1);
-		lCompositeFrameK0s->AddFrame(fTextButton2246, new TGLayoutHints(kLHintsLeft | kLHintsTop,2,2,2,2));
-		TGCheckButton *fTextButton2255 = new TGCheckButton(lCompositeFrameK0s,"PbPb-80-90%");
-		fTextButton2255->Connect("Clicked()", "TVSDReader", this, "CombineK0PbPb_8090()");
-		fTextButton2255->SetTextJustify(36);
-		fTextButton2255->SetMargins(0,0,0,0);
-		fTextButton2255->SetWrapLength(-1);
-		lCompositeFrameK0s->AddFrame(fTextButton2255, new TGLayoutHints(kLHintsLeft | kLHintsTop,2,2,2,2));
-		TGCheckButton *fTextButton2262 = new TGCheckButton(lCompositeFrameK0s,"PbPb-90-100%");
-		fTextButton2262->Connect("Clicked()", "TVSDReader", this, "CombineK0PbPb_90100()");
-		fTextButton2262->SetTextJustify(36);
-		fTextButton2262->SetMargins(0,0,0,0);
-		fTextButton2262->SetWrapLength(-1);
-		lCompositeFrameK0s->AddFrame(fTextButton2262, new TGLayoutHints(kLHintsLeft | kLHintsTop,2,2,2,2));
 
+                TGCompositeFrame *lCompositeFrame[ kNbPart ];
+                
+                // container of "Tab1"
+                lCompositeFrame[ kK0s ] = lTabsV0s->AddTab("K0s");
+                lCompositeFrame[ kK0s ]->SetLayoutManager(new TGVerticalLayout(lCompositeFrame[ kK0s ]));
+
+                // container of "Tab2"
+                lCompositeFrame[ kLambda ] = lTabsV0s->AddTab("Lambda");
+                lCompositeFrame[ kLambda ]->SetLayoutManager(new TGVerticalLayout(lCompositeFrame[ kLambda ]));
+
+                // container of "Tab3"
+                lCompositeFrame[ kALambda ] = lTabsV0s->AddTab("AntiLambda");
+                lCompositeFrame[ kALambda ]->SetLayoutManager(new TGVerticalLayout(lCompositeFrame[ kALambda ]));                
+                
+                                                   
+                // FIXME A. Maire : Mutual Exclusive click on each button ...
+                //  See /home/amaire/AliceSuite/sw/ubuntu1604_x86-64/ROOT/v6-12-06-2/tutorials/gui/buttongroupState.C
+                //  Key TGBUttonGroup::SetRadioButtonExclusive(kTRUE)
+                // Did not manage to make it work here in Tabs 
+                
+                // AN alternative to RadioButton or CheckButton would be TGComboBox.
                 
                 
-                
-                
-                
-		// container of "Tab2"
-		TGCompositeFrame *fCompositeFrameLambda;
-		fCompositeFrameLambda = fTab1590->AddTab("Lambda");
-		fCompositeFrameLambda->SetLayoutManager(new TGVerticalLayout(fCompositeFrameLambda));
-		TGCheckButton *fTextButton2269 = new TGCheckButton(fCompositeFrameLambda,"pp");
-		fTextButton2269->Connect("Clicked()", "TVSDReader", this, "CombineLambdapp()");
-		fTextButton2269->SetTextJustify(36);
-		fTextButton2269->SetMargins(0,0,0,0);
-		fTextButton2269->SetWrapLength(-1);
-		fCompositeFrameLambda->AddFrame(fTextButton2269, new TGLayoutHints(kLHintsLeft | kLHintsTop,2,2,2,2));
-		TGCheckButton *fTextButton2276 = new TGCheckButton(fCompositeFrameLambda,"PbPb");
-		fTextButton2276->Connect("Clicked()", "TVSDReader", this, "CombineLambdaPbPb()");
-		fTextButton2276->SetTextJustify(36);
-		fTextButton2276->SetMargins(0,0,0,0);
-		fTextButton2276->SetWrapLength(-1);
-		fCompositeFrameLambda->AddFrame(fTextButton2276, new TGLayoutHints(kLHintsLeft | kLHintsTop,2,2,2,2));
-		TGCheckButton *fTextButton2283 = new TGCheckButton(fCompositeFrameLambda,"PbPb-0-10%");
-		fTextButton2283->Connect("Clicked()", "TVSDReader", this, "CombineLambdaPbPb_0010()");
-		fTextButton2283->SetTextJustify(36);
-		fTextButton2283->SetMargins(0,0,0,0);
-		fTextButton2283->SetWrapLength(-1);
-		fCompositeFrameLambda->AddFrame(fTextButton2283, new TGLayoutHints(kLHintsLeft | kLHintsTop,2,2,2,2));
-		TGCheckButton *fTextButton2290 = new TGCheckButton(fCompositeFrameLambda,"PbPb-10-20%");
-		fTextButton2290->Connect("Clicked()", "TVSDReader", this, "CombineLambdaPbPb_1020()");
-		fTextButton2290->SetTextJustify(36);
-		fTextButton2290->SetMargins(0,0,0,0);
-		fTextButton2290->SetWrapLength(-1);
-		fCompositeFrameLambda->AddFrame(fTextButton2290, new TGLayoutHints(kLHintsLeft | kLHintsTop,2,2,2,2));
-		TGCheckButton *fTextButton2297 = new TGCheckButton(fCompositeFrameLambda,"PbPb-20-30%");
-		fTextButton2297->Connect("Clicked()", "TVSDReader", this, "CombineLambdaPbPb_2030()");
-		fTextButton2297->SetTextJustify(36);
-		fTextButton2297->SetMargins(0,0,0,0);
-		fTextButton2297->SetWrapLength(-1);
-		fCompositeFrameLambda->AddFrame(fTextButton2297, new TGLayoutHints(kLHintsLeft | kLHintsTop,2,2,2,2));
-		TGCheckButton *fTextButton2304 = new TGCheckButton(fCompositeFrameLambda,"PbPb-30-40%");
-		fTextButton2304->Connect("Clicked()", "TVSDReader", this, "CombineLambdaPbPb_3040()");
-		fTextButton2304->SetTextJustify(36);
-		fTextButton2304->SetMargins(0,0,0,0);
-		fTextButton2304->SetWrapLength(-1);
-		fCompositeFrameLambda->AddFrame(fTextButton2304, new TGLayoutHints(kLHintsLeft | kLHintsTop,2,2,2,2));
-		TGCheckButton *fTextButton2311 = new TGCheckButton(fCompositeFrameLambda,"PbPb-40-50%");
-		fTextButton2311->Connect("Clicked()", "TVSDReader", this, "CombineLambdaPbPb_4050()");
-		fTextButton2311->SetTextJustify(36);
-		fTextButton2311->SetMargins(0,0,0,0);
-		fTextButton2311->SetWrapLength(-1);
-		fCompositeFrameLambda->AddFrame(fTextButton2311, new TGLayoutHints(kLHintsLeft | kLHintsTop,2,2,2,2));
-		TGCheckButton *fTextButton2318 = new TGCheckButton(fCompositeFrameLambda,"PbPb-50-60%");
-		fTextButton2318->Connect("Clicked()", "TVSDReader", this, "CombineLambdaPbPb_5060()");
-		fTextButton2318->SetTextJustify(36);
-		fTextButton2318->SetMargins(0,0,0,0);
-		fTextButton2318->SetWrapLength(-1);
-		fCompositeFrameLambda->AddFrame(fTextButton2318, new TGLayoutHints(kLHintsLeft | kLHintsTop,2,2,2,2));
-		TGCheckButton *fTextButton2325 = new TGCheckButton(fCompositeFrameLambda,"PbPb-60-70%");
-		fTextButton2325->Connect("Clicked()", "TVSDReader", this, "CombineLambdaPbPb_6070()");
-		fTextButton2325->SetTextJustify(36);
-		fTextButton2325->SetMargins(0,0,0,0);
-		fTextButton2325->SetWrapLength(-1);
-		fCompositeFrameLambda->AddFrame(fTextButton2325, new TGLayoutHints(kLHintsLeft | kLHintsTop,2,2,2,2));
-		TGCheckButton *fTextButton2349 = new TGCheckButton(fCompositeFrameLambda,"PbPb-70-80%");
-		fTextButton2349->Connect("Clicked()", "TVSDReader", this, "CombineLambdaPbPb_7080()");
-		fTextButton2349->SetTextJustify(36);
-		fTextButton2349->SetMargins(0,0,0,0);
-		fTextButton2349->SetWrapLength(-1);
-		fCompositeFrameLambda->AddFrame(fTextButton2349, new TGLayoutHints(kLHintsLeft | kLHintsTop,2,2,2,2));
-		TGCheckButton *fTextButton2356 = new TGCheckButton(fCompositeFrameLambda,"PbPb-80-90%");
-		fTextButton2356->Connect("Clicked()", "TVSDReader", this, "CombineLambdaPbPb_8090()");
-		fTextButton2356->SetTextJustify(36);
-		fTextButton2356->SetMargins(0,0,0,0);
-		fTextButton2356->SetWrapLength(-1);
-		fCompositeFrameLambda->AddFrame(fTextButton2356, new TGLayoutHints(kLHintsLeft | kLHintsTop,2,2,2,2));
-		TGCheckButton *fTextButton2363 = new TGCheckButton(fCompositeFrameLambda,"PbPb-90-100%");
-		fTextButton2363->Connect("Clicked()", "TVSDReader", this, "CombineLambdaPbPb_90100()");
-		fTextButton2363->SetTextJustify(36);
-		fTextButton2363->SetMargins(0,0,0,0);
-		fTextButton2363->SetWrapLength(-1);
-		fCompositeFrameLambda->AddFrame(fTextButton2363, new TGLayoutHints(kLHintsLeft | kLHintsTop,2,2,2,2));
+                for(Short_t iPart = 0; iPart < kNbPart; ++iPart){
+                    for(Int_t iHist = -1; iHist < kNbSystemsAndEvtActivity; ++iHist ){
+                        
+                        if(iHist == -1){                        
+                            TGTextButton *button = 0;
+                                if (strncmp(gSystem->Getenv("BLA"), "EN", 2) == 0) {
+					button = new TGTextButton(lCompositeFrame[iPart], "Untick all");
+				} else if (strncmp(gSystem->Getenv("BLA"), "FR", 2) == 0) {
+					button = new TGTextButton(lCompositeFrame[iPart], "Tout decocher");
+                                }
+                            button->Connect("Clicked()", "TVSDReader", this, "CheckButtonUpAndTurnDown()");
+                            lCompositeFrame[ iPart ]->AddFrame(button, new TGLayoutHints(kLHintsRight,2,2,2,2));                          
+                        }
+                        else{                      
+                            TString lStrID( fVecListHistos[iPart][iHist].Data() );  // K0s_pp_MB
+        
+                            // Prepare label to be displayed for the button itself
+                            TString lStrIDLabel( lStrID );
+        
+                            lStrIDLabel.ReplaceAll("K0s_","K0s, ");               // K0s_pp_MB  --> K0s, pp_MB
+                            lStrIDLabel.ReplaceAll("AntiLambda_","anti-L, ");     // NOTE : replace first AntiLambda over Lambda ... to avoid undesirable replacement
+                            lStrIDLabel.ReplaceAll("Lambda_","L, ");                    
+                            lStrIDLabel.ReplaceAll("_"," ");                  // K0s, pp_MB --> K0s, pp MB
+                            lStrIDLabel.ReplaceAll("pp"  ,"p-p"  );
+                            lStrIDLabel.ReplaceAll("PbPb","Pb-Pb");
+                            TPRegexp lRegex("([0-9]{2})([0-9]{2})");// regex pattern : locate 2 groups of 2 numbers 0010 -> (00)(10)
+                            lRegex.Substitute(lStrIDLabel,"$1-$2");   // add an hyphen in between : 00-10                    
+                            if( ! lStrIDLabel.Contains("MB") ) lStrIDLabel.Append("%"); // for Pb-Pb centrality
 
-		// container of "Tab3"
-		TGCompositeFrame *fCompositeFrameAntiLambda;
-		fCompositeFrameAntiLambda = fTab1590->AddTab("AntiLambda");
-		fCompositeFrameAntiLambda->SetLayoutManager(new TGVerticalLayout(fCompositeFrameAntiLambda));
-		TGCheckButton *fTextButtonALpp = new TGCheckButton(fCompositeFrameAntiLambda,"pp");
-		fTextButtonALpp->Connect("Clicked()", "TVSDReader", this, "CombineAntiLambdapp()");
-		fTextButtonALpp->SetTextJustify(36);
-		fTextButtonALpp->SetMargins(0,0,0,0);
-		fTextButtonALpp->SetWrapLength(-1);
-		fCompositeFrameAntiLambda->AddFrame(fTextButtonALpp, new TGLayoutHints(kLHintsLeft | kLHintsTop,2,2,2,2));
-		TGCheckButton *fTextButtonALPbPb = new TGCheckButton(fCompositeFrameAntiLambda,"PbPb");
-		fTextButtonALPbPb->Connect("Clicked()", "TVSDReader", this, "CombineAntiLambdaPbPb()");
-		fTextButtonALPbPb->SetTextJustify(36);
-		fTextButtonALPbPb->SetMargins(0,0,0,0);
-		fTextButtonALPbPb->SetWrapLength(-1);
-		fCompositeFrameAntiLambda->AddFrame(fTextButtonALPbPb, new TGLayoutHints(kLHintsLeft | kLHintsTop,2,2,2,2));
-		TGCheckButton *fTextButtonALPbPb0_10 = new TGCheckButton(fCompositeFrameAntiLambda,"PbPb-0-10%");
-		fTextButtonALPbPb0_10->Connect("Clicked()", "TVSDReader", this, "CombineAntiLambdaPbPb_0010()");
-		fTextButtonALPbPb0_10->SetTextJustify(36);
-		fTextButtonALPbPb0_10->SetMargins(0,0,0,0);
-		fTextButtonALPbPb0_10->SetWrapLength(-1);
-		fCompositeFrameAntiLambda->AddFrame(fTextButtonALPbPb0_10, new TGLayoutHints(kLHintsLeft | kLHintsTop,2,2,2,2));
-		TGCheckButton *fTextButtonALPbPb10_20 = new TGCheckButton(fCompositeFrameAntiLambda,"PbPb-10-20%");
-		fTextButtonALPbPb10_20->Connect("Clicked()", "TVSDReader", this, "CombineAntiLambdaPbPb_1020()");
-		fTextButtonALPbPb10_20->SetTextJustify(36);
-		fTextButtonALPbPb10_20->SetMargins(0,0,0,0);
-		fTextButtonALPbPb10_20->SetWrapLength(-1);
-		fCompositeFrameAntiLambda->AddFrame(fTextButtonALPbPb10_20, new TGLayoutHints(kLHintsLeft | kLHintsTop,2,2,2,2));
-		TGCheckButton *fTextButtonALPbPb20_30 = new TGCheckButton(fCompositeFrameAntiLambda,"PbPb-20-30%");
-		fTextButtonALPbPb20_30->Connect("Clicked()", "TVSDReader", this, "CombineAntiLambdaPbPb_2030()");
-		fTextButtonALPbPb20_30->SetTextJustify(36);
-		fTextButtonALPbPb20_30->SetMargins(0,0,0,0);
-		fTextButtonALPbPb20_30->SetWrapLength(-1);
-		fCompositeFrameAntiLambda->AddFrame(fTextButtonALPbPb20_30, new TGLayoutHints(kLHintsLeft | kLHintsTop,2,2,2,2));
-		TGCheckButton *fTextButtonALPbPb30_40 = new TGCheckButton(fCompositeFrameAntiLambda,"PbPb-30-40%");
-		fTextButtonALPbPb30_40->Connect("Clicked()", "TVSDReader", this, "CombineAntiLambdaPbPb_3040()");
-		fTextButtonALPbPb30_40->SetTextJustify(36);
-		fTextButtonALPbPb30_40->SetMargins(0,0,0,0);
-		fTextButtonALPbPb30_40->SetWrapLength(-1);
-		fCompositeFrameAntiLambda->AddFrame(fTextButtonALPbPb30_40, new TGLayoutHints(kLHintsLeft | kLHintsTop,2,2,2,2));
-		TGCheckButton *fTextButtonALPbPb40_50 = new TGCheckButton(fCompositeFrameAntiLambda,"PbPb-40-50%");
-		fTextButtonALPbPb40_50->Connect("Clicked()", "TVSDReader", this, "CombineAntiLambdaPbPb_4050()");
-		fTextButtonALPbPb40_50->SetTextJustify(36);
-		fTextButtonALPbPb40_50->SetMargins(0,0,0,0);
-		fTextButtonALPbPb40_50->SetWrapLength(-1);
-		fCompositeFrameAntiLambda->AddFrame(fTextButtonALPbPb40_50, new TGLayoutHints(kLHintsLeft | kLHintsTop,2,2,2,2));
-		TGCheckButton *fTextButtonALPbPb50_60 = new TGCheckButton(fCompositeFrameAntiLambda,"PbPb-50-60%");
-		fTextButtonALPbPb50_60->Connect("Clicked()", "TVSDReader", this, "CombineAntiLambdaPbPb_5060()");
-		fTextButtonALPbPb50_60->SetTextJustify(36);
-		fTextButtonALPbPb50_60->SetMargins(0,0,0,0);
-		fTextButtonALPbPb50_60->SetWrapLength(-1);
-		fCompositeFrameAntiLambda->AddFrame(fTextButtonALPbPb50_60, new TGLayoutHints(kLHintsLeft | kLHintsTop,2,2,2,2));
-		TGCheckButton *fTextButtonALPbPb60_70 = new TGCheckButton(fCompositeFrameAntiLambda,"PbPb-60-70%");
-		fTextButtonALPbPb60_70->Connect("Clicked()", "TVSDReader", this, "CombineAntiLambdaPbPb_6070()");
-		fTextButtonALPbPb60_70->SetTextJustify(36);
-		fTextButtonALPbPb60_70->SetMargins(0,0,0,0);
-		fTextButtonALPbPb60_70->SetWrapLength(-1);
-		fCompositeFrameAntiLambda->AddFrame(fTextButtonALPbPb60_70, new TGLayoutHints(kLHintsLeft | kLHintsTop,2,2,2,2));
-		TGCheckButton *fTextButtonALPbPb70_80 = new TGCheckButton(fCompositeFrameAntiLambda,"PbPb-70-80%");
-		fTextButtonALPbPb70_80 ->Connect("Clicked()", "TVSDReader", this, "CombineAntiLambdaPbPb_7080()");
-		fTextButtonALPbPb70_80 ->SetTextJustify(36);
-		fTextButtonALPbPb70_80 ->SetMargins(0,0,0,0);
-		fTextButtonALPbPb70_80 ->SetWrapLength(-1);
-		fCompositeFrameAntiLambda->AddFrame(fTextButtonALPbPb70_80 , new TGLayoutHints(kLHintsLeft | kLHintsTop,2,2,2,2));
-		TGCheckButton *fTextButtonALPbPb80_90 = new TGCheckButton(fCompositeFrameAntiLambda,"PbPb-80-90%");
-		fTextButtonALPbPb80_90->Connect("Clicked()", "TVSDReader", this, "CombineAntiLambdaPbPb_8090()");
-		fTextButtonALPbPb80_90->SetTextJustify(36);
-		fTextButtonALPbPb80_90->SetMargins(0,0,0,0);
-		fTextButtonALPbPb80_90->SetWrapLength(-1);
-		fCompositeFrameAntiLambda->AddFrame(fTextButtonALPbPb80_90, new TGLayoutHints(kLHintsLeft | kLHintsTop,2,2,2,2));
-		TGCheckButton *fTextButtonALPbPb90_100 = new TGCheckButton(fCompositeFrameAntiLambda,"PbPb-90-100%");
-		fTextButtonALPbPb90_100->Connect("Clicked()", "TVSDReader", this, "CombineAntiLambdaPbPb_90100()");
-		fTextButtonALPbPb90_100->SetTextJustify(36);
-		fTextButtonALPbPb90_100->SetMargins(0,0,0,0);
-		fTextButtonALPbPb90_100->SetWrapLength(-1);
-		fCompositeFrameAntiLambda->AddFrame(fTextButtonALPbPb90_100, new TGLayoutHints(kLHintsLeft | kLHintsTop,2,2,2,2));
+                                            
+                            fTabCheckButton[ lStrID.Data() ] = new TGCheckButton(lCompositeFrame[ iPart ], lStrIDLabel.Data(), iPart*100 + iHist   );
+                            // NOTE 1 :
+                            //  the table of button is organised with a std::map to look like  fTabCheckButton[ "Lambda_PbPb_7080" ], 
+                            //  i.e. identified via meaning string rather than a simple Int_t ID
+                            
+                            // NOTE 2:  
+                            // Unique ID of the buttons = potentially needed for the mutual exclusion behaviour
+                            //  (iPart=0-2)*100 + (iHist=0-11) should be sufficient to avoid overlap in ID ...
+                            
+                            // FIXME
+                            fTabCheckButton[ lStrID.Data() ]->Connect("Clicked()", "TVSDReader", this, TString::Format("Combine%s()", lStrID.Data()) );
+                            //fTabCheckButton[ lStrID.Data() ]->Connect("Clicked()", "TVSDReader", this, TString::Format("LoadHisto(=%d,%d)", iPart, iHist) );
+                            fTabCheckButton[ lStrID.Data() ]->SetTextJustify(36);
+                            fTabCheckButton[ lStrID.Data() ]->SetMargins(0,0,0,0);
+                            fTabCheckButton[ lStrID.Data() ]->SetWrapLength(-1);
+                            
+                            lCompositeFrame[ iPart ]->AddFrame(fTabCheckButton[ lStrID.Data() ], new TGLayoutHints(kLHintsLeft | kLHintsTop,2,2,2,2));
+                        }
+                        
+                        //fButtonGroup->Show();
+                        //lCompositeFrame[ iPart ]->AddFrame(fButtonGroup, new TGLayoutHints(kLHintsLeft | kLHintsTop,2,2,2,2));
+                        
+                    }// end loop over iHist, system + centrality
+                }// end loop over iPart
+                                
+                
 
-		fTab1590->SetTab(1);
+		lTabsV0s->SetTab(1);
 
-		fTab1590->Resize(fTab1590->GetDefaultSize());
-		frmMain->AddFrame(fTab1590, new TGLayoutHints(kLHintsLeft | kLHintsTop,2,2,2,2));
-		fTab1590->MoveResize(8,8,128,280);
+		lTabsV0s->Resize(lTabsV0s->GetDefaultSize());
+		frmMain->AddFrame(lTabsV0s, new TGLayoutHints(kLHintsLeft | kLHintsTop,2,2,2,2));
+		lTabsV0s->MoveResize(8,8,128,280);
 
 		frmMain->SetMWMHints(kMWMDecorAll,
 		kMWMFuncAll,
@@ -1025,7 +1068,7 @@ public:
 		if (strncmp(gSystem->Getenv("BLA"), "EN", 2) == 0) {
 			fMinvHisto = new TH1D("Invariant Mass","Invariant Mass",400,0.0,2.0);
 		} else if (strncmp(gSystem->Getenv("BLA"), "FR", 2) == 0) {
-			fMinvHisto = new TH1D("Masse Invariante","Masse Invariante",400,0.0,2.0);
+			fMinvHisto = new TH1D("Masse Invariante","masse invariante",400,0.0,2.0);
 		}
 
 		// if(AC<=4) {
@@ -1045,7 +1088,7 @@ public:
 			fMinvHisto->GetXaxis()->SetTitle("Invariant Mass (GeV/c^{2})");
 			fMinvHisto->GetYaxis()->SetTitle("Counts");
 		} else if (strncmp(gSystem->Getenv("BLA"), "FR", 2) == 0) {
-			fMinvHisto->GetXaxis()->SetTitle("Masse Invariante (GeV/c^{2})");
+			fMinvHisto->GetXaxis()->SetTitle("masse invariante (GeV/c^{2})");
 			fMinvHisto->GetYaxis()->SetTitle("Coups");
 		}
 		fMinvHisto->SetFillColor(0);

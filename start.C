@@ -5,7 +5,9 @@ void start(){
     lPath.Append( gSystem->Getenv("EXPATH") ); 
     lPath.Append( gSystem->Getenv("PART") ); 
 
-    gSystem->CompileMacro( lPath + "alice_vsd.C");
+    gSystem->CompileMacro( lPath + "alice_vsd.C", "fg"); 
+        // "f" = force recompilation
+        // "g" = compile with debug symbol
     gSystem->Load("alice_vsd_C.so");
     
     
