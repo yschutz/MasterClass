@@ -98,7 +98,6 @@ Bool_t foundPos = kFALSE;
 
 TLatex *gLabels2 = 0;
 
-Int_t AC = 0;
 
 class TVSDReader
 {
@@ -120,6 +119,7 @@ public:
 	TEveGDoubleValuator 	*fFitRangePoly;
 	TF1                     *fFitGaus;
 	TF1                     *fFitPolynomial;
+        TString                 fMassInfo;
         
         enum gkPartType{
             kK0s = 0,
@@ -151,7 +151,7 @@ public:
 	fFile(0), fEvDirKeys(0),
 	fVSD(0), fMaxEv(-1), fCurEv(-1), fMaxR(400), 
 	fTimer(0), fMinvHisto(0), fPad(0), fFitRangeGaus(0), fFitRangePoly(0),
-	fFitGaus(0), fFitPolynomial(0)
+	fFitGaus(0), fFitPolynomial(0), fMassInfo("")
 	{
 		fFile = TFile::Open(file_name);
 		if (!fFile)
@@ -299,7 +299,7 @@ public:
 
 	}
 	// ----------------------------------------------------------
-	void Combine(const char * fileName, int type)
+	void ReadHistoFile(const char * fileName)
 	{
 		TString fn(fileName); 
 		fn.Prepend(gSystem->Getenv("PART")); 
@@ -309,18 +309,9 @@ public:
 		TFile *file; 
 
 		Double_t minv;
-		// if(AC<4) {
-		// 	AC=AC+1;
-		// 	cout << AC << endl; 
-		// } else  {
-		// 	AC=1;
-		// 	cout << AC <<endl; 
-		// }	
-	
-		// fPad->cd(AC);
 
-		fFitPolynomial = nullptr;
-		fFitGaus       = nullptr;
+		// fFitPolynomial = 0;
+		// fFitGaus       = 0;
 
       
 		// file.open(fn);
@@ -338,23 +329,6 @@ public:
 			cout << "Cannot open file: " << fn << endl;
 			return;
 		}
-		fMinvHisto->SetLineColor(2);
-		float max = 1.0;
-		float min = 0.25; 
-		if (type == 1) {
-			max = 2.0;
-			min = 1.0;
-		}
-		if (strncmp(gSystem->Getenv("BLA"), "EN", 2) == 0) {
-			fMinvHisto = new TH1D("fMinvHisto","InvariantMass ",400,min,max);
-			fMinvHisto->GetXaxis()->SetTitle("Invariant Mass (GeV/c^{2})");
-			fMinvHisto->GetYaxis()->SetTitle("Counts");
-		} else if (strncmp(gSystem->Getenv("BLA"), "FR", 2) == 0) {
-			fMinvHisto = new TH1D("fMinvHisto","Masse Invariante ",400,min,max);
-			fMinvHisto->GetXaxis()->SetTitle("Masse Invariante (GeV/c^{2})");
-			fMinvHisto->GetYaxis()->SetTitle("Coups");
-		}
-		fMinvHisto->SetFillColor(0);
 
 		// while(!file.eof() )
 		// {
@@ -380,11 +354,10 @@ public:
 		} 
 		fMinvHisto->Draw();
 		fPad->Update();
-		// file.close();
 		file->Close();
-		
-	}
-	
+	} // end ReadHistoFile
+
+
 	void CheckButtonUpAndTurnDown(){
             
             for(Short_t iPart = 0; iPart < kNbPart; ++iPart){
@@ -396,7 +369,7 @@ public:
                     // in https://root.cern.ch/doc/master/classTGButtonGroup.html
 
                     if( fTabCheckButton[ lStrID.Data() ]->IsOn() ){
-                        Printf("Button [%s] was on... switching it off now.", fTabCheckButton[ lStrID.Data() ]->GetTitle() );    
+                        Printf("Button [%s] has been turn on... switching it off for now.", fTabCheckButton[ lStrID.Data() ]->GetTitle() );    
                         fTabCheckButton[ lStrID.Data() ]->SetOn(kFALSE);
                     }
                     
@@ -405,353 +378,113 @@ public:
         }
 
         
-        	// ----------------------------------------------------------
+        // ----------------------------------------------------------
 	void LoadHisto( Int_t iPart, Int_t iHist)
 	{
-            CheckButtonUpAndTurnDown();
-            Printf("File to be open : dataset_%d_%d", iPart, iHist );
-            
-            
+
             TString lStrID( fVecListHistos[iPart][iHist].Data() );
-            Printf("File to be open : dataset_%d_%d = dataset_%s", iPart, iHist, lStrID.Data()  );
             
+            // Manage button exclusion
             CheckButtonUpAndTurnDown();
             fTabCheckButton[ lStrID.Data() ]->SetOn(kTRUE);
-		const char * file = "pp-K0.txt";
-		Combine(file, 0 );
-                fMinvHisto->SetTitle( lStrID.Data()  );
+            Printf("File to be open : dataset_%d_%d = dataset_%s \n", iPart, iHist, lStrID.Data()  );
             
-	}
+
+                
+
+            // Book histogram
+            
+            fMinvHisto = new TH1D("fMinvHisto","InvariantMass",2000, 0., 2.0);
+            fMinvHisto->Rebin(2);
+                           
+                TString lHistTitle("");
+                TString lXTitle("");
+                TString lYTitle("");
+                
+                
+                if (strncmp(gSystem->Getenv("BLA"), "EN", 2) == 0) {
+                        lHistTitle  = "Invariant Mass ";
+                        lXTitle     = "invariant mass candidates";
+                        lYTitle     = "Counts per bin of ";                        
+                } else if (strncmp(gSystem->Getenv("BLA"), "FR", 2) == 0) {
+                        lHistTitle  = "Masse invariante ";
+                        lXTitle     = "Candidats de masse invariante";
+                        lYTitle     = "Coups par bin de ";  
+                }
+                lYTitle     = lYTitle + TString::Format("%4.2f MeV/c^{2}", fMinvHisto->GetXaxis()->GetBinWidth(1)*1000. ) ;
+                
+                
+                // Prepare label to be displayed for the title itself
+                TString lStrIDLabel( lStrID );
+    
+                lStrIDLabel.ReplaceAll("K0s_","[ K^{0}s, ");               // K0s_pp_MB  --> K0s, pp_MB
+                lStrIDLabel.ReplaceAll("AntiLambda_","[ #bar{#Lambda}, ");     // NOTE : replace first AntiLambda over Lambda ... to avoid undesirable replacement
+                lStrIDLabel.ReplaceAll("Lambda_","[ #Lambda, ");                    
+                lStrIDLabel.ReplaceAll("_"," ");                  // K0s, pp_MB --> K0s, pp MB
+                lStrIDLabel.ReplaceAll("pp"  ,"p-p"  );
+                lStrIDLabel.ReplaceAll("PbPb","Pb-Pb");
+                TPRegexp lRegex("([0-9]{2})([0-9]{2})");// regex pattern : locate 2 groups of 2 numbers 0010 -> (00)(10)
+                lRegex.Substitute(lStrIDLabel,"$1-$2");   // add an hyphen in between : 00-10                    
+                if( ! lStrIDLabel.Contains("MB") ) lStrIDLabel.Append("% ]"); // for Pb-Pb centrality
+                else lStrIDLabel.Append(" ]");
+                
+                lHistTitle  = lHistTitle + lStrIDLabel;
+                
+                
+                float   lZoomXmin = 0.0; 
+                float   lZoomXmax = 2.0;
+                Color_t lColor = 1;
+
+            if (lStrID.BeginsWith("K0s")) { 
+                lZoomXmin   = 0.25;
+                lZoomXmax   = 1.0;                        
+                lXTitle     = lXTitle + " m(#pi^{+}#pi^{-}) (GeV/c^{2})";
+                lColor      = kAzure+2;
+                fMassInfo   = "m_{PDG}( K^{0}s ) #approx 0.498 GeV/c^{2}";
+            }
+                           
+            if (lStrID.BeginsWith("Lambda")) { // valid for Lambda and AntiLambda, then... put Lambda first
+                lZoomXmin   = 1.0;	
+                lZoomXmax   = 2.0;
+                lXTitle     = lXTitle + " m(p^{+}#pi^{-}) (GeV/c^{2})";
+                lColor      = kRed+1;
+                fMassInfo   = "m_{PDG}( #Lambda ) #approx 1.116 GeV/c^{2}";
+            }
+            
+            if (lStrID.BeginsWith("AntiLambda")) {
+                lZoomXmin   = 1.0;
+                lZoomXmax   = 2.0;
+                lXTitle     = lXTitle + " m(#bar{p}^{#kern[+0.2]{-}}#pi^{+}) (GeV/c^{2})";
+                lColor      = kOrange-3;
+                fMassInfo   = "m_{PDG}( #bar{#Lambda} ) #approx 1.116 GeV/c^{2}";
+            }
+
+            
+            
+                fMinvHisto->SetTitle( lHistTitle.Data() );
+                fMinvHisto->GetXaxis()->SetTitle( lXTitle.Data() );
+                fMinvHisto->GetYaxis()->SetTitle( lYTitle.Data() );
+                fMinvHisto->GetXaxis()->SetRangeUser( lZoomXmin, lZoomXmax);
+            
+                fMinvHisto->SetFillColor(0);
+                fMinvHisto->SetLineColor(lColor);
+            
+             // Read file input
+            ReadHistoFile( TString::Format( "dataset_%s.txt", lStrID.Data() ) );           
+
+            fMinvHisto->Draw();
+            
+            
+            TLatex *lLaTeX_Mass = new TLatex();
+                lLaTeX_Mass->SetTextSize(0.03);
+                lLaTeX_Mass->SetTextColor(kGray+2);
+                lLaTeX_Mass->DrawLatexNDC( 0.69, 0.88, fMassInfo.Data() );
+                
+            fPad->Update();
+            
+	}// end LoadHisto
         
 
-	// ----------------------------------------------------------
-	void CombineK0s_pp_MB()
-	{
-            TString lStrID("K0s_pp_MB");
-            CheckButtonUpAndTurnDown();
-            fTabCheckButton[ lStrID.Data() ]->SetOn(kTRUE);
-		const char * file = "pp-K0.txt";
-		Combine(file, 0);
-                fMinvHisto->SetTitle( lStrID.Data()  );
-	}
-
-	// ----------------------------------------------------------
-	void CombineK0s_PbPb_MB()
-	{
-            CheckButtonUpAndTurnDown();
-            fTabCheckButton[ "K0s_PbPb_MB"  ]->SetOn(kTRUE);            
-            	const char * file = "PbPb-K0.txt";
-		Combine(file, 0); 
-	}
-
-	// ----------------------------------------------------------
-	void CombineK0s_PbPb_0010()
-	{
-            CheckButtonUpAndTurnDown();
-            fTabCheckButton[ "K0s_PbPb_0010"  ]->SetOn(kTRUE); 
-		const char * file = "dataset11.txt";
-		Combine(file, 0); 
-	}
-
-	// ----------------------------------------------------------
-	void CombineK0s_PbPb_1020()
-	{
-            CheckButtonUpAndTurnDown();
-            fTabCheckButton[ "K0s_PbPb_1020"  ]->SetOn(kTRUE);             
-		const char * file = "dataset12.txt";
-		Combine(file, 0); 
-	}
-
-	// ----------------------------------------------------------
-	void CombineK0s_PbPb_2030()
-	{
-            CheckButtonUpAndTurnDown();
-            fTabCheckButton[ "K0s_PbPb_2030"  ]->SetOn(kTRUE);             
-		const char * file = "dataset13.txt";
-		Combine(file, 0); 
-	}
-
-	// ----------------------------------------------------------
-	void CombineK0s_PbPb_3040()
-	{
-            CheckButtonUpAndTurnDown();
-            fTabCheckButton[ "K0s_PbPb_3040"  ]->SetOn(kTRUE);
-		const char * file = "dataset14.txt";
-		Combine(file, 0); 
-	}
-
-	// ----------------------------------------------------------
-	void CombineK0s_PbPb_4050()
-	{
-            CheckButtonUpAndTurnDown();
-            fTabCheckButton[ "K0s_PbPb_4050"  ]->SetOn(kTRUE);
-		const char * file = "dataset15.txt";
-		Combine(file, 0); 
-	}
-
-	// ----------------------------------------------------------
-	void CombineK0s_PbPb_5060()
-	{
-            CheckButtonUpAndTurnDown();
-            fTabCheckButton[ "K0s_PbPb_5060"  ]->SetOn(kTRUE);
-		const char * file = "dataset16.txt";
-		Combine(file, 0); 
-	}
-
-	// ----------------------------------------------------------
-	void CombineK0s_PbPb_6070()
-	{
-            CheckButtonUpAndTurnDown();
-            fTabCheckButton[ "K0s_PbPb_6070"  ]->SetOn(kTRUE);
-		const char * file = "dataset17.txt";
-		Combine(file, 0); 
-	}
-
-	// ----------------------------------------------------------
-	void CombineK0s_PbPb_7080()
-	{
-            CheckButtonUpAndTurnDown();
-            fTabCheckButton[ "K0s_PbPb_7080"  ]->SetOn(kTRUE);	
-                const char * file = "dataset18.txt";
-		Combine(file, 0); 
-	}
-
-	// ----------------------------------------------------------
-	void CombineK0s_PbPb_8090()
-	{
-            CheckButtonUpAndTurnDown();
-            fTabCheckButton[ "K0s_PbPb_8090"  ]->SetOn(kTRUE);
-		const char * file = "dataset19.txt";
-		Combine(file, 0); 
-	}
-
-	// ----------------------------------------------------------
-	void CombineK0s_PbPb_90100()
-	{
-            CheckButtonUpAndTurnDown();
-            fTabCheckButton[ "K0s_PbPb_90100"  ]->SetOn(kTRUE);
-		const char * file = "dataset20.txt";
-		Combine(file, 0); 
-	}
-
-	
-	
-	// ----------------------------------------------------------
-	void CombineLambda_pp_MB()
-	{
-            CheckButtonUpAndTurnDown();
-            fTabCheckButton[ "Lambda_pp_MB"  ]->SetOn(kTRUE);
-		const char * file = "pp-Lambda.txt";
-		Combine(file, 1); 
-	}
-
-	// ----------------------------------------------------------
-	void CombineLambda_PbPb_MB()
-	{
-            CheckButtonUpAndTurnDown();
-            fTabCheckButton[ "Lambda_PbPb_MB"  ]->SetOn(kTRUE);
-		const char * file = "PbPb-Lambda.txt";
-		Combine(file, 1); 
-	}	
-	
-	// ----------------------------------------------------------
-	void CombineLambda_PbPb_0010()
-	{
-            CheckButtonUpAndTurnDown();
-            fTabCheckButton[ "Lambda_PbPb_0010"  ]->SetOn(kTRUE);
-		const char * file = "dataset21.txt";
-		Combine(file, 1); 
-	}
-
-	// ----------------------------------------------------------
-	void CombineLambda_PbPb_1020()
-	{
-            CheckButtonUpAndTurnDown();
-            fTabCheckButton[ "Lambda_PbPb_1020"  ]->SetOn(kTRUE);
-		const char * file = "dataset22.txt";
-		Combine(file, 1); 
-	}
-
-	// ----------------------------------------------------------
-	void CombineLambda_PbPb_2030()
-	{
-            CheckButtonUpAndTurnDown();
-            fTabCheckButton[ "Lambda_PbPb_2030"  ]->SetOn(kTRUE);
-		const char * file = "dataset23.txt";
-		Combine(file, 1); 
-	}
-
-	// ----------------------------------------------------------
-	void CombineLambda_PbPb_3040()
-	{
-            CheckButtonUpAndTurnDown();
-            fTabCheckButton[ "Lambda_PbPb_3040"  ]->SetOn(kTRUE);
-		const char * file = "dataset24.txt";
-		Combine(file, 1); 
-	}
-
-	// ----------------------------------------------------------
-	void CombineLambda_PbPb_4050()
-	{
-            CheckButtonUpAndTurnDown();
-            fTabCheckButton[ "Lambda_PbPb_4050"  ]->SetOn(kTRUE);
-		const char * file = "dataset25.txt";
-		Combine(file, 1); 
-	}
-
-	// ----------------------------------------------------------
-	void CombineLambda_PbPb_5060()
-	{
-            CheckButtonUpAndTurnDown();
-            fTabCheckButton[ "Lambda_PbPb_5060"  ]->SetOn(kTRUE);
-		const char * file = "dataset26.txt";
-		Combine(file, 1); 
-	}
-
-	// ----------------------------------------------------------
-	void CombineLambda_PbPb_6070()
-	{
-            CheckButtonUpAndTurnDown();
-            fTabCheckButton[ "Lambda_PbPb_6070"  ]->SetOn(kTRUE);
-		const char * file = "dataset27.txt";
-		Combine(file, 1); 
-	}
-
-	// ----------------------------------------------------------
-	void CombineLambda_PbPb_7080()
-	{
-            CheckButtonUpAndTurnDown();
-            fTabCheckButton[ "Lambda_PbPb_7080"  ]->SetOn(kTRUE);
-		const char * file = "dataset28.txt";
-		Combine(file, 1); 
-	}
-
-	// ----------------------------------------------------------
-	void CombineLambda_PbPb_8090()
-	{
-            CheckButtonUpAndTurnDown();
-            fTabCheckButton[ "Lambda_PbPb_8090"  ]->SetOn(kTRUE);
-		const char * file = "dataset29.txt";
-		Combine(file, 1); 
-	}
-
-	// ----------------------------------------------------------
-	void CombineLambda_PbPb_90100()
-	{
-            CheckButtonUpAndTurnDown();
-            fTabCheckButton[ "Lambda_PbPb_90100"  ]->SetOn(kTRUE);
-		const char * file = "dataset30.txt";
-		Combine(file, 1); 
-	}
-
-	
-		// ----------------------------------------------------------
-	void CombineAntiLambda_pp_MB()
-	{
-            CheckButtonUpAndTurnDown();
-            fTabCheckButton[ "AntiLambda_pp_MB"  ]->SetOn(kTRUE);
-		const char * file = "pp-AntiLambda.txt";
-		Combine(file, 1); 
-	}
-
-	// ----------------------------------------------------------
-	void CombineAntiLambda_PbPb_MB()
-	{
-            CheckButtonUpAndTurnDown();
-            fTabCheckButton[ "AntiLambda_PbPb_MB"  ]->SetOn(kTRUE);
-		const char * file = "PbPb-AntiLambda.txt";
-		Combine(file, 1); 
-	}
-	
-	// ----------------------------------------------------------
-	void CombineAntiLambda_PbPb_0010()
-	{
-            CheckButtonUpAndTurnDown();
-            fTabCheckButton[ "AntiLambda_PbPb_0010"  ]->SetOn(kTRUE);
-		const char * file = "dataset31.txt";
-		Combine(file, 1); 
-	}
-
-	// ----------------------------------------------------------
-	void CombineAntiLambda_PbPb_1020()
-	{
-            CheckButtonUpAndTurnDown();
-            fTabCheckButton[ "AntiLambda_PbPb_1020"  ]->SetOn(kTRUE);
-		const char * file = "dataset32.txt";
-		Combine(file, 1); 
-	}
-
-	// ----------------------------------------------------------
-	void CombineAntiLambda_PbPb_2030()
-	{
-            CheckButtonUpAndTurnDown();
-            fTabCheckButton[ "AntiLambda_PbPb_2030"  ]->SetOn(kTRUE);
-		const char * file = "dataset33.txt";
-		Combine(file, 1); 
-	}
-
-	// ----------------------------------------------------------
-	void CombineAntiLambda_PbPb_3040()
-	{
-            CheckButtonUpAndTurnDown();
-            fTabCheckButton[ "AntiLambda_PbPb_3040"  ]->SetOn(kTRUE);
-		const char * file = "dataset34.txt";
-		Combine(file, 1); 
-	}
-  
-	// ----------------------------------------------------------
-	void CombineAntiLambda_PbPb_4050()
-	{
-            CheckButtonUpAndTurnDown();
-            fTabCheckButton[ "AntiLambda_PbPb_4050"  ]->SetOn(kTRUE);
-		const char * file = "dataset35.txt";
-		Combine(file, 1); 
-	}
-
-	// ----------------------------------------------------------
-	void CombineAntiLambda_PbPb_5060()
-	{
-            CheckButtonUpAndTurnDown();
-            fTabCheckButton[ "AntiLambda_PbPb_5060"  ]->SetOn(kTRUE);
-		const char * file = "dataset36.txt";
-		Combine(file, 1); 
-	}
-
-	// ----------------------------------------------------------
-	void CombineAntiLambda_PbPb_6070()
-	{
-            CheckButtonUpAndTurnDown();
-            fTabCheckButton[ "AntiLambda_PbPb_6070"  ]->SetOn(kTRUE);
-		const char * file = "dataset37.txt";
-		Combine(file, 1); 
-	}
-
-	// ----------------------------------------------------------
-	void CombineAntiLambda_PbPb_7080()
-	{
-            CheckButtonUpAndTurnDown();
-            fTabCheckButton[ "AntiLambda_PbPb_7080"  ]->SetOn(kTRUE);
-		const char * file = "dataset38.txt";
-		Combine(file, 1); 
-	}
-  
-	// ----------------------------------------------------------
-	void CombineAntiLambda_PbPb_8090()
-	{
-            CheckButtonUpAndTurnDown();
-            fTabCheckButton[ "AntiLambda_PbPb_8090"  ]->SetOn(kTRUE);
-		const char * file = "dataset39.txt";
-		Combine(file, 1); 
-	}
-
-	// ----------------------------------------------------------
-	void CombineAntiLambda_PbPb_90100()
-	{
-            CheckButtonUpAndTurnDown();
-            fTabCheckButton[ "AntiLambda_PbPb_90100"  ]->SetOn(kTRUE);
-		const char * file = "dataset40.txt";
-		Combine(file, 1);               
-	}
 	
 
 
@@ -786,25 +519,28 @@ public:
 		gLabels2->SetTextColor(kBlack);
 		gLabels2->SetNDC(kTRUE);
 		Double_t LabelX = 0.5;
-		Double_t LabelY = 0.8;
-		Double_t LabelYstep = 0.05;
+		Double_t LabelY = 0.75;
+		Double_t LabelYstep = 0.06;
       
 		Int_t Total_Fit = (Int_t)(fFitGaus->Integral(fFitRangeGaus->GetMin(),fFitRangeGaus->GetMax())/fMinvHisto->GetBinWidth(1));
 		Int_t Bck_Fit = (Int_t)(Background_Integral(fFitRangeGaus->GetMin(),fFitRangeGaus->GetMax())/fMinvHisto->GetBinWidth(1));
 
-		if (strncmp(gSystem->Getenv("BLA"), "EN", 2) == 0) {
-			gLabels2->DrawLatex(LabelX, LabelY,Form("Total: %d",Total_Fit));
-			gLabels2->DrawLatex(LabelX, LabelY-LabelYstep,Form("Background: %d",Bck_Fit));
-			gLabels2->DrawLatex(LabelX, LabelY-2.*LabelYstep,Form("Signal: %d",Total_Fit-Bck_Fit));
-			gLabels2->DrawLatex(LabelX, LabelY-3.*LabelYstep,Form("Mean: %f#pm%f",fFitGaus->GetParameter(1)*1000., fFitGaus->GetParError(1)*1000.));
-			gLabels2->DrawLatex(LabelX, LabelY-4.*LabelYstep,Form("#sigma: %f#pm%f",fFitGaus->GetParameter(2)*1000., fFitGaus->GetParError(2)*1000.));
-		} else if (strncmp(gSystem->Getenv("BLA"), "FR", 2) == 0) {
-			gLabels2->DrawLatex(LabelX, LabelY,Form("Total: %d",Total_Fit));
-			gLabels2->DrawLatex(LabelX, LabelY-LabelYstep,Form("Fond: %d",Bck_Fit));
-			gLabels2->DrawLatex(LabelX, LabelY-2.*LabelYstep,Form("Signal: %d",Total_Fit-Bck_Fit));
-			gLabels2->DrawLatex(LabelX, LabelY-3.*LabelYstep,Form("Moyenne: %f#pm%f",fFitGaus->GetParameter(1)*1000., fFitGaus->GetParError(1)*1000.));
-			gLabels2->DrawLatex(LabelX, LabelY-4.*LabelYstep,Form("#sigma: %f#pm%f",fFitGaus->GetParameter(2)*1000., fFitGaus->GetParError(2)*1000.));
-		}
+                
+                gLabels2->DrawLatex(LabelX, LabelY,Form("Total: %d",Total_Fit));
+
+                if (strncmp(gSystem->Getenv("BLA"), "EN", 2) == 0) {
+                    gLabels2->DrawLatex(LabelX, LabelY -1.0*LabelYstep,Form("Background: %d",Bck_Fit));
+                } else if (strncmp(gSystem->Getenv("BLA"), "FR", 2) == 0) {
+                    gLabels2->DrawLatex(LabelX, LabelY -1.0*LabelYstep,Form("Fond: %d",Bck_Fit));
+                }
+
+                gLabels2->DrawLatex(LabelX, LabelY-2.*LabelYstep,Form("#color[%d]{#rightarrow Signal: %d}", kGreen+1, Total_Fit-Bck_Fit));
+                gLabels2->DrawLatex(LabelX, LabelY-3.*LabelYstep,Form("#mu_{Gauss} : %6.4f #pm %6.4f GeV/c^{2}",fFitGaus->GetParameter(1), fFitGaus->GetParError(1)));
+                gLabels2->SetTextSize(0.03);
+                gLabels2->DrawLatex(LabelX, LabelY-4.*LabelYstep,Form("     #color[%d]{ NOTE : %s}", kGray+1, fMassInfo.Data() ));
+                gLabels2->SetTextSize(0.045);		
+                gLabels2->DrawLatex(LabelX, LabelY-5.*LabelYstep,Form("#sigma_{Gauss} : %5.3f #pm %5.3f  MeV/c^{2}",fFitGaus->GetParameter(2)*1000., fFitGaus->GetParError(2)*1000.));		
+		
     
 		if(!fFitPolynomial) fFitPolynomial = new TF1("fitPoly","[0]*x*x+[1]*x+[2]",MinRange,MaxRange);
 		else fFitPolynomial->SetRange(MinRange,MaxRange);
@@ -896,7 +632,7 @@ public:
         
                             // Prepare label to be displayed for the button itself
                             TString lStrIDLabel( lStrID );
-        
+                            
                             lStrIDLabel.ReplaceAll("K0s_","K0s, ");               // K0s_pp_MB  --> K0s, pp_MB
                             lStrIDLabel.ReplaceAll("AntiLambda_","anti-L, ");     // NOTE : replace first AntiLambda over Lambda ... to avoid undesirable replacement
                             lStrIDLabel.ReplaceAll("Lambda_","L, ");                    
@@ -918,8 +654,8 @@ public:
                             //  (iPart=0-2)*100 + (iHist=0-11) should be sufficient to avoid overlap in ID ...
                             
                             // FIXME
-                            fTabCheckButton[ lStrID.Data() ]->Connect("Clicked()", "TVSDReader", this, TString::Format("Combine%s()", lStrID.Data()) );
-                            //fTabCheckButton[ lStrID.Data() ]->Connect("Clicked()", "TVSDReader", this, TString::Format("LoadHisto(=%d,%d)", iPart, iHist) );
+                            //fTabCheckButton[ lStrID.Data() ]->Connect("Clicked()", "TVSDReader", this, TString::Format("Combine%s()", lStrID.Data()) );
+                            fTabCheckButton[ lStrID.Data() ]->Connect("Clicked()", "TVSDReader", this, TString::Format("LoadHisto(=%d,%d)", iPart, iHist) );
                             fTabCheckButton[ lStrID.Data() ]->SetTextJustify(36);
                             fTabCheckButton[ lStrID.Data() ]->SetMargins(0,0,0,0);
                             fTabCheckButton[ lStrID.Data() ]->SetWrapLength(-1);
@@ -976,8 +712,8 @@ public:
 				fFitRangePoly->SetLabelWidth(70);
 				fFitRangePoly->Build();
 				fFitRangePoly->GetSlider()->SetWidth(190);
-				fFitRangePoly->SetLimits(0.0, 2.0, TGNumberFormat::kNESRealThree);
-				fFitRangePoly->SetValues(0.0, 2.0, TGNumberFormat::kNESRealThree);
+				fFitRangePoly->SetLimits(0.25, 2.0, TGNumberFormat::kNESRealThree);
+				fFitRangePoly->SetValues(0.25, 2.0, TGNumberFormat::kNESRealThree);
 
 				hf->AddFrame(fFitRangePoly, new TGLayoutHints(kLHintsExpandX));
 
@@ -997,8 +733,8 @@ public:
 				fFitRangeGaus->SetLabelWidth(70);
 				fFitRangeGaus->Build();
 				fFitRangeGaus->GetSlider()->SetWidth(190);
-				fFitRangeGaus->SetLimits(0.0, 2.0, TGNumberFormat::kNESRealThree);
-				fFitRangeGaus->SetValues(0.0, 2.0, TGNumberFormat::kNESRealThree);
+				fFitRangeGaus->SetLimits(0.35, 1.5, TGNumberFormat::kNESRealThree);
+				fFitRangeGaus->SetValues(0.35, 1.5, TGNumberFormat::kNESRealThree);
 
 				hf->AddFrame(fFitRangeGaus, new TGLayoutHints(kLHintsExpandX));
 
@@ -1064,34 +800,6 @@ public:
 		fPad = new TCanvas();
 		// fPad->Divide(2, 2);
 		// fPad->cd(1);
-
-		if (strncmp(gSystem->Getenv("BLA"), "EN", 2) == 0) {
-			fMinvHisto = new TH1D("Invariant Mass","Invariant Mass",400,0.0,2.0);
-		} else if (strncmp(gSystem->Getenv("BLA"), "FR", 2) == 0) {
-			fMinvHisto = new TH1D("Masse Invariante","masse invariante",400,0.0,2.0);
-		}
-
-		// if(AC<=4) {
-		// 	AC=AC+1; 
-		// 	cout << AC << endl;
-		// }
-
-	
-		// else {
-		// 	AC=1; 
-		// 	cout << AC << endl;
-		// }
-
-		// fPad->cd(AC);
-		fMinvHisto->SetLineColor(2);
-		if (strncmp(gSystem->Getenv("BLA"), "EN", 2) == 0) {
-			fMinvHisto->GetXaxis()->SetTitle("Invariant Mass (GeV/c^{2})");
-			fMinvHisto->GetYaxis()->SetTitle("Counts");
-		} else if (strncmp(gSystem->Getenv("BLA"), "FR", 2) == 0) {
-			fMinvHisto->GetXaxis()->SetTitle("masse invariante (GeV/c^{2})");
-			fMinvHisto->GetYaxis()->SetTitle("Coups");
-		}
-		fMinvHisto->SetFillColor(0);
 
 		if (strncmp(gSystem->Getenv("BLA"), "EN", 2) == 0) {
 			browser->StopEmbedding("Invariant Mass Distibution");
