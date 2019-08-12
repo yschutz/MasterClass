@@ -20,6 +20,7 @@ Strangeness/Part2/.DS_Store
 *.so
 *.dylib
 *.dll
+*so.dSYM
 
 # Fortran module files
 *.mod
@@ -41,6 +42,7 @@ Strangeness/Part2/.DS_Store
 *.pcm
 *.so
 *.root
+*dict*
 
 autosave*
 data/*
