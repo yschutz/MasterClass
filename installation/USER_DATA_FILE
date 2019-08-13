@@ -1,0 +1,55 @@
+#!/bin/sh.after
+parents=$(pid=$$; while [ $pid -ne 1 ]; do pid=$(ps -o ppid= -p $pid); cat /proc/$(echo $pid)/cmdline; done)
+if ! echo $parents | grep -q amiconfig; then
+  echo "Skipping startup script, which should only run under amiconfig daemon"
+  exit 0
+fi
+
+ls /cvmfs/alice.cern.ch >/dev/null
+echo 'if [ "$PS1" ]; then
+git config --global user.email "schutz@in2p3.fr"
+git config --global user.name "yschutz"
+  if [ "x$CERNVM_ALICE_ENV" = "x" ]; then
+    . /cvmfs/alice.cern.ch/etc/login.sh || true
+    export CERNVM_ALICE_ENV=1
+	if [ -d "MasterClass" ]; then
+		# get the latest version
+		cd MasterClass 
+		git pull 
+	else
+		# download software and associated stuff from github 
+		git clone https://github.com/yschutz/MasterClass.git
+		cd MasterClass
+	fi 
+	chmod +x *.sh
+  fi
+fi
+export HISTIGNORE="*sudo -S*"
+echo masterclass | sudo -S -k systemctl start eosd' >> /home/masterclass/.bashrc
+if [[ $LANG == *"fr"*  ]]; then 
+	echo 'echo "***** BIENVENNU.E POUR LES EXERCICES MASTER CLASS ALICE *****"
+          echo "***** *************************************** *****"
+          echo "** Pour démarrer taper : "
+          echo "> ./Bash_StartExercise.sh -h"' >> /home/masterclass/.bashrc
+else	
+	echo 'echo "***** WELCOME TO ALICE MASTER CLASS EXERCICES *****"
+	      echo "***** *************************************** *****"
+	      echo "** To start type: "
+	      echo "> ./Bash_StartExercise.sh -h"' >> /home/masterclass/.bashrc
+fi	
+exit 0
+
+[amiconfig]
+plugins=cernvm
+
+[cernvm]
+organisations=ALICE
+repositories=alice,alice-ocdb,grid,sft
+shell=/bin/bash
+config_url=http://cernvm.cern.ch/config
+users=masterclass:alice:masterclass
+edition=Desktop
+screenRes=1280x700
+keyboard=us
+startXDM=on
+auto_login=on

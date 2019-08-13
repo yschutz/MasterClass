@@ -1,0 +1,1003 @@
+\documentclass{cernphprep} 
+\usepackage{cernunits,cernchemsym,heppennames2}
+\usepackage{cite,fancyvrb}
+\providecommand*\eg{e.g.,\xspace}
+\providecommand*\ie{i.e.,\xspace}
+\providecommand*\etc{etc.\@\xspace}
+\providecommand*\etal{\emph{et al.}}
+\providecommand*\cf{\emph{cf.\xspace}}
+\begin{document}
+\begin{titlepage}
+\PHnumber{2010--xxx}
+\PHdate{DD Month 2010}
+\EXPnumber{IT-UDS-HUS-001}
+\EXPdate{30 June 2010}
+\DEFCOL{CDS-Library}
+\title{Preparing a CERN PH preprint}
+\author{Michel Goossens/IT-UDS\thanks{\texttt{Email:michel.goossens@cern.ch}}}
+\begin{abstract}
+This document contains instructions for authors who want to prepare a
+CERN PH Preprint using the \texttt{cernphprep} \LaTeX{} class.  It
+first discusses mandatory material that has to go on the title
+page. Then it gives a brief overview of \LaTeX's structural elements
+and their use. Suggestions for using correct spelling and grammar
+follow, with particular attention to typographical rules for scientific
+texts.  The appendix explains which packages are available to make
+your life easier for typesetting your texts in a convenient and
+coherent way.
+\end{abstract}
+\end{titlepage}
+ 
+\section{General introductory remarks}
+ 
+Authors are invited to observe the suggestions described in the
+present document in order to ensure consistency and uniformity in the
+style and layout of CERN PH preprints.
+
+Although the typesetting rules that are described hare are of a
+general nature, the present document explains their use with the
+\texttt{cernphprep} \LaTeX{} class. This class file becomes
+automatically available when running with the latest \LaTeX{} on
+CERN's central \texttt{lxplus} system\footnote
+%
+    {See \url{http://cern.ch/XML/textproc/texlivelinux2009.html} for
+     an explanation on modifying your \texttt{PATH} environment variable
+     correctly.}.
+%
+ 
+As the text frame is defined as $16\Ucm \times 24\Ucm$ (\ie a A4 sized
+paper has $3\Ucm$ margins at the top and at the bottom, and $3\Ucm$
+at the inner and $2\Ucm$ at the outer edge), please take care to
+remain inside these limits. This is especially true for figures and
+tabular content.
+
+Note that it is the responsibility of the authors to obtain permission
+from the copyright holder if material taken from other sources is
+included in the source submitted as a CERN PH preprint.
+
+\section{The title page}
+
+Your CERN PH preprint \textbf{must always} begin with a title page. The
+information contained on the title page is specified inside a
+\texttt{titlepage} environment.
+
+The minimal mandatory information that a title page must contain is
+the following (as, \eg for the present document).
+\begin{Verbatim}[numbers=left,fontsize=\small]
+\documentclass{cernphprep} 
+\usepackage{cite,fancyvrb}
+\begin{document}
+\begin{titlepage}
+\PHnumber{2010--xxx}
+\PHdate{DD Month 2010}
+\EXPnumber{IT-UDS-HUS-001}
+\EXPdate{23 June 2010}
+\DEFCOL{CDS-Library}
+\title{Preparing a CERN PH preprint}
+\author{Michel Goossens/IT-UDS\thanks{\texttt{Email:michel.goossens@cern.ch}}}
+\begin{abstract}
+This document contains instructions for authors who want to prepare
+a CERN PH Preprint using the \texttt{cernphprep} \LaTeX{} class.
+...
+\end{abstract}
+\end{titlepage}
+\end{Verbatim}
+On line 2 you see how you can specify supplementary packages to use in
+your document (here, the \texttt{cite} and \texttt{fancyvrb} packages
+are loaded). The commands \verb!\PHnumber! and \verb!\PHdate!  (lines
+5 and 6) specify the number and the date that have been assigned by
+the PH Departmental Office to your CERN PH preprint. You can add a
+number and date for your experiment by using the \verb!\EXPnumber! and
+\verb!\EXPdate! commands (lines 7 and 8). By default these are
+empty. Then follow (lines 9 and 10) the title and the author(s)
+(inside, resp., \verb!\title! and \verb!\author!  commands).  Finally,
+the \texttt{abstract} environment (lines 11--15) lets you give a short
+description of the content of the preprint. The command
+\verb!\CERNCopyright! contains the copyright message that can appear
+at the bottom of the front page (default: no message).
+
+\subsection{Controling the running titles}
+
+For the body of the text the running titles will show the (beginning
+of the) title on the odd (right-hand) pages and the authors on the
+even (left-hand) pages. 
+
+If the way the authors or the title which are printed in the running
+titles is not what you want, you can control the typeset text by
+specifying what you want inside the \texttt{titlepage} environment as
+argument to a \verb!\ShortAuthor! or \verb!\Shorttitle! command,
+respectively.
+
+\subsection{Special setup for the LHC experiments}
+
+For the LHC experiments, the experiment logo can also be
+printed. Experiments can contact me to have their logo registered so
+that their experiment's name is recognized as an option by the class
+file.
+
+\begin{Verbatim}[numbers=left,fontsize=\small]
+\documentclass[CMS]{cernphprep}
+\begin{document}%
+\begin{titlepage}
+\EXPnumber{QCD-09-010}
+\PHnumber{...}
+\PHdate{...}
+\title{Full title for paper...}
+\Collaboration{The CMS Collaboration%
+         \thanks{See Appendix~\ref{app:collab} for the list of collaboration 
+                      members}}
+\ShortAuthor{The CMS Collaboration}
+\ShortTitle{Short title}
+\begin{abstract}
+  ...
+\end{abstract}
+\end{titlepage}
+\end{Verbatim}
+The \texttt{[CMS]} option specified on the \verb!\documentclass!
+command (line~1) signals that we are dealing with a preprint prepared
+by the CMS experiment. Thus the CMS logo will also appear on the title
+page.  We note the presence of the \verb!\Collaboration!  command,
+which substitutes for the \verb!\author! command (lines~8--10) with a
+reference to the appendix (via the \verb!\thanks! command) which
+contains the names of the many authors of that paper. Note also the
+\verb!\ShortAuthor! and \verb!\ShortTitle! commands define the text
+for the running headers.
+
+\subsection{Alternative ways of specifying author lists}
+
+For experiments with a smaller number of authors, the
+\texttt{cernphprep} class offers two ways of specifying the authors
+and affiliations on the title page, as shown in Fig.~\ref{fig:title}.
+The \LaTeX{} sources for the layouts shown at the left and right in
+Fig.~\ref{fig:title} correspond to the example files
+\texttt{cernphprepexa.tex} and \texttt{cernphprepexax.tex}, respectively.
+
+\begin{figure}
+\centering
+\fbox{\includegraphics[width=.46\linewidth]{cernphprepexa1.pdf}}
+\hfill
+\fbox{\includegraphics[width=.46\linewidth]{cernphprepexax1.pdf}}
+\caption{Two possible layouts of authors and affiliations on the title page}
+\label{fig:title}
+\end{figure}
+
+\section{The document body}
+
+\subsection{Sectioning commands and paragraphs}
+\label{sec:sections}
+
+The standard \LaTeX{} commands \verb!\section! (level 1),
+\verb!\subsection! (level 2), \verb!\subsubsection! (level 3),
+\verb!\paragraph! (level 4), should be used for headings. 
+
+To start a new paragraph it is sufficient to insert a blank line,
+hence it is unnecessary to include \verb!\par! commands in your
+\LaTeX{} source.
+
+Please minimize explicit line break (\verb!\newline!, \verb!\\!) or
+page break (\verb!\newpage!) commands and use them only when
+\emph{absolutely} necessary and when the document is in its final
+state.
+
+\subsection{Equations}
+\label{sec:equations}
+
+An unnumbered single formula is delimited by \verb!\[! and \verb!\]!
+(alternatively a \texttt{displaymath} environment can be used), while a
+numbered equation is generated with the \texttt{equation} environment.
+You should \textbf{never} use the \texttt{\$\$} construct.  
+
+For cross-referencing equations use the \LaTeX{} commands \verb!\label!
+and \verb!\ref!, as explained in Section~\ref{sec:crossref}.
+A simple example, with a cross-reference to a formula, follows.
+\begin{Verbatim}[numbers=left,fontsize=\small]
+Einstein has expressed the relation between energy $E$ 
+and mass $m$ in his famous formula~(\ref{eq:einstein}):
+\begin{equation}
+E=mc^2~.
+\label{eq:einstein}
+\end{equation}
+\end{Verbatim}
+When typeset, this gives:
+
+Einstein has expressed the relation between energy $E$ and mass $m$ in
+his famous formula~(\ref{eq:einstein}):
+\begin{equation}
+E=mc^2~.
+\label{eq:einstein}
+\end{equation}
+
+Equations should be treated as part of the text, and therefore
+punctuated (with a space, \eg \verb!~!, between the end of the
+equation and the punctuation mark, as shown in
+Eq.~(\ref{eq:einstein}).  Equations are numbered consecutively
+throughout the report.
+
+The CERN \LaTeX{} classes automatically load the \texttt{amsmath}
+class, which offers a large choice of constructs for typesetting
+mathematics~\cite{bib:voss2005}. See also Appendix~\ref{app:amsmath}
+for some hints about using the \texttt{amsmath} extensions in an
+optimal way.
+
+\subsection{Figures}
+\label{sec:figures}
+
+Figures should be prepared electronically. The image should be of high
+quality when printed (in black and white). In particular, all lines
+should be heavy enough to be visible and text large enough to be
+legible when the figure is printed \emph{at the final size}. If using
+colour, the figure should print clearly in greyscale\footnote
+%
+  {Beware of faint colours, such as yellow or light blue or red, which
+   are barely visible when reproduced as level of grey.}.
+
+When running \texttt{latex} EPS (Encapsulated PostScript) files are to
+be provided, while when running \texttt{pdflatex} PDF, PNG or JPEG
+formats can be used.
+
+As already mentioned in the introduction, before using material such
+as illustrations taken from other sources, you must obtain permission
+from the copyright holder.
+
+All figures must remain within the page area ($16\Ucm \times 24\Ucm$),
+where, if necessary, the page may be turned $90^\circ$ to accommodate
+the figure. When this is done, the caption must be oriented in the
+same way as the figure, and no other text may appear on that page.
+The bottom of the turned illustrations should be at the right-hand
+side of the page.
+
+\subsubsection{Including your figure}
+
+Figures are included with the \texttt{figure} environment. In the
+example that follows we include an EPS graphics file
+(\texttt{myfig.eps}, where the extension \texttt{.eps} does not need
+to be specified since it is the default) with the
+\verb!\includegraphics! command, which is defined in the
+\texttt{graphicx} package that is loaded by default by the CERN
+\LaTeX{} classes.
+
+The figure caption (specified as argument of the \verb!\caption!
+command), must \emph{follow} the figure body, and should be brief. No
+full stop is necessary unless the caption is more that one sentence
+long, in which case full punctuation should be used.
+
+\subsubsection{References to figures}
+
+\LaTeX's cross-reference mechanism can be used to refer to figures.  A
+figure reference is defined with a \verb!\label! command, which must
+come in the source \emph{after} the \verb!\caption! command that
+contains the description of the figure content.
+
+Figures must be referenced in the text in consecutive numerical order
+with the help of the \verb!\ref! command. The following are examples
+of references to figures and how to produce them.
+\begin{Itemize}
+\item `Fig. 3' produced by, \eg \verb!Fig.~\ref{fig:myfig}!,
+\item `Figs. 3--5' produced by, \eg
+       \verb!Figs.~\ref{fig:myfiga}--\ref{fig:myfigb}!,
+\item  At the beginning of a sentence the word ``Figure'' should be
+       written out in full. For instance, \verb!Figure~\ref{fig:myfig}!
+       which gives, \eg `Figure~3'.
+\end{Itemize}
+Figures with several parts are cited as follows: `Figs. 2(a) and (b)',
+and `Figs. 3(a)--(c)'.
+
+Figures and illustrations \emph{should follow} the paragraph in which
+they are first discussed.  If this is not feasible, they may be placed
+on the following page (\LaTeX{}'s float mechanism takes care of this
+automatically, in principle). If it is not possible to place
+\emph{all} numbered figures in the text, then they should \emph{all}
+be placed at the end of the paper.
+
+An example with a cross-reference to a figure follows. The reference
+is defined by the \verb!\label! command \emph{following} the
+\verb!\caption! command. A cross-reference is generated with the
+\verb!\ref! command on the second line. Note the cross-reference key
+(\texttt{fig:myfig}) which clearly indicates that it refers to a
+figure (see Section~\ref{sec:crossref} for a discussion of the importance of
+using good keys).
+\begin{Verbatim}[numbers=left,fontsize=\small]
+\section{Section title}
+In Fig.~\ref{fig:myfig} we see that ...
+\begin{figure}
+\centering\includegraphics[width=.9\linewidth]{myfig}
+\caption{Description of my figure}
+\label{fig:myfig}
+\end{figure}
+\end{Verbatim}
+
+\subsection{Tables}
+
+Tables are defined the the \texttt{table} environment.  Each table
+should be centred on the page width, with a brief caption (specified
+as argument of the \verb!\caption! command) \emph{preceding} the table
+body.
+
+In general, tables should be open, drawn with a double thin horizontal
+line (0.4~pt) at the top and bottom, and single horizontal line
+(0.4~pt) separating column headings from data.
+
+Like figures, tables must be referenced in the text in consecutive
+numerical order with \LaTeX's \verb!\ref! command. Examples of
+cross-references to tables follow (commands that can be used to
+generate the given text strings are shown between parentheses): `Table
+5' (\eg \verb!\Table~\ref{tab:mytab}!),
+`Tables 2--3' (\eg
+\verb!\Tables~\ref{tab:mytaba}--\ref{tab:mytabb}!). The word `Table'
+should never be abbreviated.
+
+\subsubsection{Formatting and layout within the table}
+
+Write the headings in sentence case but do not use full stops. Units
+should be entered in parentheses on a separate line below the column
+heading. (If the same unit is used throughout the table, it should be
+written in parentheses on a separate line below the caption.)
+
+Unsimilar items should be aligned on the left, whereas similar items
+should be aligned on the operator or decimal point. All decimal points
+must be preceded by a digit.
+
+\emph{Table captions} should be brief and placed centrally
+\emph{above} the table. No full stop is necessary unless the caption
+is more that one sentence long, in which case full punctuation should
+be used.
+
+\emph{Notes in tables} should be designated by superscript lower-case
+letters, and begun anew for each table. The superscript letter should
+be placed in alphabetical order moving from left to right across the
+first row and down to the last. The notes should then be listed
+directly under the table.
+
+An instance of a simple table, following the proposed rules follows.
+\begin{Verbatim}[numbers=left,fontsize=\small]
+Table~\ref{tab:famous} shows three famous mathematical constants.
+\begin{table}
+\caption{Famous constants}
+\label{tab:famous}
+\centering
+\begin{tabular}{@{}lll@{}}\hline\hline
+Symbol & Description               & Approximate value\\\hline
+$e$    & base of natural logarithm & $2.7182818285$   \\
+$\pi$  & ratio circle circumference to diameter &
+                                     $3.1415926536$   \\
+$\phi$ & golden ratio              & $1.6180339887$   \\\hline\hline
+\end{tabular}
+\end{table}
+\end{Verbatim}
+Notice the \verb!\hline! commands at the beginning and end of the
+\texttt{tabular} environment to generate the double lines at the top
+and the bottom of the table, as well as the single \verb!\hline! command
+to separate the heading from the data. The typeset result is shown next.
+
+Table~\ref{tab:famous} shows three famous mathematical constants.
+\begin{table}[h]
+\caption{Famous constants}
+\label{tab:famous}
+\centering
+\begin{tabular}{@{}lll@{}}\hline\hline
+Symbol & Description               & Approximate value\\\hline
+$e$    & base of natural logarithm & $2.7182818285$   \\
+$\pi$  & ratio circle circumference to diameter &
+                                     $3.1415926536$   \\
+$\phi$ & golden ratio              & $1.6180339887$   \\\hline\hline
+\end{tabular}
+\end{table}
+
+\subsection{Bibliographical references}
+\label{sec:biblioref}
+
+References should be cited in the text using numbers within square
+brackets. This is achieved with the \verb!\cite! command. Punctuation
+can be used either within or outside the brackets, but the same method
+should be used consistently throughout the contribution. A few examples follow.
+\begin{Itemize}
+\item \verb!Ref.~\cite{bib:mybiba}!  typesets, \eg `Ref.~[1]'.
+\item \verb!Refs~\cite{bib:mybiba}--\cite{tab:mybibb}!, 
+      typesets, \eg `Refs~[1--5].
+\item At the beginning of a sentence the word ``Reference'' should be
+       written out in full. For instance \verb!Reference~\cite{bib:mybibc}!
+       which gives, \eg `Reference~[3]'.
+\end{Itemize}
+
+The text of the document should show the bibliographic references in
+\emph{consecutive numerical order}. References in tables should be
+entered in the order left to right, and top to bottom.
+
+\subsubsection{List of references}
+
+The list of references (the \verb!\bibitem! entries) must all be
+grouped inside a \texttt{thebibliography} environment, as follows.
+\begin{Verbatim}[numbers=left,fontsize=\small]
+\section{Section title}
+Work by Einstein~\cite{bib:einstein} as well as that in
+Ref.~\cite{bib:gravitation} explain the theory of relativity.
+...
+\begin{thebibliography}
+\bibitem{bib:einstein}} ...
+\bibitem{bib:gravitation} ...
+  ...
+\end{thebibliography}
+\end{Verbatim}
+As shown, each \verb!\bibitem! is identified with a reference key
+(\texttt{bib:einstein}, \texttt{bib:gravitation}, \etc), which allows
+one to refer to the relevant bibliography entry with a
+\verb|\cite{bib:einstein}| command in the text. The information about
+each entry can be specified in a separate file, \eg
+\texttt{mybib.bbl}, which can be read by the \texttt{bibtex} program
+for generating the list of references (see a \LaTeX{} manual or
+Chapter~12 of Ref.~\cite{bib:mittelbach2004} for details).
+
+The order of the \verb!\bibitem! elements must ensure that the
+bibliographical references in the body of the text appear in
+consecutive numerical order.  Care should in particular be taken with
+citation commands inside floating elements (\ie figures and tables
+defined by the \texttt{figure} and \texttt{table} environments), since
+their position in the final typeset output can move when the input
+source is modified.
+
+Unless you are near the bottom of the last page of text, do \emph{not}
+start a new page for the list of references, but continue on the same
+page. Note that in the list of references it is unnecessary to state
+the title of an article or chapter in proceedings or in a collection
+of papers unless a page number cannot be quoted, \eg for forthcoming
+publications.
+
+For abbreviations of names of journals quoted in the references, see
+the \emph{Journal abbreviations} entry available from the Web page at
+the URL \url{http://cern.ch/DTP/dtpgrammar.htm}\footnote
+%    
+    {The Reviews of Modern Physics site: \url{http://rmp.aps.org/info/manprep.html}
+     also has a list, see \emph{Appendix B: Journal Title Abbreviations}.}
+%
+The entry \emph{Citation of references} on the same DTP Web page shows
+more details on how to present references.
+
+If you need to provide a bibliography, this should come after the list
+of references.
+
+\subsection{Footnotes}
+
+Footnotes are to be avoided. If absolutely necessary, they should be
+brief, and placed at the bottom of the page on which they are referred
+to. Take care when citing references in the footnotes to ensure that
+these are correctly numbered.
+
+\subsection{Referencing structural elements}
+\label{sec:crossref}
+
+In this section we give a general overview of \LaTeX's reference
+mechanism which makes it easy to reference structural elements. First
+a \verb!\label! command, with a unique \emph{key} as its argument to
+identify the structural element in question, must be placed in the
+source, as follows.
+
+\begin{Itemize}
+\item For sectioning commands, such as \verb!\section!,
+      \verb!\subsection!, \verb!\subsubsection!, the \verb!\label! command
+      must \emph{follow} it.
+\item Inside \texttt{figure} and \texttt{table} environments, the 
+      \verb!\label! command must be placed \emph{after} the \verb!\caption!
+      command.
+\item Inside an \texttt{equation} environment the \verb!\label! command
+      can be placed anywhere.
+\item Inside an \texttt{eqnarray} environment, the \verb!\label! command
+      can be used to identify each line, so that it must be placed
+      \emph{before} each end-of-line \verb!\\!. If for a given line no
+      line-number has to be produced, a \verb!\nonumber! command should
+      be used.
+\item Inside an \texttt{enumerate} environment a \verb!\label! command
+      can be associated with each \verb!\item! command.
+\item Inside a \texttt{footnote} a \verb!\label! command can be placed
+      anywhere.
+\end{Itemize}
+As seen in all the examples in this document, for reasons of clarity
+it is best to place the \verb!\label! command immediately
+\emph{following} the element if refers to (rather than inserting it
+inside its contents).
+
+From any place in the document one can refer to a structural element
+identified with a \verb!\label! command with the help of a \verb!\ref!
+command. An example follows.
+\begin{Verbatim}[numbers=left,fontsize=\small]
+\section{My first section}\label{sec:first}
+Figure~\ref{fig:fdesc} in Section~\ref{sec:second} shows \dots
+\begin{table}
+\caption{table caption text}\label{tab:tdesc}
+...
+\end{table}
+\begin{equation}
+\exp{i\pi}+1=0~.\label{eq:euler}
+\end{equation}
+\section{My second section}\label{sec:second}
+Section~\ref{sec:first} contains Table~\ref{tab:tdesc} and Eq.~\ref{eq:euler}...
+\begin{figure}
+\centering\includegraphics[...]{...}
+\caption{Text of figure caption}
+\label{fig:fdesc}
+\end{figure}
+\end{Verbatim}
+To easily differentiate between references to the various structural
+elements it is good practice to start the key with a few characters
+identifying it (\eg \texttt{sec:} for a sectioning command, such as
+\verb!\section!, \verb!\subsection!, \etc, \texttt{fig:} for figures,
+\texttt{tab:} for tables, and \texttt{eq:} for equations, including
+\texttt{eqnarray} environments (which should have a \verb!\label!
+command placed before the \verb!\\! if you want to identify the line
+in question). The second part of the key should identify the
+particular element clearly, \eg use of a mnemonic component, such as
+\texttt{eq:euler} in the example of the equation reference
+above. Avoid using keys with only digits, such as \texttt{f1},
+\texttt{f2}, \etc, since, if for any reason structural elements are
+eliminated or change position in the source, confusion can result.
+
+\subsection{Appendices}
+
+Each appendix should be laid out as the sections in the text.
+Appendices are labelled alphabetically and should be referred to as
+Appendix A, Appendices A--C, \etc Equations, figures and tables should
+be quoted as Eq.~(A.1), Fig.~B.2, Table~C.4, \etc
+
+\subsection{Acknowledgements}
+
+If required, acknowledgements should appear as an unnumbered
+subsection immediately before the references section.
+
+\section{Spelling and grammar}
+
+For more information on English grammar rules and commonly misused
+words and expressions (including a guide to avoiding `franglais'),
+please see the files available from the DTP Web pages (URL 
+\url{http://cern.ch/DTP/dtpgrammar.htm}).
+
+\subsection{Spelling}
+
+CERN uses British English spelling, and `-ize' rather that
+`-ise'. Here we provide a few examples for guidance:
+\begin{flushleft}
+\begin{tabularx}{\linewidth}{@{}lX}
+-il:     & fulfil (not fulfill) \\
+-re:     & centre (not center) \\
+-our:    & colour (not color) \\ 
+-gue:    & catalogue (not catalog, but analog is used in electronics) \\ 
+-mme:    & programme (not program, unless referring to a computer
+           program) \\ 
+-ell-:   & labelled (not labeled) \\ 
+-ce/-se: & licence (noun), license (verb), practice (noun), practise (verb) \\ 
+-ize:    & organization, authorize. \\
+         & Exceptions to this rule include advise, comprise, compromise, 
+           concise, demise, devise, enterprise, exercise, improvise, 
+           incise, precise, revise, supervise, surmise, surprise, televise.\\
+\end{tabularx}
+\end{flushleft}
+
+\subsection{Punctuation}
+
+\subsubsection{Hyphen}
+
+Hyphens are used to avoid ambiguity, \ie in attributive compound
+adjectives (compare `a little used car' and `a little-used car'), to
+distinguish between words such as `reform' (change for the better) and
+`re-form' (form again), and to separate double letters to aid
+comprehension and pronunciation (\eg co-operate).
+
+Hyphens are also used if a prefix or suffix is added to a proper noun,
+symbol, or numeral, and in fractions: \eg non-Fermi, 12-fold,
+three-quarters.
+
+\subsubsection{En and em dashes}
+
+En dashes are used to mean `and' (\eg space--time, Sourian--Lagrange)
+or `to' (\eg 2003--2004, input--output ratio). In \LaTeX{} enter
+\texttt{{-}{-}} for typeset an en dash.
+
+An em dash is used as a parenthetical pause. Simply type with no space
+on either side, \eg `the experiment\,---\,due to begin in
+2007\,---\,represents a major advance...'. In \LaTeX{} enter
+\texttt{{-}{-}{-}} to typeset an em dash.
+
+\subsubsection{Quotation marks}
+
+Double for true quotations, single for anything else. Single within
+double for a quotation within a quotation. Our preferred method of
+punctuation around quotation marks is to place punctuation marks
+outside the quotation marks, to avoid any ambiguity: Oxford has been
+called a `Home of lost causes'. Shakespeare wrote ``To be or not to be''.
+
+
+\subsubsection{Apostrophe}
+
+Do not use in plural acronyms (\eg JFETs), decades (1990s).  Do use
+in plural Greek letters and symbols (\eg $\pi$'s).
+
+\subsubsection{Colon, semi-colon, exclamation mark, question mark}
+
+Please note that in English these punctuation marks do not require a
+space before them.
+
+\subsubsection{Punctuation in lists}
+
+In a series of three or more terms, use a comma (sometimes called the
+serial comma) before the final `and' or `or' (\eg gold, silver, or
+copper coating). In a run-on list, do not introduce a punctuation mark
+between the main verb and the rest of the sentence.  Avoid the use of
+bullet points.
+
+For a displayed list there are two options:
+
+\begin{itemize}
+\item[i)]  finish the introductory sentence with a colon, start the
+           first item of the list with a lower-case letter, finish it
+           with a semi-colon, and do the same for all items until the
+           last, where a full stop is placed at the end of the text
+           (as here);
+\item[ii)] finish the introductory sentence with a full stop, start
+           the first item with a capital letter and finish it with a
+           full stop, and the same for the remaining items.
+\end{itemize}
+
+\subsection{Capitalization}
+
+Capitalize adjectives and nouns formed from proper names,
+\eg Gaussian.  Exceptions to this rule include units of measure
+(amperes), particles (fermion), elements (einsteinium), and minerals
+(fosterite) derived from names.  Capitalize only the name in
+Avogadro's number, Debye temperature, Ohm's law, Bohr radius.
+
+Never capitalize lower-case symbols or abbreviations. When referring
+to article, paper, or report, column, sample, counter, curve, or type,
+do not capitalize.
+
+Do capitalize Theorem I, Lemma 2, Corollary 3, \etc
+
+\subsubsection{Acronyms}
+
+In the first instance, spell out the acronym using capital letters for
+each letter used in the acronym, and provide the acronym in
+parentheses, \eg Quark--Gluon Plasma (QGP).
+
+\subsection{Numbers, symbols and units}
+\label{sec:numberssymbolsunits}
+
+Spell out numbers 1 to 9 unless they are followed by a unit or are
+part of a series containing the number 10 or higher (as here); numbers
+are always in roman type. Numbers should always be written out at the
+beginning of a sentence.  Symbols of variables (\ie anything that can
+be replaced by a number) should be typed in \emph{italics}.
+
+In scientific texts the printed form of a symbol often implies a
+meaning which is not easily captured by generic markup.  Therefore
+authors using some form of generic coding (such as \LaTeX) need
+to know about typographical conventions.  The following is a brief
+summary of the most important rules for composing scientific
+texts\cite{bib:iso31,bib:iupap,bib:bipm,bib:nist}.
+ 
+The most important rule is \emph{consistency}: a symbol should always
+be the same, whether it appears in a formula or in the text, on the
+main line or as a superscript or subscript.  This means that in
+\LaTeX, once you have used a symbol inside mathematics mode (`\$'),
+always use it inside mathematics mode.  Inside math mode, \LaTeX{} by
+default prints characters in \emph{italics}.
+
+The following families of symbols must \emph{always} to be typeset in
+roman. With \LaTeX{} roman type in maths mode can be typeset by the
+\verb!\mathrm! or \verb!\text! commands.
+
+\begin{Itemize}
+\item \emph{Units}, such as g, cm, s, keV.  Note that physical
+      constants are usually in italics, so units involving constants
+      are mixed roman-italics, \eg GeV/\emph{c} (where the \emph{c} is
+      italic because it symbolizes the speed of light, a constant).
+\item \emph{Particle names}, for example p, K, q, g.
+\item \emph{Chemical element names}, for example Ne, O, Cu, Fe.
+\item \emph{Standard mathematical functions} (sin, det, cos, tan, Re,
+      Im, \etc).  Use the built-in \LaTeX\ functions for these
+      (\verb+\sin+, etc.).
+\item \emph{Numbers}.
+\item \emph{Names of waves or states} (p-wave) and covariant couplings
+      (A for axial, V for vector), names of monopoles (E for electric,
+      M for magnetic).
+\item \emph{Abbreviations} that are initials of bits of words (exp, for
+      experimental; min, for minimum).
+\item The `d' operator in integrands (\eg d\emph{p}).
+\end{Itemize}
+ 
+By applying these rules consistently, the reader will be able to
+understand at first glance the precise meaning of the symbol. The
+importance of the distinction between typeface (roman and italic) for
+the same symbol can be seen in Table~\ref{tab:symbols}.
+\begin{table}[h]
+\caption[]{Examples of the importance of using the correct typeface for
+symbols, variables and constants}
+\label{tab:symbols}
+\centering
+\begin{tabular}{@{}lp{50mm}@{\qquad}lp{50mm}@{}}
+\hline\hline
+\multicolumn{2}{@{}c}{Roman typeface } &
+\multicolumn{2}{c@{}}{Italic typeface} \\
+\hline
+A & ampere (electric unit)      & $A$ & atomic number (variable)       \\
+e & electron (particle name)    & $e$ & electron charge (constant)     \\
+g & gluon (particle name)       & $g$ & gravitational constant         \\
+l & litre (volume unit)         & $l$ & length (variable)              \\
+m & metre (length unit)         & $m$ & mass (variable)                \\
+p & proton (particle name)      & $p$ & momentum (variable)            \\
+q & quark (particle name)       & $q$ & electric charge (variable)     \\
+s & second (time unit)          & $s$ & c.m. energy squared (variable) \\
+t & tonne (weight unit)         & $t$ & time (variable)                \\
+V & volt (electric unit)        & $V$ & volume (variable)              \\
+Z & Z boson (particle name)     & $Z$ & atomic charge (variable)       \\
+\hline\hline
+\end{tabular}
+\end{table}
+
+A convenient two-page summary about which typefaces to use for symbols
+in scientific documents is available from
+NIST\cite{bib:nisttypefaces}.
+
+As already pointed out, \LaTeX{} implements part of the rules
+mentioned above by default in math mode (\eg variables will be in math
+italic). Yet care must be taken with particle names, units, \etc
+inside math formulae to ensure that they come out in roman.
+
+Symbols for units derived from proper names are written with capital
+letters (\eg coulomb, 6~C).  Write the unit out in full in cases such
+as `a few centimetres'.  When using symbols insert a
+\emph{non-breaking space} between the number and the unit, unless it
+is $\%$ or superscript, \eg \verb!10~cm!, \verb!100~GeV!,
+\verb!15~nb!, but \verb!20\%!, \verb!27$^\circ$C!.
+
+\subsection{Predefined commands}
+\label{ref:predefinedcommands}
+
+To help implement the rules given above at CERN, \LaTeX{} packages have
+been developed with predefined commands for abbreviations of units,
+element names, and elementary particle names.
+
+The \texttt{cernchemsym} package\footnote
+%
+   {\url{http://cern.ch/XML/textproc/cernchemsym.pdf}.}
+%
+defines the \verb!\Isotope! command (\eg \verb!\Isotope[234][92]{U}!
+typesets \Isotope[234][92]{U}. The package also defines commands for
+all atomic elements, which all start with \verb!\E!, \eg \verb!\EH!
+for hydrogen (\EH), \verb!\EAl! for aluminium (\EAl), \etc
+
+The \texttt{cernunits} package\footnote
+%
+   {\url{http://cern.ch/XML/textproc/cernunits.pdf}.}
+%
+defines a set of commands, all starting with
+\verb!\U!. Table~\ref{tab:predef} provides a few examples of HEP
+energy and momenta. Using these commands, the examples in the last
+paragraph of Section~\ref{sec:numberssymbolsunits} could be entered as
+\verb!\Unit{10}{cm}! or \verb!$10\Ucm$!, \verb!100\UGeV!, \etc, where
+these commands work both in text or math mode.
+\begin{table}[h]
+\caption[]{Examples of predefined commands in the CERN package \texttt{cernunits}}
+\label{tab:predef}
+\centering\small
+\begin{tabular}{@{}>{\ttfamily}ll@{}}
+\hline\hline
+{\rmfamily Commands available in math and text mode}
+                                          & Result as printed   \\\hline
+\verb!\Unit{3}{Tm} and $\Unit{3}{Tm}$!    & \Unit{3}{Tm} and $\Unit{3}{Tm}$  \\
+\verb!\Unit{1}{PeV} and $\Unit{1}{PeV}$!  & \Unit{1}{PeV} and $\Unit{1}{PeV}$\\
+\verb|3\UeV{} and $3\UeV$|                & 3\UeV{} and $3\UeV$   \\
+\verb|3\UkeV{} and $3\UkeV$|              & 3\UkeV{} and $3\UkeV$ \\
+%\verb|3\UMeV{} and $3\UMeV$|              & 3\UMeV{} and $3\UMeV$ \\
+%\verb|3\UGeV{} and $3\UGeV$|              & 3\UGeV{} and $3\UGeV$ \\
+%\verb|3\UTeV{} and $3\UTeV$|              & 3\UTeV{} and $3\UTeV$ \\
+\verb|3\UPeV{} and $3\UPeV$|              & 3\UPeV{} and $3\UPeV$ \\
+\verb|3\UGeVc{} and $3\UGeVc$|            & 3\UGeVc{} and $3\UGeVc$ \\
+\verb|3\UGeVcc{} and $3\UGeVcc$|          & 3\UGeVcc{} and $3\UGeVcc$ \\
+\hline\hline
+\end{tabular}
+\end{table}
+
+The \verb!\U...!  commands typeset a non-breaking space preceding the
+unit.  Each of these commands has a partner ending in `\texttt{Z}',
+which omits this space, \eg \verb!100~\UGeVZ!. These variants can be
+useful when combining several units.
+
+Let us look as a few more examples: lenghts and distances (\eg
+\verb!\Ufm! gives \Ufm{} for femtometre, while \verb!\Uum! gives
+\Uum{} for micrometre), mass, force, energy, power and pressure (\eg
+\verb!10\Ukg! gives 10\Ukg, \verb!5\UW[G]!  gives 5\UW[G],
+\verb!1013\UPa[h]! gives 1013\UPa[h], the standard atmospheric
+pressure), cross-sections (\verb!\Ufb! gives \Ufb{} for fermobarn),
+time and frequencies (\eg, \verb!50\Ups!  gives 50\Ufb{} and
+\verb!2\UGHz! gives 2\UGHz), magnetic and electric units (\eg
+\verb!$1\UG=10\sp{-4}\UT$! will typeset $1\UG=10\sp{-4}\UT$),
+temperature (\eg \verb!$0\UDC=273.15\UK$! gives $0\UDC=273.15\UK$),
+and human health-related units (\eg \verb!10\USv! gives 10\USv{} for
+ten sievert, while 50\Umrad for 50 millirad can be entered as
+\verb!50\Urad[m]!  or \verb!50\Umrad!).
+
+The \texttt{heppennames2} package\footnote
+%
+   {\mbox{\url{http://cern.ch/XML/textproc/heppennames2.pdf} and 
+    \url{http://cern.ch/xml/pennames/pennameswww.xhtml}.}}
+%
+defines the \emph{Particle Entity Notation} scheme. It assigns a
+unique name, starting with \verb!\P!  to all known particles in the
+\emph{Particle Data Group} listing. By using this scheme the
+typographic correctness of the printed symbol in \LaTeX{} (roman type
+in all circumstances) is guaranteed. For example, \verb!\Pem! codes
+for the electron (\Pem), and \verb!\Pep! codes for the positron (\Pep)
+in both text and math mode.  A more complex example is \verb!\Pg! for
+the gluon (\Pg) and \verb!\PGg! for the gamma particle (the photon
+\PGg). The tau neutrino \PGnGt{} and its antiparticle \PAGnGt{} are
+coded as \verb!\PGnGt! and \verb!\PAGnGt!, respectively.
+
+%\newpage
+\appendix
+
+\section{The \texttt{cernphprep} class file}
+
+At CERN the PH preprint files are automatically made available on AFS
+(Linux) by using the latest \TeX{} installation\footnote
+%
+   {See \url{http://cern.ch/XML/textproc/texlivelinux2009.html}.}.
+%
+Example files of PH preprints are also available\footnote
+%
+   {See \url{http://cern.ch/XML/textproc/cernphprep.html}.}.
+%
+The \LaTeX{} source of the present document (\texttt{cernphprep.tex}),
+as well as its typeset result (\texttt{cernphprep.pdf}) are available
+there as well.
+
+\section{The \texttt{amsmath} extensions}
+\label{app:amsmath}
+
+Recent developments around \LaTeX{}, often sponsored and driven by
+scientific publishers, have ensured that structural elements and math
+constructs in particular are easily delimited and their sense made
+clear. The American Mathematical Society have done a great job with
+their \texttt{amsmath} extension, which is loaded by default in the
+\texttt{cernphprep.cls} class. Therefore, we would like our authors to
+use the conventions and \LaTeX{} constructs of that package, rather
+than the pure \TeX{} primitives. This is all the more important as we
+want to take full advantage of the possibilities of hypertext and the
+Web, where \TeX{} primitives, because they are not clearly delimited,
+are much more difficult to handle (see Section~\ref{ref:predefinedcommands}).
+
+Below we give a few often-occurring mathematics constructs, first in
+their \TeX{} form (to be avoided), their \LaTeX{} equivalent (to be
+preferred), and the typeset result.
+
+\begin{itemize}
+\item \verb!\over! to be replaced by \verb!\frac!.
+\begin{description}
+\item[\TeX{}] \verb!${Z^\nu_{i}\over 2 \Lambda_{\rm ext}}$!
+\item[\LaTeX] \verb!$\frac{Z^\nu_{i}}{2 \Lambda_{\text{ext}}}$!%
+   \hfill\raisebox{1em}[0mm][0mm]{%
+       $\displaystyle\frac{Z^\nu_{i}}{2 \Lambda_{\text{ext}}}$}
+%\item[Result] $\displaystyle\frac{Z^\nu_{i}}{2 \Lambda_{\text{ext}}}$
+\end{description}
+\item \verb!\choose! to be replaced by \verb!\binom!.
+\begin{description}
+\item[\TeX{}] \verb!${m + k \ choose k}$!
+\item[\LaTeX] \verb!$\binom{m + k}{k}$!%
+   \hfill\raisebox{1em}[0mm][0mm]{%
+       $\displaystyle\binom{m + k}{k}$}
+%\item[Result] $\binom{m + k}{k}$
+\end{description}
+\item \verb!\matrix! family to be replaced by corresponding environments.
+\begin{description}
+\item[\TeX{}] \verb!$\matrix{a & b \cr c & d\cr}$!
+\item[\LaTeX] \verb!$\begin{matrix}a & b\\c & d\end{matrix}$!%
+   \hfill\raisebox{1em}[0mm][0mm]{%
+       $\displaystyle\begin{matrix}a & b\\c & d\end{matrix}$}
+%\item[Result] $\begin{matrix}a & b\\c & d\end{matrix}$
+\item[\TeX{}] \verb!$\pmatrix{a & b \cr c & d\cr}$!
+\item[\LaTeX] \verb!$\begin{pmatrix}a & b\\c & d\end{pmatrix}$!%
+   \hfill\raisebox{1em}[0mm][0mm]{%
+       $\displaystyle\begin{pmatrix}a & b\\c & d\end{pmatrix}$}
+%\item[Result] $\begin{pmatrix}a & b\\c & d\end{pmatrix}$
+\item[\TeX{}] \verb!$\bmatrix{a & b \cr c & d\cr}$!
+\item[\LaTeX] \verb!$\begin{bmatrix}a & b\\c & d\end{bmatrix}$!%
+   \hfill\raisebox{1em}[0mm][0mm]{%
+       $\displaystyle\begin{bmatrix}a & b\\c & d\end{bmatrix}$}
+%\item[Result] $\begin{bmatrix}a & b\\c & d\end{bmatrix}$
+\end{description}
+\item Cases construct: use the \texttt{cases} environment.
+\begin{description}
+\item[\LaTeX{} without \texttt{amsmath}] 
+\begin{minipage}[t]{.7\linewidth}
+\begin{Verbatim}[fontsize=\small]
+$$
+{\rm curvature~} R = {6K\over a^2(t)} \quad
+\left\{\begin{array}{ll}
+K=-1\quad&{\rm open}\\
+K=0      &{\rm flat}\\
+K=+1     &{\rm closed}
+\end{array}\right.
+$$
+\end{Verbatim}
+\end{minipage}
+\item[\LaTeX{} with \texttt{amsmath}]
+\begin{minipage}[t]{.7\linewidth}
+\begin{Verbatim}[fontsize=\small]
+\[
+\text{curvature } R = \frac{6K}{a^2(t)} \quad
+\begin{cases}
+K=-1\quad&\text{open}\\
+K=0      &\text{flat}\\
+K=+1     &\text{closed}
+\end{cases}
+\]
+\end{Verbatim}
+\end{minipage}
+\item[Typeset result] 
+\begin{minipage}[t]{.64\linewidth}
+\[
+\text{curvature } R = \frac{6K}{a^2(t)} \quad
+\begin{cases}
+K=-1\quad&\text{open}\\
+K=0      &\text{flat}\\
+K=+1     &\text{closed}
+\end{cases}
+\]
+\end{minipage}
+\end{description}
+\item \texttt{amsmath} offers symbols for multiple integrals.
+\begin{description}
+\item[\TeX{}] \verb/$\int\!\!\int\!\!\int {\rm div}~\vec{\rm E}\,{\rm d}V/\\
+              \verb/ = \int\!\!\int\vec{\rm E}\,{\rm d}\vec{\rm S}$/
+\item[\LaTeX{}] \verb/$\iiint \text{div}~\vec{\mathrm{E}}\,\mathrm{d}V/\\
+              \verb/ = \iint\vec{\mathrm{E}}\,\mathrm{d}\vec{\mathrm{S}}$/
+\item[Typeset result] $\displaystyle\iiint \text{div}~\vec{\mathrm{E}}\,\mathrm{d}V
+               = \iint\vec{\mathrm{E}}\,\mathrm{d}\vec{\mathrm{S}}$
+\end{description}
+\end{itemize}
+
+The \texttt{cernphprep} class loads, amongst others, the
+\texttt{amsmath} and the \texttt{amssymb} packages. These packages
+define many supplementary commands and symbols that with plain \TeX{}
+would have to be constructed from more basic components. See
+Refs.~\cite{bib:voss2005} and \cite{bib:pakin2003}, or Chapter~8 of
+Ref.~\cite{bib:mittelbach2004} for more details.
+
+\begin{thebibliography}{99}\raggedright
+\bibitem{bib:voss2005} Herbert Vo{\ss},
+  \emph{Math mode}, available at the URL\newline
+\url{http://www.tex.ac.uk/tex-archive/info/math/voss/mathmode/Mathmode.pdf}.
+
+\bibitem{bib:mittelbach2004} Frank Mittelbach and Michel Goossens,
+  \emph{The \LaTeX{} Companion}, 2nd ed. (Addison-Wesley, Boston,
+  2004).
+
+\bibitem{bib:iso31} International Organization for Standardization.
+edition). Geneva: ISO, 1993.
+\newblock \emph{ ISO Standards Handbook: Quantities and units (3rd edition)}.  
+\newblock \url{http://en.wikipedia.org/wiki/ISO_31} and references therein.
+
+\bibitem{bib:iupap}
+International Union of pure and applied Physics.
+\newblock \emph{Symbols, Units, Nomenclature and fundamental Constants
+in Physics}.
+\newblock Physica, 146A:1--67, 1987.
+
+\bibitem{bib:bipm}
+Bureau International des Poids et Mesures (BIPM).
+\newblock \emph{The international system of units}, especially \S~5, pp.~130--135.
+\newblock \url{http://www.bipm.org/utils/common/pdf/si_brochure_8.pdf}.
+
+\bibitem{bib:nist} National Institute of Standards and Technology
+(NIST).  \newblock \emph{Guide for the Use of the International System
+of Units (SI)}, especially \S~10, pp.~32--38.\newline
+\newblock \url{http://physics.nist.gov/cuu/pdf/sp811.pdf}
+
+\bibitem{bib:nisttypefaces}
+National Institute of Standards and Technology (NIST).
+\newblock \emph{Typefaces for Symbols in Scientific Documents}.
+\newblock \url{http://physics.nist.gov/Document/typefaces.pdf}.
+
+\bibitem{bib:pakin2003} Scatt Pakin,
+  \emph{The Comprehensive \LaTeX{} Symbol List}, available at the URL\newline
+\url{http://www.ctan.org/tex-archive/info/symbols/comprehensive/symbols-a4.pdf}.
+ 
+\end{thebibliography}
+\end{document}
+

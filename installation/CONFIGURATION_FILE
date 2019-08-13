@@ -1,0 +1,23 @@
+apiPort=22
+cernvmVersion=latest
+cpus=2
+memory=2048
+disk=20000
+diskChecksum=
+sharedFolder=
+diskURL=
+diskChecksum=
+diskPath=
+executionCap=100
+#Active bit   Effect
+#     1       The system is 64-bit instead of 32-bit
+#     2       Use regular deployment (HDD) from an online source (instead of micro-iso)
+#     4       Include a guest additions CD-ROM
+#     8       Use floppyIO instead of contextualization CD-ROM
+#    16       Start the VM in headful mode
+#    32       Enable graphical extension (like drag-n-drop)
+#    64       Use secondary adapter instead of creating a NAT rule on the first one
+#   128       Use ttyS0 as external logfile.
+#   256       Use a bootable VDI file as the main deployment image.
+# Flags: 64bit host OS, headful mode, graphical extensions enabled
+flags=49
