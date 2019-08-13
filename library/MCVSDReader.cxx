@@ -27,7 +27,8 @@ MCVSDReader MCVSDReader::fInstance = MCVSDReader();
 MCVSDReader::~MCVSDReader()
 {
     // DropEvent();
-    fFile->Close(); 
+    if (fFile) 
+        fFile->Close(); 
     // if (fEvDirKeys)
     // {
     //     delete fEvDirKeys;

@@ -1,9 +1,19 @@
 #! /bin/bash
+launch_root() 
+{
+	root -l GUI.cxx
+	RETVAL=$?
+	if [ $RETVAL -eq 0 ]; then 
+		return 0; 
+	else 
+		return 1; 
+	fi
+}
 if [ -z ${ROOTSYS+x} ]; then
 echo "ROOTSYS is unset: Install ROOT";
     exit;
 fi;
-MCDIR=/Users/schutz/cernbox/MC
+MCDIR=`pwd`
 LIBDIR=$MCDIR/library
 if [ -d "$LIBDIR" ]; then
 	cd $LIBDIR
@@ -22,5 +32,9 @@ fi
 SAVE=$LD_LIBRARY_PATH
 CPATH=`pwd`	
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$CPATH/library
-root -l GUI.cxx
+RETVAL=1;
+while [ $RETVAL -ne 0 ]; do  
+	launch_root
+	RETVAL=$?
+done
 export LD_LIBRARY_PATH=$SAVE

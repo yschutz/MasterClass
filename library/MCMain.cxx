@@ -141,7 +141,7 @@ MCMain::~MCMain()
 //=MCMain========================================================================
 void MCMain::CloseWindow()
 {
-   gApplication->Terminate();
+   gApplication->Terminate(0);
 }
 
 //=MCMain========================================================================
@@ -156,15 +156,15 @@ void MCMain::HandleMenu(ECommand id)
       TString msgText(ml.tr("Do you want really to quit?"));
       new TGMsgBox(gClient->GetRoot(), fMain, "MCMain:Exit", msgText, kMBIconQuestion, kMBYes | kMBCancel, &retval);
       if (retval == 1)
-         gApplication->Terminate();
+         gApplication->Terminate(0);
       break;
    }
    case M_EX_STRP1:
    {
       if (fExR1 || fExJ1)
       {
-         new TGMsgBox(gClient->GetRoot(), 0, "MCMain::HandleMenu", MCMultiLingual::Instance().tr("Restart Application"), kMBIconExclamation, kMBOk); 
-         gApplication->Terminate(); 
+         // new TGMsgBox(gClient->GetRoot(), 0, "MCMain::HandleMenu", MCMultiLingual::Instance().tr("Restart Application"), kMBIconExclamation, kMBOk); 
+         gApplication->Terminate(11); 
       }
       fMenuExSTRP->EnableEntry(M_EX_STRP2); 
       fMenuExRAAP->EnableEntry(M_EX_RAAP1); 
@@ -230,8 +230,8 @@ void MCMain::HandleMenu(ECommand id)
    {
      if (fExS1 || fExJ1)
       {
-         new TGMsgBox(gClient->GetRoot(), 0, "MCMain::HandleMenu", MCMultiLingual::Instance().tr("Restart Application"), kMBIconExclamation, kMBOk); 
-         gApplication->Terminate(); 
+         // new TGMsgBox(gClient->GetRoot(), 0, "MCMain::HandleMenu", MCMultiLingual::Instance().tr("Restart Application"), kMBIconExclamation, kMBOk); 
+         gApplication->Terminate(22); 
       }
       fMenuExSTRP->EnableEntry(M_EX_STRP1); 
       fMenuExSTRP->EnableEntry(M_EX_STRP2); 
@@ -297,8 +297,8 @@ void MCMain::HandleMenu(ECommand id)
    {
      if (fExS1 || fExR1)
       {
-         new TGMsgBox(gClient->GetRoot(), 0, "MCMain::HandleMenu", MCMultiLingual::Instance().tr("Restart Application"), kMBIconExclamation, kMBOk); 
-         gApplication->Terminate(); 
+         // new TGMsgBox(gClient->GetRoot(), 0, "MCMain::HandleMenu", MCMultiLingual::Instance().tr("Restart Application"), kMBIconExclamation, kMBOk); 
+         gApplication->Terminate(33); 
       }      
       fMenuExSTRP->EnableEntry(M_EX_STRP1); 
       fMenuExSTRP->EnableEntry(M_EX_STRP2); 
