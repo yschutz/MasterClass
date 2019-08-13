@@ -1,13 +1,10 @@
 #! /bin/bash
 launch_root() 
 {
+	export OPT=$1
 	root -l GUI.cxx
 	RETVAL=$?
-	if [ $RETVAL -eq 0 ]; then 
-		return 0; 
-	else 
-		return 1; 
-	fi
+	return $RETVAL; 
 }
 if [ -z ${ROOTSYS+x} ]; then
 echo "ROOTSYS is unset: Install ROOT";
@@ -34,7 +31,7 @@ CPATH=`pwd`
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$CPATH/library
 RETVAL=1;
 while [ $RETVAL -ne 0 ]; do  
-	launch_root
+	launch_root $RETVAL
 	RETVAL=$?
 done
 export LD_LIBRARY_PATH=$SAVE

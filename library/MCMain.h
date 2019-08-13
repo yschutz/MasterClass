@@ -64,7 +64,7 @@ private:
    TGPopupMenu      *fMenuView;
 
 public:
-   MCMain(const TGWindow *p, UInt_t w, UInt_t h);
+   MCMain(const TGWindow *p, UInt_t w, UInt_t h, Int_t opt = 1);
    virtual ~MCMain();
 
    //slots

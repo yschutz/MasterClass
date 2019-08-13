@@ -35,7 +35,8 @@ MCExerciseR2::MCExerciseR2(const TGWindow *p, UInt_t w, UInt_t h) : MCExercise(p
 //=MCExerciseR2========================================================================
 MCExerciseR2::~MCExerciseR2()
 {
-    DeleteHistograms();
+    if (!fNeedsInit)
+        DeleteHistograms();
 }
 
 //=MCExerciseR2========================================================================

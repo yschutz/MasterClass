@@ -19,6 +19,7 @@ private:
     TDirectory         *fDirectory                     { nullptr };
     TObjArray          *fEvDirKeys                     { nullptr };
     TFile              *fFile                          { nullptr };
+    Bool_t             fInit                           { kFALSE };
     static MCVSDReader fInstance;  
     Int_t              fMaxEv                          { -1 }; 
     Int_t              fMaxR                           { 400 };
@@ -38,6 +39,7 @@ public:
     Bool_t               GotoEvent(Int_t ev); 
     void                 Init(const TString &fileName); 
     static MCVSDReader & Instance()                     { return fInstance; } 
+    Bool_t               IsInitialized()                { return fInit; }
     Int_t                MaxEv() const                  { return fMaxEv; }
     void                 Reset(); 
 

@@ -63,7 +63,8 @@ MCExerciseS1::~MCExerciseS1()
     fDataSetFileDir = "";
     fDataTemplate = "";
     fGuiLogoName = "";
-    DeleteHistograms();
+    if (!fNeedsInit)
+        DeleteHistograms();
     if (MCAliCalculator::Instance().IsStarted())
         MCAliCalculator::Instance().DoExit();
     if (fTrackListCascadeNeg)

@@ -102,7 +102,8 @@ MCExerciseS2::~MCExerciseS2()
     delete fMinvHisto;
     delete fFitGauss;
     delete fLabel;
-    DeleteHistograms();
+    if (!fNeedsInit)
+        DeleteHistograms();
     fSMF->UnmapWindow();
     if (fMF)
         fMF->CloseWindow();

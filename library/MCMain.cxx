@@ -5,6 +5,7 @@
 #include "MCExerciseS1.h"
 #include "MCExerciseS2.h"
 #include "MCMultiLingual.h"
+#include "MCVSDReader.h"
 
 #include <TGCanvas.h>
 #include <TGFrame.h>
@@ -26,7 +27,7 @@
                          
 */
 //=MCMain========================================================================
-MCMain::MCMain(const TGWindow *p, UInt_t w, UInt_t h)
+MCMain::MCMain(const TGWindow *p, UInt_t w, UInt_t h, Int_t opt)
 {
    // const TString kAliceLogo("images/alicelogo.png");
    const TString kAliceLogo("images/alicelogo.png");
@@ -119,23 +120,49 @@ MCMain::MCMain(const TGWindow *p, UInt_t w, UInt_t h)
    // Connect("Created()", "MCMain", this, "Welcome()");
 
    MCMultiLingual::Instance().SetLanguage("FR");
+
+   switch (opt)
+   {
+   case 11:
+      fExS1 = new MCExerciseS1(gClient->GetRoot(), 400, 200);
+      fMenuExSTRP->DisableEntry(M_EX_STRP1); 
+      break;
+   case 12:
+      fExS2 = new MCExerciseS2(gClient->GetRoot(), 400, 200);
+      fMenuExSTRP->DisableEntry(M_EX_STRP2); 
+      break;
+   case 21:
+      fExR1 = new MCExerciseR1(gClient->GetRoot(), 400, 200);
+      fMenuExRAAP->DisableEntry(M_EX_RAAP1); 
+      break;
+   case 22:
+      fExR2 = new MCExerciseR2(gClient->GetRoot(), 400, 200);
+      fMenuExRAAP->DisableEntry(M_EX_RAAP2); 
+      break;
+   case 31: 
+      fExJ1 = new MCExerciseJ1(gClient->GetRoot(), 400, 200);
+      fMenuExJPsP->DisableEntry(M_EX_JPSP1); 
+      break;
+   default:
+      break;
+   }
    // Created();
 }
 
 //=MCMain========================================================================
 MCMain::~MCMain()
 {
-   // fMain->CloseWindow();
-   // if (fExS1)
-   //    delete fExS1;
-   // if (fExS2)
-   //    delete fExS2;
-   // if (fExR1)
-   //    delete fExR1;
-   // if (fExR2)
-   //    delete fExR2;
-   // if (fExJ1)
-   //    delete fExJ1;
+   fMain->CloseWindow();
+   if (fExS1)
+      delete fExS1;
+   if (fExS2)
+      delete fExS2;
+   if (fExR1)
+      delete fExR1;
+   if (fExR2)
+      delete fExR2;
+   if (fExJ1)
+      delete fExJ1;
 }
 
 //=MCMain========================================================================
@@ -161,11 +188,8 @@ void MCMain::HandleMenu(ECommand id)
    }
    case M_EX_STRP1:
    {
-      if (fExR1 || fExJ1)
-      {
-         // new TGMsgBox(gClient->GetRoot(), 0, "MCMain::HandleMenu", MCMultiLingual::Instance().tr("Restart Application"), kMBIconExclamation, kMBOk); 
+      if ((fExR1 || fExR2 || fExJ1) && MCVSDReader::Instance().IsInitialized())
          gApplication->Terminate(11); 
-      }
       fMenuExSTRP->EnableEntry(M_EX_STRP2); 
       fMenuExRAAP->EnableEntry(M_EX_RAAP1); 
       fMenuExRAAP->EnableEntry(M_EX_RAAP2); 
@@ -198,6 +222,8 @@ void MCMain::HandleMenu(ECommand id)
    }
    case M_EX_STRP2:
    {
+      if ((fExR1 || fExR2 || fExJ1) && MCVSDReader::Instance().IsInitialized())
+         gApplication->Terminate(12); 
       fMenuExSTRP->EnableEntry(M_EX_STRP1); 
       fMenuExRAAP->EnableEntry(M_EX_RAAP1); 
       fMenuExRAAP->EnableEntry(M_EX_RAAP2); 
@@ -228,11 +254,8 @@ void MCMain::HandleMenu(ECommand id)
    }
    case M_EX_RAAP1:
    {
-     if (fExS1 || fExJ1)
-      {
-         // new TGMsgBox(gClient->GetRoot(), 0, "MCMain::HandleMenu", MCMultiLingual::Instance().tr("Restart Application"), kMBIconExclamation, kMBOk); 
-         gApplication->Terminate(22); 
-      }
+     if ((fExS1 || fExS2 || fExJ1) && MCVSDReader::Instance().IsInitialized())
+         gApplication->Terminate(21); 
       fMenuExSTRP->EnableEntry(M_EX_STRP1); 
       fMenuExSTRP->EnableEntry(M_EX_STRP2); 
       fMenuExRAAP->EnableEntry(M_EX_RAAP2); 
@@ -264,6 +287,8 @@ void MCMain::HandleMenu(ECommand id)
    }
    case M_EX_RAAP2:
    {
+      if ((fExS1 || fExS2 || fExJ1) && MCVSDReader::Instance().IsInitialized())
+         gApplication->Terminate(22); 
       fMenuExSTRP->EnableEntry(M_EX_STRP1); 
       fMenuExSTRP->EnableEntry(M_EX_STRP2); 
       fMenuExRAAP->EnableEntry(M_EX_RAAP1); 
@@ -295,11 +320,8 @@ void MCMain::HandleMenu(ECommand id)
    }
    case M_EX_JPSP1:
    {
-     if (fExS1 || fExR1)
-      {
-         // new TGMsgBox(gClient->GetRoot(), 0, "MCMain::HandleMenu", MCMultiLingual::Instance().tr("Restart Application"), kMBIconExclamation, kMBOk); 
-         gApplication->Terminate(33); 
-      }      
+     if ((fExS1 || fExS2 || fExR1 || fExR2) && MCVSDReader::Instance().IsInitialized())
+         gApplication->Terminate(31); 
       fMenuExSTRP->EnableEntry(M_EX_STRP1); 
       fMenuExSTRP->EnableEntry(M_EX_STRP2); 
       fMenuExRAAP->EnableEntry(M_EX_RAAP1); 

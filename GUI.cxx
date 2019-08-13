@@ -3,11 +3,13 @@
 #include <TApplication.h>
 #include <TGClient.h>
 #include <TROOT.h>
+#include <TSystem.h>
 
 //=================================================================================
 void GUI()
 {
-   new MCMain(gClient->GetRoot(), 400, 220);
+   Int_t opt = TString(gSystem->Getenv("OPT")).Atoi();
+   new MCMain(gClient->GetRoot(), 400, 220, opt);
 }
 //=================================================================================
 int main(int argc, char **argv)

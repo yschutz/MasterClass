@@ -118,6 +118,7 @@ void MCVSDReader::Reset()
     fMaxR = 400;
     if (fFile)
         fFile->Close(); 
+    fInit = kFALSE; 
 }
 
 //=MCVSDReader========================================================================
@@ -147,7 +148,8 @@ void MCVSDReader::Init(const TString &fileName)
         // new TGMsgBox(gClient->GetRoot(), 0, "MCVSDReader:ERROR", msg, kMBIconExclamation, kMBOk);
         return;
     }
-    fVSD = new TEveVSD();
+    fVSD  = new TEveVSD();
+    fInit = kTRUE; 
     // fTimer = new TTimer();
     // fTimer->Connect("Timeout()", "MCVSDReader", this, "AnimateEsdTracks()");
 }

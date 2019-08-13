@@ -48,7 +48,8 @@ MCExerciseJ1::MCExerciseJ1(const TGWindow *p, UInt_t w, UInt_t h) : MCExercise(p
 //=MCExerciseJ1========================================================================
 MCExerciseJ1::~MCExerciseJ1()
 {
-  DeleteHistograms();
+  if (!fNeedsInit)
+    DeleteHistograms();
   if (fInstructions)
     fInstructions->CloseWindow(); 
 }
