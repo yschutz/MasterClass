@@ -49,3 +49,6 @@ data/*
 *.pcm
 *.d
 *.so
+
+# Editor stuff
+.vscode
