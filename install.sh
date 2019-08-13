@@ -8,7 +8,7 @@ if [ -d $IMCDIR ]; then
 fi    
 #download source code from github into $HOME/MasterClass 
 git clone https://github.com/yschutz/MasterClass.git
-cd MasterClass
+cd MasterClass 
 #compile and link
 if [ -z ${ROOTSYS+x} ]; then
 echo "ROOTSYS is unset: Install ROOT";
