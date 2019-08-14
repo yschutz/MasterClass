@@ -14,7 +14,7 @@ if [ -z "${ROOTSYS}" ]; then
     	exit;
 	fi
 fi
-MCDIR=$HOME/MasterClass
+MCDIR=$HOME/MC/MasterClass
 LIBDIR=$MCDIR/library
 echo $ROOTSYS $MCDIR
 if [ -d "$LIBDIR" ]; then
