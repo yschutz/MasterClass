@@ -44,13 +44,13 @@ InstallRoot()
         "Scientific 7 gcc4.8")
         root=root_v6.18.00.Linux-centos7-x86_64-gcc4.8.tar.gz
         ;;
-        *) 
         "Fedora 30 gcc9")
         root=root_v6.18.00.Linux-fedora30-x86_64-gcc9.1.tar.gz
         ;;
         "Fedora 29 gcc8")
         root=root_v6.18.00.Linux-fedora29-x86_64-gcc8.3.tar.gz
         ;;
+        *) 
         echo "not binary root distribution for $OS; check here https://root.cern.ch/content/release-61800"
         exit
     esac
