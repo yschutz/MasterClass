@@ -29,7 +29,7 @@ class MCExerciseJ1 : public MCExercise
     TGTextButton       *fButtonQuickAnalysis    { nullptr }; 
     Double_t           fDeMax                   { 140. };
     Double_t           fDeMin                   { 20. };
-    Double_t           fElectrons[100][4]       { 0. };
+    Double_t           fElectrons[100][4]       {{ 0. }};
     Bool_t             fEnableQuickAnalysis     { kFALSE };
     TH1F               *fhElectrons             { nullptr }; 
     TH1F               *fhEleEle                { nullptr }; 
@@ -51,7 +51,7 @@ class MCExerciseJ1 : public MCExercise
     Double_t           fPMin                    { 0. };
     TCanvas            *fPad                    { nullptr }; 
     TCanvas            *fPad2                   { nullptr }; 
-    Double_t           fPositrons[100][4]       { 0. };
+    Double_t           fPositrons[100][4]       {{ 0. }};
     Double_t           fSignificance            { 0. }; 
     Double_t           fSoB                     { 0. }; 
 
