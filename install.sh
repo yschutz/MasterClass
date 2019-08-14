@@ -1,4 +1,58 @@
 #!/bin/bash
+CheckSystemTools()
+{
+    wget -h > /dev/null 2>&1
+    if [ $? -eq 127 ]; then 
+        echo "MISSING wget on your system"
+        MWGET=1
+    else 
+        MWGET=0
+    fi
+
+    gcc  > /dev/null 2>&1
+    if [ $? -eq 127 ]; then 
+        echo "MISSING gcc on your system"
+        MGCC=1
+    else 
+        MGCC=0
+    fi
+
+    git  > /dev/null 2>&1
+    if [ $? -eq 127 ]; then 
+        echo "MISSING git on your system"
+        MGIT=1
+    else 
+        MGIT=0
+    fi
+
+    if [ ! -d $ROOTDIR ] && [ -z "${ROOTSYS}" ]; then 
+        echo "MISSING ROOT installation"
+        MROOT=1
+    else
+        MROOT=0
+    fi
+
+    if [ ! -d $MCDIR ]; then 
+        echo "MISSING MasterClass installation"
+        MMC=1
+    else
+        MMC=0
+    fi
+
+    local os=`uname`
+    if [ "$OS" = "Linux" ]; then 
+        lsb_release -i > /dev/null 2>&1
+        if [ $? -eq 127 ]; then 
+            echo "MISSING lsb_release on your system"
+            MLSB=1
+        else 
+            MLSB=0
+        fi
+    fi 
+    if [ $MWGET -eq 1 -o $MGCC -eq 1 -o $MGIT -eq 1 ]; then 
+        exit
+    fi  
+}
 GetOSName()
 {
     OS=`uname`
@@ -63,40 +117,26 @@ InstallRoot()
         echo "*****************************"
 }
 INSTALDIR=$HOME/MC
-if [ ! -d $INSTALDIR ]; then 
-    mkdir $INSTALDIR
-fi
-cd $INSTALDIR
 MCDIR=$INSTALDIR/MasterClass
-#Check if INSTALDIR/MasterClass exists and remove it 
-if [ -d $IMCDIR ]; then 
-    rm -fr $MCDIR
+ROOTDIR=$INSTALDIR/root
+CheckSystemTools
+#Check if INSTALDIR exists 
+if [ ! -d $INSTALDIR ]; then 
+    mkdir -p $INSTALDIR
 fi    
+cd $INSTALDIR 
+if [ $MROOT -eq 1 ]; then 
+    InstallRoot
+fi    
+if [ $MMC -eq 1 ]; then 
 #download source code from github into $HOME/MasterClass 
-git clone https://github.com/yschutz/MasterClass.git
-if [ $? -eq 127 ]; then 
-    echo "!!!! ERROR: you need to install git on your computer"
-    exit
-fi    
-#check if root is installed and install it if requested
-if [ -z "${ROOTSYS}" ]; then
-	echo "ROOTSYS is unset: You need to install ROOT";
-	echo "Download the appropriate binary distributions from https://root.cern.ch/content/release-61800"
-	echo "Make sure gcc and C++ STL are installed on your computer"
-	gcc --version
-	if [ $? -eq 127 ]; then 
-		echo "You need to install gcc (version 4.8, 5.4 or 7.4) and C++ STL"
-		exit
-	fi
-	echo "Do you wish to install root?"
-	select yn in "Yes" "No"; do
-    	case $yn in
-        	Yes ) InstallRoot; break;;
-        	No ) exit;;
-    	esac
-	done
-fi;
-cd MasterClass 
+    git clone https://github.com/yschutz/MasterClass.git
+else 
+#update the existing version
+    cd $MCDIR
+    git pull
+fi
+cd $MCDIR 
 #compile and link
 LIBDIR=$MCDIR/library
 if [ -d "$LIBDIR" ]; then
