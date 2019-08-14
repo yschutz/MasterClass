@@ -16,7 +16,7 @@ GetOSName()
         OS=$OS" "`sw_vers -productVersion`
         OS=${OS%.*}
     else 
-        echo "ERROR: no root distribution for OS = $OS"      
+        echo "!!!! ERROR: no root distribution for OS = $OS"      
     fi
 }
 InstallRoot()
@@ -28,16 +28,16 @@ InstallRoot()
         root=root_v6.18.00.macosx64-10.14-clang100.tar.gz
         ;;
         "OsX 10.13")
-        wget https://root.cern/download/root_v6.18.00.macosx64-10.13-clang100.tar.gz
+        root=root_v6.18.00.macosx64-10.13-clang100.tar.gz
         ;;
         "Ubuntu 18 gcc7")
-        wget https://root.cern/download/root_v6.18.00.Linux-ubuntu18-x86_64-gcc7.4.tar.gz 
+        root=root_v6.18.00.Linux-ubuntu18-x86_64-gcc7.4.tar.gz 
         ;;
         "Ubuntu 16 gcc5")
-        wget https://root.cern/download/root_v6.18.00.Linux-ubuntu16-x86_64-gcc5.4.tar.gz
+        root=root_v6.18.00.Linux-ubuntu16-x86_64-gcc5.4.tar.gz
         ;;
         "Ubuntu 14 gcc4")
-        wget https://root.cern/download/root_v6.18.00.Linux-ubuntu14-x86_64-gcc4.8.tar.gz
+        root=root_v6.18.00.Linux-ubuntu14-x86_64-gcc4.8.tar.gz
         ;;
         *) 
         echo not binary root distribution for $OS; check here https://root.cern.ch/content/release-61800
@@ -60,7 +60,7 @@ fi
 #download source code from github into $HOME/MasterClass 
 git clone https://github.com/yschutz/MasterClass.git
 if [ $? -eq 127 ]; then 
-    echo "ERROR: you need to install git on your computer"
+    echo "!!!! ERROR: you need to install git on your computer"
     exit
 fi    
 #check if root is installed and install it if requested
@@ -91,14 +91,14 @@ if [ -d "$LIBDIR" ]; then
 	make
     retVal=$?
  	if [ $retVal -ne 0 ]; then
-    	echo "!!! Compilation Error !!!"
+    	echo "!!!! Compilation Error !!!"
 		cd $MCDIR
 		exit $retVal
 	fi
     echo $MCDIR
 	cd $MCDIR
 else
-	echo "ERROR: $LIBDIR not found!"
+	echo "!!!! ERROR: $LIBDIR not found"
 	exit 1
 fi 
 echo "Installation completed .... "
