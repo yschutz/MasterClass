@@ -10,7 +10,7 @@ GetOSName()
         ver=${ver%.*}
         OS=`echo $OS$ver gcc`
         local gccv=`gcc -dumpversion`
-        gcc=${gcc%.*}
+        gccv=${gccv%.*}
         OS=`echo $OS$gccv`
     elif [ "$OS" == "Darwin" ]; then 
         OS=OsX
@@ -45,7 +45,8 @@ InstallRoot()
         root=root_v6.18.00.Linux-centos7-x86_64-gcc4.8.tar.gz
         ;;
         *) 
-        echo not binary root distribution for $OS; check here https://root.cern.ch/content/release-61800
+        echo "not binary root distribution for $OS; check here https://root.cern.ch/content/release-61800"
+        exit
     esac
         wget https://root.cern/download/$root
         tar -zxvf $root
