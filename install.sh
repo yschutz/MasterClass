@@ -48,7 +48,7 @@ InstallRoot()
         echo "not binary root distribution for $OS; check here https://root.cern.ch/content/release-61800"
         exit
     esac
-        curl https://root.cern/download/$root
+        wget https://root.cern/download/$root
         tar -zxvf $root
         rm $root
         source $HOME/root/bin/thisroot.sh
