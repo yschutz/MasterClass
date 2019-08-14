@@ -102,4 +102,4 @@ else
 	exit 1
 fi 
 echo "Installation completed .... "
-echo "To start the exercises: ./$MCDIR/MasterClassStart.sh"
+echo "To start the exercises: $MCDIR/MasterClassStart.sh"
