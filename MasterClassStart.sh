@@ -6,12 +6,17 @@ launch_root()
 	RETVAL=$?
 	return $RETVAL; 
 }
-if [ -z ${ROOTSYS+x} ]; then
-echo "ROOTSYS is unset: Install ROOT";
-    exit;
-fi;
-MCDIR=`pwd`
+if [ -z "${ROOTSYS}" ]; then
+	if [ -d $HOME/root ]; then 
+		source $HOME/root/bin/thisroot.sh
+	else
+		echo "!!!! ERROR ROOTSYS is unset, install ROOT";
+    	exit;
+	fi
+fi
+MCDIR=$HOME/MasterClass
 LIBDIR=$MCDIR/library
+echo $ROOTSYS $MCDIR
 if [ -d "$LIBDIR" ]; then
 	cd $LIBDIR
 	make
@@ -23,7 +28,7 @@ if [ -d "$LIBDIR" ]; then
 	fi
 	cd ..
 else
-	echo "ERROR: $LIBDIR not found!"
+	echo "!!!! ERROR: $LIBDIR not found!"
 	exit 1
 fi 
 SAVE=$LD_LIBRARY_PATH

@@ -1,4 +1,55 @@
 #!/bin/bash
+GetOSName()
+{
+    OS=`uname`
+    if [ "$OS" = "Linux" ]; then
+        local dis=`lsb_release -i`
+        OS=`echo ${dis#*:}`
+        local ver=`lsb_release -r`
+        ver=${ver#*:}
+        ver=${ver%.*}
+        OS=`echo $OS$ver gcc`
+        local gccv=`gcc -dumpversion`
+        OS=`echo $OS$gccv`
+    elif [ "$OS" == "Darwin" ]; then 
+        OS=OsX
+        OS=$OS" "`sw_vers -productVersion`
+        OS=${OS%.*}
+    else 
+        echo "ERROR: no root distribution for OS = $OS"      
+    fi
+}
+InstallRoot()
+{
+    GetOSName
+    cd $HOME
+    case $OS in 
+        "OsX 10.14")
+        root=root_v6.18.00.macosx64-10.14-clang100.tar.gz
+        ;;
+        "OsX 10.13")
+        wget https://root.cern/download/root_v6.18.00.macosx64-10.13-clang100.tar.gz
+        ;;
+        "Ubuntu 18 gcc7")
+        wget https://root.cern/download/root_v6.18.00.Linux-ubuntu18-x86_64-gcc7.4.tar.gz 
+        ;;
+        "Ubuntu 16 gcc5")
+        wget https://root.cern/download/root_v6.18.00.Linux-ubuntu16-x86_64-gcc5.4.tar.gz
+        ;;
+        "Ubuntu 14 gcc4")
+        wget https://root.cern/download/root_v6.18.00.Linux-ubuntu14-x86_64-gcc4.8.tar.gz
+        ;;
+        *) 
+        echo not binary root distribution for $OS; check here https://root.cern.ch/content/release-61800
+    esac
+        wget https://root.cern/download/$root
+        tar -zxvf $root
+        rm $root
+        source $HOME/root/bin/thisroot.sh
+        echo *****************************
+        echo root is installed at $ROOTSYS
+        echo *****************************
+}
 INSTALDIR=$HOME
 cd $INSTALDIR
 MCDIR=$INSTALDIR/MasterClass
@@ -12,14 +63,28 @@ if [ $? -eq 127 ]; then
     echo "ERROR: you need to install git on your computer"
     exit
 fi    
+#check if root is installed and install it if requested
+echo root = $ROOTSYS
+if [ -z "${ROOTSYS}" ]; then
+	echo "ROOTSYS is unset: You need to install ROOT";
+	echo "Download the appropriate binary distributions from https://root.cern.ch/content/release-61800"
+	echo "Make sure gcc and C++ STL are installed on your computer"
+	gcc --version
+	if [ $? -eq 127 ]; then 
+		echo You need to install gcc (version 4.8, 5.4 or 7.4) and C++ STL
+		exit
+	fi
+	echo "Do you wish to install root?"
+	select yn in "Yes" "No"; do
+    	case $yn in
+        	Yes ) InstallRoot; break;;
+        	No ) exit;;
+    	esac
+	done
+fi;
 cd MasterClass 
 #compile and link
-if [ -z ${ROOTSYS+x} ]; then
-echo "ROOTSYS is unset: You need to install ROOT";
-echo "Download the appropriate binary distributions from https://root.cern.ch/content/release-61800"
-echo "Make sure gcc and C++ STL are installed on your computer"
-    exit;
-fi;
+echo $ROOTSYS
 LIBDIR=$MCDIR/library
 if [ -d "$LIBDIR" ]; then
 	cd $LIBDIR
