@@ -16,11 +16,11 @@ if ! which virtualbox > /dev/null; then
 fi
 #dowload the installation files from github
 # the install script (to launch the Virtual Machine for MacOS and Linux)
-curl -o install.sh https://raw.githubusercontent.com/yschutz/MasterClass/master/VMInstall/install.sh
+ curl -o install.sh https://raw.githubusercontent.com/yschutz/MasterClass/master/VMInstall/install.sh
 # the configuration files
 curl -o CONFIGURATION_FILE https://raw.githubusercontent.com/yschutz/MasterClass/master/VMInstall/CONFIGURATION_FILE
 # the user data file
 curl -o USER_DATA_FILE https://raw.githubusercontent.com/yschutz/MasterClass/master/VMInstall/USER_DATA_FILE
-# make the scrit executable and run it
+make the scrit executable and run it
 chmod +x install.sh
 ./install.sh

@@ -14,4 +14,4 @@ export name=`echo MCat$HOSTNAME | cut -d. -f1`
 if ! ./cernvm-launch create --name $name USER_DATA_FILE CONFIGURATION_FILE; then 
 	./cernvm-launch start $name
 fi	
-rm cernvm-launch
+# rm cernvm-launch
