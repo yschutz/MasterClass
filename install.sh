@@ -10,6 +10,7 @@ GetOSName()
         ver=${ver%.*}
         OS=`echo $OS$ver gcc`
         local gccv=`gcc -dumpversion`
+        gcc=${gcc%.*}
         OS=`echo $OS$gccv`
     elif [ "$OS" == "Darwin" ]; then 
         OS=OsX
@@ -17,6 +18,7 @@ GetOSName()
         OS=${OS%.*}
     else 
         echo "!!!! ERROR: no root distribution for OS = $OS"      
+        exit
     fi
 }
 InstallRoot()
@@ -38,6 +40,9 @@ InstallRoot()
         ;;
         "Ubuntu 14 gcc4")
         root=root_v6.18.00.Linux-ubuntu14-x86_64-gcc4.8.tar.gz
+        ;;
+        "Scientific 7 gcc4.8")
+        root=root_v6.18.00.Linux-centos7-x86_64-gcc4.8.tar.gz
         ;;
         *) 
         echo not binary root distribution for $OS; check here https://root.cern.ch/content/release-61800
