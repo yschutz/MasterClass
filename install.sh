@@ -71,7 +71,7 @@ if [ -z "${ROOTSYS}" ]; then
 	echo "Make sure gcc and C++ STL are installed on your computer"
 	gcc --version
 	if [ $? -eq 127 ]; then 
-		echo You need to install gcc (version 4.8, 5.4 or 7.4) and C++ STL
+		echo "You need to install gcc (version 4.8, 5.4 or 7.4) and C++ STL"
 		exit
 	fi
 	echo "Do you wish to install root?"
