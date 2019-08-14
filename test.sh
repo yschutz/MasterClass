@@ -1,17 +1,16 @@
 #!/bin/bash
 GetOSName()
 {
-OS="unknown"
 OS=`uname`
-if [ "$OS" == "Linux" ]; then
-    OS=`lsb_release -i`
-    OS=${OS#*:}" "
-    ver=`lsb_release -r`
+if [ "$OS" = "Linux" ]; then
+    local dis=`lsb_release -i`
+    OS=`echo ${dis#*:}`
+    local ver=`lsb_release -r`
     ver=${ver#*:}
     ver=${ver%.*}
-    OS=$OS" "$ver" gcc"
-    gccv=`gcc -dumpversion`
-    OS=$OS$gccv
+    OS=`echo $OS$ver gcc`
+    local gccv=`gcc -dumpversion`
+    OS=`echo $OS$gccv`
 elif [ "$OS" == "Darwin" ]; then 
     OS=OsX
     OS=$OS" "`sw_vers -productVersion`
