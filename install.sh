@@ -51,10 +51,10 @@ InstallRoot()
         wget https://root.cern/download/$root
         tar -zxvf $root
         rm $root
-        source $HOME/root/bin/thisroot.sh
-        echo *****************************
+        source $INSTALDIR/root/bin/thisroot.sh
+        echo "*****************************"
         echo root is installed at $ROOTSYS
-        echo *****************************
+        echo "*****************************"
 }
 INSTALDIR=$HOME/MC
 if [ ! -d $INSTALDIR ]; then 
@@ -73,7 +73,6 @@ if [ $? -eq 127 ]; then
     exit
 fi    
 #check if root is installed and install it if requested
-echo root = $ROOTSYS
 if [ -z "${ROOTSYS}" ]; then
 	echo "ROOTSYS is unset: You need to install ROOT";
 	echo "Download the appropriate binary distributions from https://root.cern.ch/content/release-61800"
@@ -93,7 +92,6 @@ if [ -z "${ROOTSYS}" ]; then
 fi;
 cd MasterClass 
 #compile and link
-echo $ROOTSYS
 LIBDIR=$MCDIR/library
 if [ -d "$LIBDIR" ]; then
 	cd $LIBDIR
