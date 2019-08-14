@@ -7,8 +7,8 @@ launch_root()
 	return $RETVAL; 
 }
 if [ -z "${ROOTSYS}" ]; then
-	if [ -d $HOME/root ]; then 
-		source $HOME/root/bin/thisroot.sh
+	if [ -d $HOME/MC/root ]; then 
+		source $HOME/MC/root/bin/thisroot.sh
 	else
 		echo "!!!! ERROR ROOTSYS is unset, install ROOT";
     	exit;

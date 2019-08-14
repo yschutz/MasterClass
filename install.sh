@@ -24,7 +24,7 @@ GetOSName()
 InstallRoot()
 {
     GetOSName
-    cd $HOME
+    cd $INSTALDIR
     case $OS in 
         "OsX 10.14")
         root=root_v6.18.00.macosx64-10.14-clang100.tar.gz
@@ -48,7 +48,7 @@ InstallRoot()
         echo "not binary root distribution for $OS; check here https://root.cern.ch/content/release-61800"
         exit
     esac
-        wget https://root.cern/download/$root
+        curl https://root.cern/download/$root
         tar -zxvf $root
         rm $root
         source $HOME/root/bin/thisroot.sh
@@ -56,7 +56,10 @@ InstallRoot()
         echo root is installed at $ROOTSYS
         echo *****************************
 }
-INSTALDIR=$HOME
+INSTALDIR=$HOME/MC
+if [ ! -d $INSTALDIR ]; then 
+    mkdir $INSTALDIR
+fi
 cd $INSTALDIR
 MCDIR=$INSTALDIR/MasterClass
 #Check if INSTALDIR/MasterClass exists and remove it 
