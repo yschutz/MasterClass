@@ -5,7 +5,7 @@ OS="unknown"
 OS=`uname`
 if [ "$OS" == "Linux" ]; then
     OS=`lsb_release -i`
-    OS={$OS#*:}" "
+    OS=${OS#*:}" "
     ver=`lsb_release -r`
     ver=${ver#*:}
     ver=${ver%.*}
