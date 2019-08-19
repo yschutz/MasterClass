@@ -36,6 +36,7 @@ MCExerciseR1::MCExerciseR1(const TGWindow *p, UInt_t w, UInt_t h) : MCExercise(p
 	fGuiLogoName = "images/RAA.png";
 	MakeGui();
 	fTutor->SetEnabled(kFALSE);
+	fDemo->SetEnabled(kFALSE);
 }
 
 //=MCExerciseR1========================================================================

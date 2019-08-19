@@ -30,6 +30,7 @@ MCExerciseR2::MCExerciseR2(const TGWindow *p, UInt_t w, UInt_t h) : MCExercise(p
     fDataSetFileName = fDataSetFileDir + "MasterClassesTree_LHC10h_Run139036.root";
     fGuiLogoName = "images/RAA.png";
     MakeGui(kFALSE);
+    fDemo->SetEnabled(kFALSE);
 }
 
 //=MCExerciseR2========================================================================
