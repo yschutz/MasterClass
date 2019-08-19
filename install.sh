@@ -124,7 +124,11 @@ InstallRoot()
         echo root is installed at $ROOTSYS
         echo "*****************************"
 }
-INSTALDIR=$HOME/MC
+if [ "$#" -eq 1 ]; then 
+    INSTALDIR=$1
+else 
+    INSTALDIR=$HOME/MC
+fi
 export MCDIR=$INSTALDIR/MasterClass
 export ROOTDIR=$INSTALDIR/root
 CheckSystemTools
@@ -144,11 +148,13 @@ else
     cd $MCDIR
     git pull
 fi
-#download the data 
-cd $MCDIR/Data-Masterclass
-wget http://alice-project-masterclass-data.web.cern.ch/alice-project-masterclass-data/events.tgz
-tar -zxvf events.tgz
-rm events.tgz
+#download the data if needed
+if [ ! -d $MCDIR/Data-Masterclass ]; then 
+    mkdir MCDIR/Data-Masterclass && cd "$_"
+    wget http://alice-project-masterclass-data.web.cern.ch/alice-project-masterclass-data/events.tgz
+    tar -zxvf events.tgz
+    rm events.tgz
+fi
 #compile and link
 cd $MCDIR 
 LIBDIR=$MCDIR/library
