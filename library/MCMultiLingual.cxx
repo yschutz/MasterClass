@@ -32,7 +32,7 @@ Dans la fenetre <MasterClass>, il y a 3 boutons a votre disposition\n\
 En cliquant ces boutons, vous pouvez choisir l'un des modes suivant :\n\n\
   Demo     - demarre une demonstration de l'exercice MasterClass analysant 4 evenements\n\
 \
-  Etudiant - demarre l'exercice MasterClass avec 100 evenemets reels que vous devrez analyser\n\
+  Etudiant - demarre l'exercice MasterClass avec 100 evenements reels que vous devrez analyser\n\
 \
   Tuteur   - demarre l'exercice Masterclass avec des outils permettant de finaliser \n\
              l'exercice a partir des resultats obtenus par les etudiants et de conclure");
@@ -392,7 +392,7 @@ How to merge and analyze the students' results\n\n\
 But de l'analyse :\n\n\
 \
 La production de particules etranges est rare et elles ne sont pas produites dans chaque evenement\n\
-Vous avez 100 evenemets ; examinez chacun d'eux et comptez\n\
+Vous avez 100 evenements ; examinez chacun d'eux et comptez\n\
 combien de particules etranges de chaque espece vous pouvez trouver (combien de Kaons,\n\
 Lambdas, antiLambdas, Xis) et comparez vos resultats aux donnes MC.\n\n\
 \
@@ -430,7 +430,7 @@ Comment analyser un evenement :\n\n\
 \
    Confirmez en cliquant <Ceci est un XXX>, ou XXX est le nom de la particule que vous avez trouvee.\n\n\
 \
-   Lorsque vous avez trouve une particule, cliquez l'onglet <Masse Invariante> au-dessus de la visualition de l'evenemet.\n\
+   Lorsque vous avez trouve une particule, cliquez l'onglet <Masse Invariante> au-dessus de la visualition de l'evenement.\n\
    Pour mettre a jour vos resultats dans les histogrammes\n\n\
 \
    4. Lorsque vous avez termine l'analyse de l'evenement, cliquez <Evenement analyse !> pour compter les evenements analyses.\n\
@@ -635,7 +635,7 @@ Dans la partie basse, se trouvent les boutons de controle de l'application princ
 VOTRE MISSION:  \n\
 Dans cet exercice du programme MasterClass vous devez evaluer la multiplicite moyenne\n\
 des evenements pp (premiers 30 evenements), et des collisions Pb-Pb peripheriques (evenement 31), semi-centraux (evenement 32)  \n\
-et centraux (evenement 33) et determiner le facteur de modification nucleaire integre pour ces 3 evenemets Pb-Pb.\n \n\
+et centraux (evenement 33) et determiner le facteur de modification nucleaire integre pour ces 3 evenements Pb-Pb.\n \n\
 Avant de commencer vous devez vous familiarisez avec cet outil. \n\n\
 Dans l'afficheur d'evenements vous pouvez visualiser les grappes (points d'espace reconstruits)\n\
 dans les differents detecteurs. A partir de ces grappes, les trajectoires des particules, appelee trace, traversant les\n\
@@ -651,7 +651,7 @@ C'est pour cela qu'il vous suffira de visualiser uniquement les traces primaires
 \t \"Voir les traces primaires\". \n\
 En cliquant a nouveau, la totalite de l'evenement s'affichera a nouveau.\n\n\
 Pour atteindre l'objectif final, vous devez utiliser le \"Compteur\". Cet outil vous aidera a compter le \n\
-nombre de traces primaires. Il incrementera la multiplicite de l'evenemet courant d'une unite en cliquant \n\
+nombre de traces primaires. Il incrementera la multiplicite de l'evenement courant d'une unite en cliquant \n\
 une trace, qui changea de couleur (rouge) pour vous eviter les doubles comptages.\n\n\
 Apres avoir clique le bouton \"Evenement analyze\" la multiplicte de cet evenement sera ajoutee \n\
 a l'histogramme sous l'onglet \"Caracteristiques de l'evenement\". \n\n\
@@ -739,7 +739,7 @@ statistics box of the corresponding histogram in the top row.\
    fEnglish.push_back("You do not need to count tracks");
    fFrancais.push_back("Uniquement traces primaires");
    fEnglish.push_back("Show primary tracks only");
-   fFrancais.push_back("Caracteristiques de l'evenemet");
+   fFrancais.push_back("Caracteristiques de l'evenement");
    fEnglish.push_back("Event Characteristics");
    fFrancais.push_back("Cette trace a deja ete compte");
    fEnglish.push_back("This track has already been counted");
