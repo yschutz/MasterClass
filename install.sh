@@ -25,6 +25,14 @@ CheckSystemTools()
         MGIT=0
     fi
 
+    tar  > /dev/null 2>&1
+    if [ $? -eq 127 ]; then 
+        echo "MISSING tar on your system"
+        MTAR=1
+    else 
+        MTAR=0
+    fi
+
     if [ ! -d $ROOTDIR ] && [ -z "${ROOTSYS}" ]; then 
         echo "MISSING ROOT installation"
         MROOT=1
@@ -49,7 +57,7 @@ CheckSystemTools()
             MLSB=0
         fi
     fi 
-    if [ $MWGET -eq 1 -o $MGCC -eq 1 -o $MGIT -eq 1 ]; then 
+    if [ $MWGET -eq 1 -o $MGCC -eq 1 -o $MGIT -eq 1 -o $MTAR -eq 1 ]; then 
         exit
     fi  
 }
@@ -117,8 +125,8 @@ InstallRoot()
         echo "*****************************"
 }
 INSTALDIR=$HOME/MC
-MCDIR=$INSTALDIR/MasterClass
-ROOTDIR=$INSTALDIR/root
+export MCDIR=$INSTALDIR/MasterClass
+export ROOTDIR=$INSTALDIR/root
 CheckSystemTools
 #Check if INSTALDIR exists 
 if [ ! -d $INSTALDIR ]; then 
@@ -136,8 +144,13 @@ else
     cd $MCDIR
     git pull
 fi
-cd $MCDIR 
+#download the data 
+cd $MCDIR/Data-Masterclass
+wget http://alice-project-masterclass-data.web.cern.ch/alice-project-masterclass-data/events.tgz
+tar -zxvf events.tgz
+rm events.tgz
 #compile and link
+cd $MCDIR 
 LIBDIR=$MCDIR/library
 if [ -d "$LIBDIR" ]; then
 	cd $LIBDIR
