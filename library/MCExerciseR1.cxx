@@ -32,7 +32,7 @@
 MCExerciseR1::MCExerciseR1(const TGWindow *p, UInt_t w, UInt_t h) : MCExercise(p, w, h)
 {
 	fDataSetFileDir = "Data-Masterclass/events/RAA/Part1/";
-	fDataTemplate = "AliVSD_MasterClass_x.root";
+	fDataTemplate = "AliVSD_Masterclass_x.root";
 	fGuiLogoName = "images/RAA.png";
 	MakeGui();
 	fTutor->SetEnabled(kFALSE);
