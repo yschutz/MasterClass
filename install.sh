@@ -124,6 +124,7 @@ InstallRoot()
         echo root is installed at $ROOTSYS
         echo "*****************************"
 }
+SAVEDIR=`pwd`
 if [ "$#" -eq 1 ]; then 
     INSTALDIR=$1
 else 
@@ -149,8 +150,8 @@ else
     git pull
 fi
 #download the data if needed
-if [ ! -d $MCDIR/Data-Masterclass ]; then 
-    mkdir MCDIR/Data-Masterclass && cd "$_"
+if [ ! -d $MCDIR/Data-Masterclass/events ]; then 
+    cd $MCDIR/Data-Masterclass
     wget http://alice-project-masterclass-data.web.cern.ch/alice-project-masterclass-data/events.tgz
     tar -zxvf events.tgz
     rm events.tgz
@@ -177,3 +178,4 @@ echo "************************************************************"
 echo "Installation completed .... "
 echo "To start the exercises: $MCDIR/MasterClassStart.sh"
 echo "************************************************************"
+cd $SAVEDIR
