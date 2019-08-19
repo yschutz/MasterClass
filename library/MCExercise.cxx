@@ -103,8 +103,8 @@ MCExercise::~MCExercise()
 //    if (fDataFile->IsOpen())
 //       fDataFile->Close();    
 
-    if (fInstructions)
-        fInstructions->CloseWindow(); 
+    // if (fInstructions)
+    //     fInstructions->CloseWindow(); 
     delete fMain; 
 }
 

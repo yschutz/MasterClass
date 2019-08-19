@@ -91,8 +91,8 @@ MCExerciseS1::~MCExerciseS1()
         fCSP->UnmapWindow();
     if (fCSP2)
         fCSP2->UnmapWindow();
-    if (fInstructions)
-        fInstructions->CloseWindow();
+    // if (fInstructions)
+    //     fInstructions->CloseWindow();
     if (fADI)
         fADI->UnmapWindow();
     if (fPAI)
@@ -811,7 +811,7 @@ void MCExerciseS1::Instructions()
 {
     MCMultiLingual &ml = MCMultiLingual::Instance();
     fInstructions = new TRootHelpDialog(gClient->GetRoot(), " ", 620, 400);
-    // fInstructions->DontCallClose();
+    fInstructions->DontCallClose();
     fInstructions->Popup();
     switch (fRole)
     {
