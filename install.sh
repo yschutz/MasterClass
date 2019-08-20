@@ -61,28 +61,6 @@ CheckSystemTools()
         exit
     fi  
 }
-GetOSName2()
-{
-    OS=`uname`
-    if [ "$OS" = "Linux" ]; then
-        local dis=`lsb_release -i`
-        OS=`echo ${dis#*:}`
-        local ver=`lsb_release -r`
-        ver=${ver#*:}
-        ver=${ver%.*}
-        OS=`echo $OS$ver gcc`
-        local gccv=`gcc -dumpversion`
-        gccv=${gccv%.*}
-        OS=`echo $OS$gccv`
-    elif [ "$OS" == "Darwin" ]; then 
-        OS=OsX
-        OS=$OS" "`sw_vers -productVersion`
-        OS=${OS%.*}
-    else 
-        echo "!!!! ERROR: no root distribution for OS = $OS"      
-        exit
-    fi
-}
 GetOSName()
 {
     OS=`uname`
