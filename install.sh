@@ -137,6 +137,9 @@ InstallRoot()
         "Fedora 29 gcc8")
         root=root_v6.18.00.Linux-fedora29-x86_64-gcc8.3.tar.gz
         ;;
+        "CentOS Linux 7 gcc4.8"
+        root=root_v6.18.00.Linux-centos7-x86_64-gcc4.8.tar.gz
+        ;;
         *) 
         echo "no binary root distribution for $OS; check here https://root.cern.ch/content/release-61800"
         return 1
