@@ -70,25 +70,24 @@ GetOSName()
             . /etc/os-release
             OS=$NAME
             local ver=$VERSION_ID
-            OS=`echo $OS $ver gcc`
         elif type lsb_release >/dev/null 2>&1; then
             # linuxbase.org
             OS=$(lsb_release -si)
             local ver=$(lsb_release -sr)
-            OS=`echo $OS$ver gcc`
         elif [ -f /etc/lsb-release ]; then
             # For some versions of Debian/Ubuntu without lsb_release command
             . /etc/lsb-release
             OS=$DISTRIB_ID
             local ver=$DISTRIB_RELEASE
-            OS=`echo $OS $ver gcc`
         elif [ -f /etc/debian_version ]; then
             # Older Debian/Ubuntu/etc.
             OS=Debian
             local ver=$(cat /etc/debian_version)
-            OS=`echo $OS $ver gcc`
         fi
         local gccv=`gcc -dumpversion`
+        ver=${ver#*:}
+        ver=${ver%.*}
+        OS=`echo $OS $ver gcc`
         gccv=${gccv%.*}
         OS=`echo $OS$gccv`
     elif [ "$OS" == "Darwin" ]; then 
@@ -130,7 +129,7 @@ InstallRoot()
         root=root_v6.18.00.Linux-fedora29-x86_64-gcc8.3.tar.gz
         ;;
         *) 
-        echo "not binary root distribution for $OS; check here https://root.cern.ch/content/release-61800"
+        echo "no binary root distribution for $OS; check here https://root.cern.ch/content/release-61800"
         exit
     esac
         wget https://root.cern/download/$root
@@ -171,6 +170,9 @@ if [ ! -d $MCDIR/Data-Masterclass/events ]; then
     cd $MCDIR/Data-Masterclass
     wget http://alice-project-masterclass-data.web.cern.ch/alice-project-masterclass-data/events.tgz
     tar -zxvf events.tgz
+    if [ $? -eq 127 ]; then 
+        exit 1
+    fi    
     rm events.tgz
 fi
 #compile and link
