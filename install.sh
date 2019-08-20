@@ -92,7 +92,7 @@ GetOSName()
             . /etc/os-release
             OS=$NAME
             local ver=$VERSION_ID
-            OS=`echo $OS$ver gcc`
+            OS=`echo $OS $ver gcc`
         elif type lsb_release >/dev/null 2>&1; then
             # linuxbase.org
             OS=$(lsb_release -si)
@@ -103,13 +103,16 @@ GetOSName()
             . /etc/lsb-release
             OS=$DISTRIB_ID
             local ver=$DISTRIB_RELEASE
-            OS=`echo $OS$ver gcc`
+            OS=`echo $OS $ver gcc`
         elif [ -f /etc/debian_version ]; then
             # Older Debian/Ubuntu/etc.
             OS=Debian
             local ver=$(cat /etc/debian_version)
-            OS=`echo $OS$ver gcc`
+            OS=`echo $OS $ver gcc`
         fi
+        local gccv=`gcc -dumpversion`
+        gccv=${gccv%.*}
+        OS=`echo $OS$gccv`
     elif [ "$OS" == "Darwin" ]; then 
         OS=OsX
         OS=$OS" "`sw_vers -productVersion`
