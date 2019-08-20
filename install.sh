@@ -61,7 +61,7 @@ CheckSystemTools()
         exit
     fi  
 }
-GetOSName()
+GetOSName2()
 {
     OS=`uname`
     if [ "$OS" = "Linux" ]; then
@@ -74,6 +74,42 @@ GetOSName()
         local gccv=`gcc -dumpversion`
         gccv=${gccv%.*}
         OS=`echo $OS$gccv`
+    elif [ "$OS" == "Darwin" ]; then 
+        OS=OsX
+        OS=$OS" "`sw_vers -productVersion`
+        OS=${OS%.*}
+    else 
+        echo "!!!! ERROR: no root distribution for OS = $OS"      
+        exit
+    fi
+}
+GetOSName()
+{
+    OS=`uname`
+    if [ "$OS" = "Linux" ]; then
+        if [ -f /etc/os-release ]; then
+        # freedesktop.org and systemd
+            . /etc/os-release
+            OS=$NAME
+            local ver=$VERSION_ID
+            OS=`echo $OS$ver gcc`
+        elif type lsb_release >/dev/null 2>&1; then
+            # linuxbase.org
+            OS=$(lsb_release -si)
+            local ver=$(lsb_release -sr)
+            OS=`echo $OS$ver gcc`
+        elif [ -f /etc/lsb-release ]; then
+            # For some versions of Debian/Ubuntu without lsb_release command
+            . /etc/lsb-release
+            OS=$DISTRIB_ID
+            local ver=$DISTRIB_RELEASE
+            OS=`echo $OS$ver gcc`
+        elif [ -f /etc/debian_version ]; then
+            # Older Debian/Ubuntu/etc.
+            OS=Debian
+            local ver=$(cat /etc/debian_version)
+            OS=`echo $OS$ver gcc`
+        fi
     elif [ "$OS" == "Darwin" ]; then 
         OS=OsX
         OS=$OS" "`sw_vers -productVersion`
