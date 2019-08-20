@@ -137,7 +137,7 @@ InstallRoot()
         "Fedora 29 gcc8")
         root=root_v6.18.00.Linux-fedora29-x86_64-gcc8.3.tar.gz
         ;;
-        "CentOS Linux 7 gcc4.8"
+        "CentOS Linux 7 gcc4.8")
         root=root_v6.18.00.Linux-centos7-x86_64-gcc4.8.tar.gz
         ;;
         *) 
