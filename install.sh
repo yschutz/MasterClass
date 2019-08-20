@@ -139,7 +139,7 @@ InstallRoot()
         ;;
         *) 
         echo "no binary root distribution for $OS; check here https://root.cern.ch/content/release-61800"
-        exit
+        return 1
     esac
         wget https://root.cern/download/$root
         tar -zxvf $root
