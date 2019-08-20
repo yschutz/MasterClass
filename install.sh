@@ -58,8 +58,9 @@ CheckSystemTools()
         fi
     fi 
     if [ $MWGET -eq 1 -o $MGCC -eq 1 -o $MGIT -eq 1 -o $MTAR -eq 1 ]; then 
-        exit
+        return 1
     fi  
+    return 0
 }
 GetOSName()
 {
@@ -96,12 +97,20 @@ GetOSName()
         OS=${OS%.*}
     else 
         echo "!!!! ERROR: no root distribution for OS = $OS"      
-        exit
+        return 1
     fi
+    return 0
 }
 InstallRoot()
 {
+    cd $INSTALDIR 
+    if [ $MROOT -eq 0 ]; then 
+        return 0
+    fi
     GetOSName
+    if [ $? -eq 1 ]; then
+        return 1
+    fi 
     cd $INSTALDIR
     case $OS in 
         "OsX 10.14")
@@ -139,6 +148,60 @@ InstallRoot()
         echo "*****************************"
         echo root is installed at $ROOTSYS
         echo "*****************************"
+    return 0
+}
+DownLoadSource()
+{
+    if [ $MMC -eq 1 ]; then 
+        #download source code from github into $HOME/MasterClass 
+        git clone https://github.com/yschutz/MasterClass.git
+    else 
+        #update the existing version
+        cd $MCDIR
+        git pull
+    fi
+}
+DownLoadData()
+{
+    #download the data if needed
+    if [ ! -d $MCDIR/Data-Masterclass/events ]; then 
+        cd $MCDIR/Data-Masterclass
+        wget http://alice-project-masterclass-data.web.cern.ch/alice-project-masterclass-data/events.tgz
+        tar -zxvf events.tgz
+        if [ $? -eq 127 ]; then 
+            return 1
+        fi    
+        rm events.tgz
+    fi
+    return 0
+}
+MakeLib()
+{
+    #compile and link
+    cd $MCDIR 
+    LIBDIR=$MCDIR/library
+    if [ -d "$LIBDIR" ]; then
+	    cd $LIBDIR
+	    make
+        retVal=$?
+ 	    if [ $retVal -ne 0 ]; then
+            echo "!!!! Compilation Error !!!"
+	        cd $MCDIR
+	        return $retVal
+	    fi
+        echo $MCDIR
+	    cd $MCDIR
+    else
+	    echo "!!!! ERROR: $LIBDIR not found"
+	    return 1
+    fi 
+    return 0
+}
+Error()
+{
+    echo "************************************************************"
+    echo "ERROR encountered during the installation !!! "
+    echo "************************************************************"
 }
 SAVEDIR=`pwd`
 if [ "$#" -eq 1 ]; then 
@@ -148,53 +211,33 @@ else
 fi
 export MCDIR=$INSTALDIR/MasterClass
 export ROOTDIR=$INSTALDIR/root
-CheckSystemTools
 #Check if INSTALDIR exists 
 if [ ! -d $INSTALDIR ]; then 
     mkdir -p $INSTALDIR
 fi    
-cd $INSTALDIR 
-if [ $MROOT -eq 1 ]; then 
-    InstallRoot
-fi    
-if [ $MMC -eq 1 ]; then 
-#download source code from github into $HOME/MasterClass 
-    git clone https://github.com/yschutz/MasterClass.git
+CheckSystemTools
+if [ $? -eq 0 ]; then 
+    InstallRoot 
+    if [ $? -eq 0 ]; then 
+        DownLoadSource
+        DownLoadData
+        if [ $? -eq 0 ]; then 
+            MakeLib
+            if [ $? -eq 0 ]; then     
+                echo "************************************************************"
+                echo "Installation completed .... "
+                echo "To start the exercises: $MCDIR/MasterClassStart.sh"
+                echo "************************************************************"
+            else 
+                Error
+            fi
+        else 
+            Error
+        fi
+    else 
+        Error
+    fi
 else 
-#update the existing version
-    cd $MCDIR
-    git pull
+    Error    
 fi
-#download the data if needed
-if [ ! -d $MCDIR/Data-Masterclass/events ]; then 
-    cd $MCDIR/Data-Masterclass
-    wget http://alice-project-masterclass-data.web.cern.ch/alice-project-masterclass-data/events.tgz
-    tar -zxvf events.tgz
-    if [ $? -eq 127 ]; then 
-        exit 1
-    fi    
-    rm events.tgz
-fi
-#compile and link
-cd $MCDIR 
-LIBDIR=$MCDIR/library
-if [ -d "$LIBDIR" ]; then
-	cd $LIBDIR
-	make
-    retVal=$?
- 	if [ $retVal -ne 0 ]; then
-    	echo "!!!! Compilation Error !!!"
-		cd $MCDIR
-		exit $retVal
-	fi
-    echo $MCDIR
-	cd $MCDIR
-else
-	echo "!!!! ERROR: $LIBDIR not found"
-	exit 1
-fi 
-echo "************************************************************"
-echo "Installation completed .... "
-echo "To start the exercises: $MCDIR/MasterClassStart.sh"
-echo "************************************************************"
 cd $SAVEDIR
