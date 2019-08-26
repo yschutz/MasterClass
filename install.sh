@@ -243,4 +243,17 @@ if [ $? -eq 0 ]; then
 else 
     Error    
 fi
+OS=`uname`
+case $OS in 
+    "Darwin")
+    bashrc=$HOME/.bash_profile
+    ;;
+    "Linux")
+    bashrc=$HOME/.bashrc
+    ;;
+    *)
+    bashrc=
+esac
+echo 'export ROOTDIR='$ROOTDIR >> $bashrc
+echo 'export MCDIR='$ROOTDIR >> $bashrc
 cd $SAVEDIR

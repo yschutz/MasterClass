@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=ALICE MasterClass
+Comment=MasterClass Application Launcher for Linux
+Exec=$HOME/MC/MasterClass/MasterClassStart.sh
+Icon=$HOME/MC/MasterClass/nui2.png
+Terminal=false
+Type=Application
