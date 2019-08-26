@@ -255,5 +255,5 @@ case $OS in
     bashrc=
 esac
 echo 'export ROOTDIR='$ROOTDIR >> $bashrc
-echo 'export MCDIR='$ROOTDIR >> $bashrc
+echo 'export MCDIR='$MCDIR >> $bashrc
 cd $SAVEDIR
