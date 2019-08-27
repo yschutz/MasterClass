@@ -6,8 +6,8 @@ launch_root()
 	RETVAL=$?
 	return $RETVAL; 
 }
-export ROOTDIR=RRRRRR
 export MCDIR=MMMMMM
+export ROOTDIR=RRRRRR
 if [ -z "${ROOTSYS}" ]; then
 	if [ -d $ROOTDIR ]; then 
 		source $ROOTDIR/bin/thisroot.sh
