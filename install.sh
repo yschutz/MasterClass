@@ -246,6 +246,17 @@ fi
 sed -i -e 's~'"RRRRRR"'~'"$ROOTDIR"'~g' $MCDIR/MasterClassStart.sh
 sed -i -e 's~'"MMMMMM"'~'"$MCDIR"'~g' $MCDIR/MasterClassStart.sh
 cd $SAVEDIR
-cp $MCDIR/MasterClass.desktop $HOME/Desktop/MasterClass.desktop
-sed -i -e 's~'"MMMMMM"'~'"$MCDIR"'~g' $HOME/Desktop/MasterClass.desktop 
-chmod +x $HOME/Desktop/MasterClass.desktop
+OS=`uname`
+case $OS in
+"Darwin")
+    cp $MCDIR/MasterClassStart.sh $HOME/Desktop/MasterClassStart.command
+    chmod +x $HOME/Desktop/MasterClassStart.command
+;;
+"Linux")
+    cp $MCDIR/MasterClass.desktop $HOME/Desktop/MasterClass.desktop
+    sed -i -e 's~'"MMMMMM"'~'"$MCDIR"'~g' $HOME/Desktop/MasterClass.desktop 
+    chmod +x $HOME/Desktop/MasterClass.desktop
+;;
+*)
+    echo $OS is an unkown OS
+esac
