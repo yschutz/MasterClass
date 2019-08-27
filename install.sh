@@ -246,5 +246,6 @@ fi
 sed -i -e 's~'"RRRRRR"'~'"$ROOTDIR"'~g' $MCDIR/MasterClassStart.sh
 sed -i -e 's~'"MMMMMM"'~'"$MCDIR"'~g' $MCDIR/MasterClassStart.sh
 cd $SAVEDIR
-cp $MCDIR/MasterClass.desktop MasterClass.desktop
-sed -i -e 's~'"MMMMMM"'~'"$MCDIR"'~g' MasterClass.desktop 
+cp $MCDIR/MasterClass.desktop $HOME/Desktop/MasterClass.desktop
+sed -i -e 's~'"MMMMMM"'~'"$MCDIR"'~g' $HOME/Desktop/MasterClass.desktop 
+chmod +x $HOME/Desktop/MasterClass.desktop
