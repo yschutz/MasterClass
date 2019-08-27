@@ -6,6 +6,8 @@ launch_root()
 	RETVAL=$?
 	return $RETVAL; 
 }
+export ROOTDIR=RRRRRR
+export MCDIR=MMMMMM
 if [ -z "${ROOTSYS}" ]; then
 	if [ -d $ROOTDIR ]; then 
 		source $ROOTDIR/bin/thisroot.sh
@@ -14,18 +16,6 @@ if [ -z "${ROOTSYS}" ]; then
     	exit;
 	fi
 fi
-OS=`uname`
-case $OS in 
-    "Darwin")
-    bashrc=$HOME/.bash_profile
-    ;;
-    "Linux")
-    bashrc=$HOME/.bashrc
-    ;;
-    *)
-    bashrc=
-esac
-source $bashrc
 DIRSAVE=`pwd`
 LIBDIR=$MCDIR/library
 echo $ROOTSYS $MCDIR

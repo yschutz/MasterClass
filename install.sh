@@ -243,19 +243,6 @@ if [ $? -eq 0 ]; then
 else 
     Error    
 fi
-OS=`uname`
-case $OS in 
-    "Darwin")
-    bashrc=$HOME/.bash_profile
-    ;;
-    "Linux")
-    bashrc=$HOME/.bashrc
-    ;;
-    *)
-    bashrc=
-esac
-grep -v "ROOTDIR" $bashrc > temp && mv temp $bashrc 
-grep -v "MCDIR" $bashrc > temp && mv temp $bashrc
-echo 'export ROOTDIR='$ROOTDIR >> $bashrc
-echo 'export MCDIR='$MCDIR >> $bashrc
+sed -i -e 's~'"RRRRRR"'~'"$ROOTDIR"'~g' $MCDIR/MasterClassStart.sh
+sed -i -e 's~'"MMMMMM"'~'"$MCDIR"'~g' $MCDIR/MasterClassStart.sh
 cd $SAVEDIR
