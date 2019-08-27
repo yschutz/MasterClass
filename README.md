@@ -9,3 +9,11 @@ chmod +x install.sh
 ./install.sh your_installation-directory (default is $HOME/MC)**
 
 This will create a icon with the ALICE logo on your desktop; double click on it to start the exercises.
+
+Supported platforms are: 
+
+- OsX 10.14, and OsX 10.13
+- Ubuntu 18 gcc7, Ubuntu 16 gcc5, Ubuntu 14 gcc4
+- Scientific Linux 7 gcc4.8
+- Fedora 30 gcc9, Fedora 29 gcc8
+- CentOS Linux 7 gcc4
