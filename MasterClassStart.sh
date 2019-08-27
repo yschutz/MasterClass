@@ -14,6 +14,18 @@ if [ -z "${ROOTSYS}" ]; then
     	exit;
 	fi
 fi
+OS=`uname`
+case $OS in 
+    "Darwin")
+    bashrc=$HOME/.bash_profile
+    ;;
+    "Linux")
+    bashrc=$HOME/.bashrc
+    ;;
+    *)
+    bashrc=
+esac
+source $bashrc
 DIRSAVE=`pwd`
 LIBDIR=$MCDIR/library
 echo $ROOTSYS $MCDIR

@@ -254,6 +254,8 @@ case $OS in
     *)
     bashrc=
 esac
+grep -v "ROOTDIR" $bashrc > temp && mv temp $bashrc 
+grep -v "MCDIR" $bashrc > temp && mv temp $bashrc
 echo 'export ROOTDIR='$ROOTDIR >> $bashrc
 echo 'export MCDIR='$MCDIR >> $bashrc
 cd $SAVEDIR
