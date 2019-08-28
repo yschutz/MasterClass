@@ -4,24 +4,6 @@ if ! echo $parents | grep -q amiconfig; then
   echo "Skipping startup script, which should only run under amiconfig daemon"
   exit 0
 fi
-
-ls /cvmfs/alice.cern.ch >/dev/null
-echo 'if [ "$PS1" ]; then
-
-' >> /home/masterclass/.bashrc
-if [[ $LANG == *"fr"*  ]]; then 
-	echo 'echo "***** BIENVENNU.E POUR LES EXERCICES MASTER CLASS ALICE *****"
-          echo "***** *************************************** *****"
-          echo "** Pour démarrer taper : "
-          echo "> ./Bash_StartExercise.sh -h"' >> /home/masterclass/.bashrc
-else	
-	echo 'echo "***** WELCOME TO ALICE MASTER CLASS EXERCICES *****"
-	      echo "***** *************************************** *****"
-	      echo "** To start type: "
-	      echo "> ./Bash_StartExercise.sh -h"' >> /home/masterclass/.bashrc
-fi	
-exit 0
-
 [amiconfig]
 plugins=cernvm
 
