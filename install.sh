@@ -205,7 +205,9 @@ Error()
     echo "************************************************************"
     echo "ERROR encountered during the installation !!! "
     echo "************************************************************"
+    ERRORFLAG=1
 }
+ERRORFLAG=0
 SAVEDIR=`pwd`
 if [ "$#" -eq 1 ]; then 
     INSTALDIR=$1
@@ -245,20 +247,22 @@ if [ $? -eq 0 ]; then
 else 
     Error    
 fi
-sed -i -e 's~'"RRRRRR"'~'"$ROOTDIR"'~g' $MCDIR/MasterClassStart.sh
-sed -i -e 's~'"MMMMMM"'~'"$MCDIR"'~g' $MCDIR/MasterClassStart.sh
-cd $SAVEDIR
-OS=`uname`
-case $OS in
-"Darwin")
-    cp $MCDIR/MasterClassStart.sh $HOME/Desktop/MasterClassStart.command
-    chmod +x $HOME/Desktop/MasterClassStart.command
-;;
-"Linux")
-    cp $MCDIR/MasterClass.desktop $HOME/Desktop/MasterClass.desktop
-    sed -i -e 's~'"MMMMMM"'~'"$MCDIR"'~g' $HOME/Desktop/MasterClass.desktop 
-    chmod +x $HOME/Desktop/MasterClass.desktop
-;;
-*)
-    echo $OS is an unkown OS
-esac
+if [ $ERRORFLAG -eq 0 ]; then 
+    sed -i -e 's~'"RRRRRR"'~'"$ROOTDIR"'~g' $MCDIR/MasterClassStart.sh
+    sed -i -e 's~'"MMMMMM"'~'"$MCDIR"'~g' $MCDIR/MasterClassStart.sh
+    cd $SAVEDIR
+    OS=`uname`
+    case $OS in
+    "Darwin")
+        cp $MCDIR/MasterClassStart.sh $HOME/Desktop/MasterClassStart.command
+        chmod +x $HOME/Desktop/MasterClassStart.command
+    ;;
+    "Linux")
+        cp $MCDIR/MasterClass.desktop $HOME/Desktop/MasterClass.desktop
+        sed -i -e 's~'"MMMMMM"'~'"$MCDIR"'~g' $HOME/Desktop/MasterClass.desktop 
+        chmod +x $HOME/Desktop/MasterClass.desktop
+    ;;
+    *)
+        echo $OS is an unkown OS
+    esac
+fi
