@@ -229,7 +229,9 @@ if [ $? -eq 0 ]; then
             if [ $? -eq 0 ]; then     
                 echo "************************************************************"
                 echo "Installation completed .... "
-                echo "To start the exercises: $MCDIR/MasterClassStart.sh"
+                echo "To start the exercises: "
+                echo "           click the icon ALICE MASTER Class on your desktop"
+                echo "           or run from a terminal $MCDIR/MasterClassStart.sh"
                 echo "************************************************************"
             else 
                 Error
