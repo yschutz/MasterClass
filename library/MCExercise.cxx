@@ -1,3 +1,4 @@
+#include "MCAliCalculator.h"
 #include "MCExercise.h"
 #include "MCMultiLingual.h"
 #include "MCMultiView.h"
@@ -856,8 +857,11 @@ Bool_t MCExercise::OpenDataFile()
 
             fDataSetFileName = fDataSetFileDir + dataName;
         } 
-        else if (fRole == RO_DEMO)
+        else if (fRole == RO_DEMO) 
+        {
+            fDataSet = -1; 
             fDataSetFileName = fDataSetFileDir + "AliVSD_example.root";
+        }
     }
     if (! (fDataFile = TFile::Open(fDataSetFileName)))
     {
@@ -885,9 +889,17 @@ void MCExercise::Start(E_ROLE role)
     fRole = role;
     if (fRole == RO_STUDENT || fRole == RO_DEMO)
     {
+        fDataSetFileName.Clear(); 
         if (!OpenDataFile()) 
             return;  
         MCVSDReader::Instance().Init(fDataSetFileName);
+    }
+    if (MCAliCalculator::Instance().IsStarted())
+    {
+        if (fRole == RO_STUDENT)
+        MCAliCalculator::Instance().BlockButtons(kTRUE);
+        else if (fRole == RO_DEMO)
+        MCAliCalculator::Instance().BlockButtons(kFALSE);
     }
     StartExercise(); 
  

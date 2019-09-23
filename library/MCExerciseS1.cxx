@@ -52,7 +52,7 @@
 MCExerciseS1::MCExerciseS1(const TGWindow *p, UInt_t w, UInt_t h) : MCExercise(p, w, h)
 {
     fDataSetFileDir = "Data-Masterclass/events/Strangeness/Part1/";
-    fDataTemplate = "AliVSD_MasterClass_pp_x.root";
+    fDataTemplate = "AliVSD_MasterClass_x.root";
     fGuiLogoName = "images/strangeness.png";
     MakeGui();
 }
@@ -1626,36 +1626,6 @@ void MCExerciseS1::NextEvent()
     if (MCAliCalculator::Instance().IsStarted())
         MCAliCalculator::Instance().SetZero();
 }
-// //=MCExerciseS1========================================================================
-// Bool_t MCExerciseS1::OpenDataFile()
-// {
-//     Bool_t rv = kFALSE;
-//     if (fRole == RO_STUDENT)
-//     {
-//         fDataSet = fData->GetSelected() + 1;
-//         TString dataName(fDataTemplate);
-//         if (fDataSet == 101)
-//             dataName = "AliVSD_MasterClass_PbPb_101.root";
-//         else
-//             // dataName = Form("AliVSD_MasterClass_pp_%i.root", fDataSet);
-//             dataName.ReplaceAll("x", Form("%i", fDataSet));
-
-//         fDataSetFileName = fDataSetFileDir + dataName;
-//     }
-//     else if (fRole == RO_DEMO)
-//     {
-//         fDataSetFileName = fDataSetFileDir + "AliVSD_example.root";
-//     }
-//     if (!TFile::Open(fDataSetFileName))
-//     {
-//         TString msgText(Form("Event file %s not found! \nCheck your installation", fDataSetFileName.Data()));
-//         new TGMsgBox(gClient->GetRoot(), fMain, "MCExerciseS1:Data", msgText, kMBIconExclamation, kMBOk);
-//         gApplication->Terminate();
-//     }
-//     else
-//         rv = kTRUE;
-//     return rv;
-// }
 //=MCExerciseS1========================================================================
 void MCExerciseS1::PatternInfo()
 {
@@ -2064,7 +2034,7 @@ void MCExerciseS1::TrackInfoWindo(Double_t px, Double_t py, Double_t pz, Double_
     fTIW->Resize();
     fTIW->SetWMSizeHints(fTIW->GetDefaultWidth(), fTIW->GetDefaultHeight(), 1000, 1000, 0, 0);
     fTIW->MapRaised();
-    fTIW->Move(100, 1000);
+    fTIW->Move(200, 200);
 }
 
 //=MCExerciseS1========================================================================
