@@ -350,6 +350,11 @@ void MCExerciseS2::FitInvariantMass()
     fFitPoly->SetLineColor(kBlue + 1);
     fFitPoly->Draw("SAME");
 
+    TLatex *lLaTeX_Mass = new TLatex();
+    lLaTeX_Mass->SetTextSize(0.03);
+    lLaTeX_Mass->SetTextColor(kGray + 2);
+    lLaTeX_Mass->DrawLatexNDC(0.59, 0.85, fMassInfo.Data());
+
     fPad->Update();
 }
 
@@ -391,17 +396,16 @@ void MCExerciseS2::LoadHisto(Int_t iPart, Int_t iHist)
     TString lStrID(fVecListHistos[iPart][iHist].Data());
     fTabCheckButton[lStrID.Data()]->SetOn(kTRUE);
     TString lHistTitle(ml.tr("Invariant Mass")), lXTitle(""), lYTitle("");
-    if (!fMinvHisto)
-    {
-        fMinvHisto = new TH1D("MinvHisto", ml.tr("Invariant Mass"), 2000, 0., 2.);
-        fMinvHisto->Rebin(2);
-        fMinvHisto->SetStats(kFALSE);
-        fMinvHisto->SetLineWidth(2);
-        lXTitle = ml.tr("Invariant Mass (GeV/c^{2})");
-        lYTitle = TString::Format("%s %4.2f MeV/c^{2}",
-                                  ml.tr("Counts per bin of "),
-                                  fMinvHisto->GetXaxis()->GetBinWidth(1) * 1000.);
-    }
+    if (fMinvHisto)
+        delete fMinvHisto;
+    fMinvHisto = new TH1D("MinvHisto", ml.tr("Invariant Mass"), 2000, 0., 2.);
+    fMinvHisto->Rebin(2);
+    fMinvHisto->SetStats(kFALSE);
+    fMinvHisto->SetLineWidth(2);
+    lXTitle = ml.tr("Invariant Mass (GeV/c^{2})");
+    lYTitle = TString::Format("%s %4.2f MeV/c^{2}",
+                              ml.tr("Counts per bin of "),
+                              fMinvHisto->GetXaxis()->GetBinWidth(1) * 1000.);
     fCurrentLabel = FormatText(lStrID);
     lHistTitle = lHistTitle + fCurrentLabel;
 
