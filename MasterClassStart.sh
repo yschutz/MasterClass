@@ -6,8 +6,8 @@ launch_root()
 	RETVAL=$?
 	return $RETVAL; 
 }
-export MCDIR=/Users/schutz/MC/MasterClass
-export ROOTDIR=/Users/schutz/MC/root
+export MCDIR="MMMMMM"
+export ROOTDIR="RRRRRR"
 if [ -z "${ROOTSYS}" ]; then
 	if [ -d $ROOTDIR ]; then 
 		source $ROOTDIR/bin/thisroot.sh
