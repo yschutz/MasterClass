@@ -18,6 +18,7 @@
 #include <TGPicture.h>
 #include <TGWindow.h>
 #include <TROOT.h>
+#include <TSystem.h>
 
 #include <iostream>
 /*
@@ -75,21 +76,37 @@ MCMain::MCMain(const TGWindow *p, UInt_t w, UInt_t h, Int_t opt)
    fMenuView->CheckEntry(M_VIEW_ENBL_DOCK);
    fMenuView->CheckEntry(M_VIEW_ENBL_HIDE);
    fMenuView->Connect("Activated(Int_t", "MCMain", this, "HandleMenu(ECommand");
+   
+   TString datapath("Data-Masterclass/events/");
 
    // pop up menu Exercices Strangeness
    fMenuExSTRP = new TGPopupMenu(gClient->GetRoot());
    fMenuExSTRP->AddEntry("Part&1", M_EX_STRP1);
    fMenuExSTRP->AddEntry("Part&2", M_EX_STRP2);
-
+   if (gSystem->AccessPathName(datapath + "Strangeness") == kTRUE)
+   {      
+      fMenuExSTRP->DisableEntry(M_EX_STRP1); 
+      fMenuExSTRP->DisableEntry(M_EX_STRP2); 
+   } 
    // pop up menu Exercices RAA
    fMenuExRAAP = new TGPopupMenu(gClient->GetRoot());
    fMenuExRAAP->AddEntry("Part&1", M_EX_RAAP1);
    fMenuExRAAP->AddEntry("Part&2", M_EX_RAAP2);
+   if (gSystem->AccessPathName(datapath + "RAA") == kTRUE)
+   {
+      fMenuExRAAP->DisableEntry(M_EX_RAAP1);
+      fMenuExRAAP->DisableEntry(M_EX_RAAP2);
+   }
 
-   // pop up menu Exercices Strangeness
+   // pop up menu Exercices JPsi
    fMenuExJPsP = new TGPopupMenu(gClient->GetRoot());
    fMenuExJPsP->AddEntry("Part&1", M_EX_JPSP1);
    // fMenuExJPsP->AddEntry("Part&2", M_EX_JPSP2);
+   if (gSystem->AccessPathName(datapath + "JPsi") == kTRUE)
+   {
+      fMenuExJPsP->DisableEntry(M_EX_JPSP1);
+      // fMenuExJPsP->DisableEntry(M_EX_JPSP2);
+   }
 
    fMenuEx = new TGPopupMenu(gClient->GetRoot());
    fMenuEx->AddPopup("&Strangeness", fMenuExSTRP);
