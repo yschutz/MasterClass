@@ -181,7 +181,7 @@ DownLoadSource()
 DownLoadData()
 {
     #download the data if needed
-    if [ ! -d $MCDIR/Data-Masterclass/events ]; then 
+    if [ ! -d $MCDIR/Data-Masterclass/events/$EXERCISE ]; then 
         cd $MCDIR/Data-Masterclass
         wget http://alice-project-masterclass-data.web.cern.ch/alice-project-masterclass-data/events$EXERCISE.tgz
         tar -zxvf events$EXERCISE.tgz
@@ -221,7 +221,7 @@ Error()
     echo "************************************************************"
     ERRORFLAG=1
 }
-EXERCISE="ALL"
+EXERCISE="All"
 INSTALDIR=$HOME/MC
 while [[ $# -gt 0 ]] 
 do 
