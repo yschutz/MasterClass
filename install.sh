@@ -1,4 +1,10 @@
 #!/bin/bash
+Help()
+{
+    echo "usage: ./install [-h | --help] [-e | --exercise All | Strangeness |  RAA | JPsi] [-d | --dir instaldirectory]" 
+    echo "default values: exercise=ALL; dir=$HOME/MC"
+	exit 1
+}
 CheckSystemTools()
 {
     wget -h > /dev/null 2>&1
@@ -11,10 +17,18 @@ CheckSystemTools()
 
     gcc  > /dev/null 2>&1
     if [ $? -eq 127 ]; then 
-        echo "MISSING gcc on your system"
+        echo "MISSING gcc and standart C++ library on your system"
         MGCC=1
     else 
         MGCC=0
+    fi
+
+    make  > /dev/null 2>&1
+    if [ $? -eq 127 ]; then 
+        echo "MISSING make on your system"
+        MMAKE=1
+    else 
+        MMAKE=0
     fi
 
     git  > /dev/null 2>&1
@@ -57,7 +71,7 @@ CheckSystemTools()
             MLSB=0
         fi
     fi 
-    if [ $MWGET -eq 1 -o $MGCC -eq 1 -o $MGIT -eq 1 -o $MTAR -eq 1 ]; then 
+    if [ $MWGET -eq 1 -o $MGCC -eq 1 -o $MGIT -eq 1 -o $MTAR -eq 1 -o $MMAKE -eq 1 ]; then 
         return 1
     fi  
     return 0
@@ -169,12 +183,12 @@ DownLoadData()
     #download the data if needed
     if [ ! -d $MCDIR/Data-Masterclass/events ]; then 
         cd $MCDIR/Data-Masterclass
-        wget http://alice-project-masterclass-data.web.cern.ch/alice-project-masterclass-data/events.tgz
-        tar -zxvf events.tgz
+        wget http://alice-project-masterclass-data.web.cern.ch/alice-project-masterclass-data/events$EXERCISE.tgz
+        tar -zxvf events$EXERCISE.tgz
         if [ $? -eq 127 ]; then 
             return 1
         fi    
-        rm events.tgz
+        rm events$EXERCISE.tgz
     fi
     return 0
 }
@@ -207,13 +221,36 @@ Error()
     echo "************************************************************"
     ERRORFLAG=1
 }
+EXERCISE="ALL"
+INSTALDIR=$HOME/MC
+while [[ $# -gt 0 ]] 
+do 
+	key="$1"
+	case $key in 
+		-h | --help)
+		Help
+		;;
+		-e | --exercise)
+		EXERCISE="$2"
+		shift
+		;;
+        -d | --dir)
+        INSTALDIR="$2"
+        shift
+        ;;
+		*)
+		Help
+		exit 1
+		shift
+		;;
+	esac
+shift
+done
+echo "*****"
+echo "***** Exercise $EXERCISE will be installed in $INSTALDIR *****"
+echo "*****"
 ERRORFLAG=0
 SAVEDIR=`pwd`
-if [ "$#" -eq 1 ]; then 
-    INSTALDIR=$1
-else 
-    INSTALDIR=$HOME/MC
-fi
 export MCDIR=$INSTALDIR/MasterClass
 export ROOTDIR=$INSTALDIR/root
 #Check if INSTALDIR exists 
