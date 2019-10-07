@@ -18,5 +18,6 @@
 #pragma link C++ class MCAliSelector+;
 #pragma link C++ class MCAliExtractor+;
 #pragma link C++ class MCMultiLingual+;
+#pragma link C++ class MCTutorial+; 
 
 #endif

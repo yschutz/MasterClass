@@ -17,6 +17,7 @@ class MCExerciseR1;
 class MCExerciseR2;
 class MCExerciseS1;
 class MCExerciseS2;
+class MCTutorial; 
 
 enum ECommand
 {
@@ -35,7 +36,8 @@ enum ECommand
    M_VIEW_DOCK,
    M_VIEW_UNDOCK,
    M_LAN_FR,
-   M_LAN_EN
+   M_LAN_EN,
+   M_TUTO_TRACKS
 };
 
 class MCMain
@@ -61,7 +63,9 @@ private:
    TGPopupMenu      *fMenuExSTRP;
    TGPopupMenu      *fMenuGo;
    TGPopupMenu      *fMenuLang;
+   TGPopupMenu      *fMenuTuto; 
    TGPopupMenu      *fMenuView;
+   MCTutorial       *fTuto; 
 
 public:
    MCMain(const TGWindow *p, UInt_t w, UInt_t h, Int_t opt = 1);

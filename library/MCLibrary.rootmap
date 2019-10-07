@@ -13,6 +13,7 @@ class MCExerciseS2
 class MCMain
 class MCMultiLingual
 class MCMultiView
+class MCTutorial
 class MCVSDReader
 header MCAliCalculator.h
 header MCAliCounter.h
@@ -27,4 +28,5 @@ header MCExerciseS2.h
 header MCMain.h
 header MCMultiLingual.h
 header MCMultiView.h
+header MCTutorial.h
 header MCVSDReader.h

@@ -5,6 +5,7 @@
 #include "MCExerciseS1.h"
 #include "MCExerciseS2.h"
 #include "MCMultiLingual.h"
+#include "MCTutorial.h"
 #include "MCVSDReader.h"
 
 #include <TGCanvas.h>
@@ -18,7 +19,6 @@
 #include <TGPicture.h>
 #include <TGWindow.h>
 #include <TROOT.h>
-#include <TSystem.h>
 
 #include <iostream>
 /*
@@ -75,38 +75,27 @@ MCMain::MCMain(const TGWindow *p, UInt_t w, UInt_t h, Int_t opt)
    fMenuView->DisableEntry(M_VIEW_DOCK);
    fMenuView->CheckEntry(M_VIEW_ENBL_DOCK);
    fMenuView->CheckEntry(M_VIEW_ENBL_HIDE);
-   fMenuView->Connect("Activated(Int_t", "MCMain", this, "HandleMenu(ECommand");
-   
-   TString datapath("Data-Masterclass/events/");
+   fMenuView->Connect("Activated(Int_t)", "MCMain", this, "HandleMenu(ECommand");
+
+   // popu up menu tutorials
+   fMenuTuto = new TGPopupMenu(gClient->GetRoot()); 
+   fMenuTuto->AddEntry("&Tracks", M_TUTO_TRACKS); 
+   fMenuTuto->Connect("Activated(Int_t)", "MCMain", this, "HandleMenu(ECommand)"); 
 
    // pop up menu Exercices Strangeness
    fMenuExSTRP = new TGPopupMenu(gClient->GetRoot());
    fMenuExSTRP->AddEntry("Part&1", M_EX_STRP1);
    fMenuExSTRP->AddEntry("Part&2", M_EX_STRP2);
-   if (gSystem->AccessPathName(datapath + "Strangeness") == kTRUE)
-   {      
-      fMenuExSTRP->DisableEntry(M_EX_STRP1); 
-      fMenuExSTRP->DisableEntry(M_EX_STRP2); 
-   } 
+
    // pop up menu Exercices RAA
    fMenuExRAAP = new TGPopupMenu(gClient->GetRoot());
    fMenuExRAAP->AddEntry("Part&1", M_EX_RAAP1);
    fMenuExRAAP->AddEntry("Part&2", M_EX_RAAP2);
-   if (gSystem->AccessPathName(datapath + "RAA") == kTRUE)
-   {
-      fMenuExRAAP->DisableEntry(M_EX_RAAP1);
-      fMenuExRAAP->DisableEntry(M_EX_RAAP2);
-   }
 
-   // pop up menu Exercices JPsi
+   // pop up menu Exercices Strangeness
    fMenuExJPsP = new TGPopupMenu(gClient->GetRoot());
    fMenuExJPsP->AddEntry("Part&1", M_EX_JPSP1);
    // fMenuExJPsP->AddEntry("Part&2", M_EX_JPSP2);
-   if (gSystem->AccessPathName(datapath + "JPsi") == kTRUE)
-   {
-      fMenuExJPsP->DisableEntry(M_EX_JPSP1);
-      // fMenuExJPsP->DisableEntry(M_EX_JPSP2);
-   }
 
    fMenuEx = new TGPopupMenu(gClient->GetRoot());
    fMenuEx->AddPopup("&Strangeness", fMenuExSTRP);
@@ -119,6 +108,7 @@ MCMain::MCMain(const TGWindow *p, UInt_t w, UInt_t h, Int_t opt)
    fMenuBar = new TGMenuBar(fMenuDock, 1, 1, kHorizontalFrame);
    fMenuBar->AddPopup("&Go", fMenuGo, fMenuBarLayout);
    fMenuBar->AddPopup("&View", fMenuView, fMenuBarLayout);
+   fMenuBar->AddPopup("&Tutorials", fMenuTuto, fMenuBarLayout); 
    fMenuBar->AddPopup("&Exercices", fMenuEx, fMenuBarLayout);
 
    // add menu bar to dock
@@ -160,6 +150,10 @@ MCMain::MCMain(const TGWindow *p, UInt_t w, UInt_t h, Int_t opt)
       fExJ1 = new MCExerciseJ1(gClient->GetRoot(), 400, 200);
       fMenuExJPsP->DisableEntry(M_EX_JPSP1); 
       break;
+   case 41:
+      fTuto = new MCTutorial(gClient->GetRoot(), 400, 200); 
+      std::cout << " 41 Tuto Tracks" << std::endl;
+      break; 
    default:
       break;
    }
@@ -434,6 +428,13 @@ void MCMain::HandleMenu(ECommand id)
       fMenuLang->CheckEntry(M_LAN_EN);
       fMenuLang->UnCheckEntry(M_LAN_FR);
       break;
+   }
+   case M_TUTO_TRACKS:
+   {
+      if ((fExS1 || fExS2 || fExR1 || fExR2 || fExJ1) && MCVSDReader::Instance().IsInitialized())
+         gApplication->Terminate(41); 
+      fTuto = new MCTutorial(gClient->GetRoot(), 400, 200); 
+      break; 
    }
    default:
       break;
