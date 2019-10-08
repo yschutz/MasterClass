@@ -219,7 +219,7 @@ void MCExercise::DetectorInfo()
     fDEI->MapWindow(); 
 }
 
-//=MCExerciseS1========================================================================
+//=MCExercise========================================================================
 void MCExercise::DisplayAxes()
 {
     if (fAxesLoaded)
