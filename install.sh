@@ -9,8 +9,14 @@ CheckSystemTools()
 {
     wget -h > /dev/null 2>&1
     if [ $? -eq 127 ]; then 
-        echo "MISSING wget on your system"
         MWGET=1
+        curl -h > /dev/null 2>&1
+        if [ $? -eq 127 ]; then 
+            echo "MISSING wget and curl on your system install either one"
+            MCURL=1
+        else 
+            MCURL=0
+        fi        
     else 
         MWGET=0
     fi
@@ -71,7 +77,7 @@ CheckSystemTools()
             MLSB=0
         fi
     fi 
-    if [ $MWGET -eq 1 -o $MGCC -eq 1 -o $MGIT -eq 1 -o $MTAR -eq 1 -o $MMAKE -eq 1 ]; then 
+    if [ $MWGET*$MCURL -eq 1 -o $MGCC -eq 1 -o $MGIT -eq 1 -o $MTAR -eq 1 -o $MMAKE -eq 1 ]; then 
         return 1
     fi  
     return 0
@@ -158,7 +164,11 @@ InstallRoot()
         echo "no binary root distribution for $OS; check here https://root.cern.ch/content/release-61800"
         return 1
     esac
-        wget https://root.cern/download/$root
+        if [ $MWGET -eq 0 ]; then 
+            wget https://root.cern/download/$root
+        else 
+            curl -L -o $root https://root.cern/download/$root
+        fi 
         tar -zxvf $root
         rm $root
         source $INSTALDIR/root/bin/thisroot.sh
@@ -183,7 +193,11 @@ DownLoadData()
     #download the data if needed
     if [ ! -d $MCDIR/Data-Masterclass/events/$EXERCISE ]; then 
         cd $MCDIR/Data-Masterclass
-        wget http://alice-project-masterclass-data.web.cern.ch/alice-project-masterclass-data/events$EXERCISE.tgz
+        if [ $MWGET -eq 0 ]; then
+            wget http://alice-project-masterclass-data.web.cern.ch/alice-project-masterclass-data/events$EXERCISE.tgz
+        else    
+            curl -L -o events$EXERCISE.tgz http://alice-project-masterclass-data.web.cern.ch/alice-project-masterclass-data/events$EXERCISE.tgz
+        fi 
         tar -zxvf events$EXERCISE.tgz
         if [ $? -eq 127 ]; then 
             return 1
