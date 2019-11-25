@@ -134,31 +134,31 @@ InstallRoot()
     cd $INSTALDIR
     case $OS in 
         "OsX 10.14")
-        root=root_v6.18.00.macosx64-10.14-clang100.tar.gz
+        root=root_v6.18.04.macosx64-10.14-clang100.tar.gz
         ;;
         "OsX 10.13")
-        root=root_v6.18.00.macosx64-10.13-clang100.tar.gz
+        root=root_v6.18.04.macosx64-10.13-clang100.tar.gz
         ;;
         "Ubuntu 18 gcc7")
-        root=root_v6.18.00.Linux-ubuntu18-x86_64-gcc7.4.tar.gz 
+        root=root_v6.18.04.Linux-ubuntu18-x86_64-gcc7.4.tar.gz 
         ;;
         "Ubuntu 16 gcc5")
-        root=root_v6.18.00.Linux-ubuntu16-x86_64-gcc5.4.tar.gz
+        root=root_v6.18.04.Linux-ubuntu16-x86_64-gcc5.4.tar.gz
         ;;
         "Ubuntu 14 gcc4")
-        root=root_v6.18.00.Linux-ubuntu14-x86_64-gcc4.8.tar.gz
+        root=root_v6.18.04.Linux-ubuntu14-x86_64-gcc4.8.tar.gz
         ;;
         "Scientific Linux 7 gcc4.8")
-        root=root_v6.18.00.Linux-centos7-x86_64-gcc4.8.tar.gz
+        root=root_v6.18.04.Linux-centos7-x86_64-gcc4.8.tar.gz
         ;;
         "Fedora 30 gcc9")
-        root=root_v6.18.00.Linux-fedora30-x86_64-gcc9.1.tar.gz
+        root=root_v6.18.04.Linux-fedora30-x86_64-gcc9.1.tar.gz
         ;;
         "Fedora 29 gcc8")
         root=root_v6.18.00.Linux-fedora29-x86_64-gcc8.3.tar.gz
         ;;
         "CentOS Linux 7 gcc4.8")
-        root=root_v6.18.00.Linux-centos7-x86_64-gcc4.8.tar.gz
+        root=root_v6.18.04.Linux-centos7-x86_64-gcc4.8.tar.gz
         ;;
         *) 
         echo "no binary root distribution for $OS; check here https://root.cern.ch/content/release-61800"
