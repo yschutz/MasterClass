@@ -298,9 +298,9 @@ if [ $? -eq 0 ]; then
 else 
     Error    
 fi
-if [ $ERRORFLAG -eq 0 ]; then 
-    sed -i -e 's~'"RRRRRR"'~'"$ROOTDIR"'~g' $MCDIR/MasterClassStart.sh
-    sed -i -e 's~'"MMMMMM"'~'"$MCDIR"'~g' $MCDIR/MasterClassStart.sh
+if [ $ERRORFLAG -eq 0 ]; then
+    echo "export MCDIR="$MCDIR > $MCDIR/.config
+    echo "export ROOTDIR="$ROOTDIR >> $MCDIR/.config
     cd $SAVEDIR
     OS=`uname`
     case $OS in
