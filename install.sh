@@ -5,8 +5,21 @@ Help()
     echo "default values: exercise=ALL; dir=$HOME/MC"
 	exit 1
 }
+InstallPrerequisites_Ubuntu()
+{
+    sudo apt-get install wget curl make tar git dpkg-dev cmake g++ gcc binutils libx11-dev libxpm-dev libxft-dev libxext-dev
+}
+InstallPrerequisites_Fedora()
+{
+    sudo yum install wget curl make tar git cmake gcc-c++ gcc binutils libX11-devel libXpm-devel libXft-devel libXext-devel
+}
+InstallPrerequisites_openSUSE()
+{
+    sudo zypper install wget curl make tar git bash cmake gcc-c++ gcc binutils python libXpm-devel xorg-x11-devel libXext-devel
+}
 CheckSystemTools()
 {
+    MDLCMD=1 # Command for retrieving/downloading files
     wget -h > /dev/null 2>&1
     if [ $? -eq 127 ]; then 
         MWGET=1
@@ -14,10 +27,12 @@ CheckSystemTools()
         if [ $? -eq 127 ]; then 
             echo "MISSING wget and curl on your system install either one"
             MCURL=1
-        else 
+        else
+            MDLCMD=0
             MCURL=0
         fi        
-    else 
+    else
+        MDLCMD=0
         MWGET=0
     fi
 
@@ -76,9 +91,23 @@ CheckSystemTools()
         else 
             MLSB=0
         fi
-    fi 
-    if [ $MWGET*$MCURL -eq 1 -o $MGCC -eq 1 -o $MGIT -eq 1 -o $MTAR -eq 1 -o $MMAKE -eq 1 ]; then 
-        return 1
+    fi
+    if [ $MDLCMD -eq 1 -o $MGCC -eq 1 -o $MGIT -eq 1 -o $MTAR -eq 1 -o $MMAKE -eq 1 ]; then 
+        GetOSName
+        echo "[+] Try to install pre-requisites. If you do not have root (by sudo) permissions, please contact your administrator"
+        case $OS in
+            "Ubuntu"*)
+                InstallPrerequisites_Ubuntu;;
+            "Fedora"*)
+                InstallPrerequisites_Fedora;;
+            "CentOS"*)
+                InstallPrerequisites_Fedora;;
+            "Scientific Linux"*)
+                InstallPrerequisites_Fedora;;
+            *)
+                echo "!!! NOT support for "$OS;
+                return 1;;
+        esac
     fi  
     return 0
 }
