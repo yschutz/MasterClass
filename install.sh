@@ -188,10 +188,28 @@ DownLoadSource()
         git pull
     fi
 }
+CheckData()
+{
+    if [ $EXERCISE = "ALL" ]; then
+        if [ ! -d $MCDIR/Data-Masterclass/events/JPsi ];then
+            return 0
+        elif [ ! -d $MCDIR/Data-Masterclass/events/RAA ];then
+            return 0
+        elif [ ! -d $MCDIR/Data-Masterclass/events/Strangeness ];then
+            return 0
+        else
+            return 1
+        fi
+    elif [ ! -d $MCDIR/Data-Masterclass/events/$EXERCISE ]; then
+        return 0
+    else
+        return 1
+    fi
+}
 DownLoadData()
 {
     #download the data if needed
-    if [ ! -d $MCDIR/Data-Masterclass/events/$EXERCISE ]; then 
+    if [ ! CheckData ]; then
         cd $MCDIR/Data-Masterclass
         if [ $MWGET -eq 0 ]; then
             wget http://alice-project-masterclass-data.web.cern.ch/alice-project-masterclass-data/events$EXERCISE.tgz
