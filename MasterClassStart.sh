@@ -6,8 +6,18 @@ launch_root()
 	RETVAL=$?
 	return $RETVAL; 
 }
-export MCDIR="MMMMMM"
-export ROOTDIR="RRRRRR"
+# Move to MasterClass directory
+START_DIR=`dirname ${BASH_SOURCE[0]}`
+cd $START_DIR
+if [ -f .config ]; then
+	source .config
+	echo "MC directory : "$MCDIR
+	echo "ROOT directory : "$ROOTDIR
+else
+	echo "!!!! ERROR lcoal configuration NOT FOUND, please re-run install.sh"
+	exit
+fi
+# Check ROOT
 if [ -z "${ROOTSYS}" ]; then
 	if [ -d $ROOTDIR ]; then 
 		source $ROOTDIR/bin/thisroot.sh
@@ -18,7 +28,6 @@ if [ -z "${ROOTSYS}" ]; then
 fi
 DIRSAVE=`pwd`
 LIBDIR=$MCDIR/library
-echo $ROOTSYS $MCDIR
 if [ -d "$LIBDIR" ]; then
 	cd $LIBDIR
 	make
