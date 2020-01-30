@@ -72,6 +72,10 @@ CheckSystemTools()
         echo "MISSING ROOT installation"
         MROOT=1
     else
+        if [ -d $ROOTDIR ]; then
+            source $ROOTDIR/bin/thisroot.sh
+        fi
+        echo "ROOT found : "$ROOTSYS
         MROOT=0
     fi
 
@@ -219,7 +223,7 @@ DownLoadSource()
 }
 CheckData()
 {
-    if [ $EXERCISE = "ALL" ]; then
+    if [ $EXERCISE = "All" ]; then
         if [ ! -d $MCDIR/Data-Masterclass/events/JPsi ];then
             return 0
         elif [ ! -d $MCDIR/Data-Masterclass/events/RAA ];then
@@ -238,7 +242,8 @@ CheckData()
 DownLoadData()
 {
     #download the data if needed
-    if [ ! CheckData ]; then
+    CheckData
+    if [ $? -eq 0 ]; then
         cd $MCDIR/Data-Masterclass
         if [ $MWGET -eq 0 ]; then
             wget http://alice-project-masterclass-data.web.cern.ch/alice-project-masterclass-data/events$EXERCISE.tgz
@@ -250,6 +255,8 @@ DownLoadData()
             return 1
         fi    
         rm events$EXERCISE.tgz
+    else
+        echo "Event data found : "$MCDIR/Data-Masterclass/events
     fi
     return 0
 }
