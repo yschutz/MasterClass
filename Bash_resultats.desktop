@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=ALICE Resultat
+Comment=Resultat Application Launcher for Linux
+Exec=/scratch/yschutz//MasterClass/Bash_resultats.sh
+Icon=/scratch/yschutz//MasterClass/images/resultaticon.png
+Terminal=false
+Type=Application

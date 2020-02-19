@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=ALICE CernBox
+Comment=CernBox Application Launcher for Linux
+Exec=/scratch/yschutz//MasterClass/Bash_cernbox.shh
+Icon=/scratch/yschutz//MasterClass/images/cernboxlogo.png
+Terminal=false
+Type=Application

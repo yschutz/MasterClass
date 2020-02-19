@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=ALICE Sauvegarde
+Comment=Sauvegarde Application Launcher for Linux
+Exec=/scratch/yschutz//MasterClass/Bash_sauvegarde.sh
+Icon=/scratch/yschutz//MasterClass/images/sauvegardeicon.png
+Terminal=false
+Type=Application
