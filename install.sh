@@ -166,11 +166,14 @@ InstallRoot()
     fi 
     cd $INSTALDIR
     case $OS in 
+        "OsX 10.15")
+        root=root_v6.20.00.macosx64-10.15-clang110.tar.gz
+        ;;
         "OsX 10.14")
-        root=root_v6.18.04.macosx64-10.14-clang100.tar.gz
+        root=root_v6.20.00.macosx64-10.14-clang110.tar.gz
         ;;
         "OsX 10.13")
-        root=root_v6.18.04.macosx64-10.13-clang100.tar.gz
+        root=root_v6.20.00.macosx64-10.13-clang100.tar.gz
         ;;
         "Ubuntu 18 gcc7")
         root=root_v6.18.04.Linux-ubuntu18-x86_64-gcc7.4.tar.gz 
