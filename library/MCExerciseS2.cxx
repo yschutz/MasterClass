@@ -308,7 +308,7 @@ void MCExerciseS2::FitInvariantMass()
     fFitGauss->SetParLimits(1, fFitRangeGauss->GetMin(), fFitRangeGauss->GetMax());
     fFitGauss->SetParLimits(2, 0., (fFitRangeGauss->GetMax() - fFitRangeGauss->GetMin()) / 2.);
     fFitGauss->SetLineColor(kGreen + 1);
-    fMinvHisto->Fit(fFitGauss, "rime");
+    fMinvHisto->Fit(fFitGauss, "Lrime");
 
     if (fLabel)
     {
@@ -323,22 +323,46 @@ void MCExerciseS2::FitInvariantMass()
     Double_t labelY = 0.75;
     Double_t labelYStep = 0.06;
 
-    Int_t total_Fit = (Int_t)(fFitGauss->Integral(fFitRangeGauss->GetMin(), fFitRangeGauss->GetMax()) / fMinvHisto->GetBinWidth(1));
+    Int_t total_Fit = (Int_t)(fFitGauss->Integral(fFitRangeGauss->GetMin(), fFitRangeGauss->GetMax()) / fMinvHisto->GetBinWidth(1));  
+        // NOTE : Beware Int_t
+    
+    Double_t total_FitErr = fFitGauss->IntegralError(fFitRangeGauss->GetMin(), fFitRangeGauss->GetMax()) / fMinvHisto->GetBinWidth(1);
 
     Double_t maxMmin = fFitRangeGauss->GetMax() - fFitRangeGauss->GetMin();
     Double_t maxPmin = fFitRangeGauss->GetMax() + fFitRangeGauss->GetMin();
     Double_t background_Integral = maxMmin * (fFitGauss->GetParameter(5) + fFitGauss->GetParameter(4) * maxPmin / 2.) +
                                    (fFitGauss->GetParameter(3) * (TMath::Power(fFitRangeGauss->GetMax(), 3) - TMath::Power(fFitRangeGauss->GetMin(), 3)) / 3.);
     Int_t bck_Fit = (Int_t)(background_Integral / fMinvHisto->GetBinWidth(1));
+        // NOTE : Beware Int_t
+    
+    Double_t bck_FitErr = total_FitErr * (bck_Fit *1.0/ total_Fit);
+            // Hyp. 2 : Bfiterror = IntegralErr(S+B) rescaled by the background level : B/S+B, the resulting uncertainty is likely lower than sqrt(B)
+    
     fFitResult = total_Fit - bck_Fit;
+    Float_t lErrFitResult = TMath::Sqrt( total_Fit + bck_FitErr*bck_FitErr );
+                // Hyp. 1 : err on the extracted signal = sqrt( (S+B) + Bfiterror²) as advised by David Chinellato's studies, PAGStrangeness-2014-08-19
+                // i.e. the background intervene twice,
+                //      ~ one time as its sheer level B in S+B
+                //      ~ one time as the quality of its description (Bfiterror)
+                // So the ratio S/B seems to matter.
+                
+    
+    Printf("Total counts (S+B)fit  : %04d ± %.4f (i.e. ± %5.2f %%)", total_Fit,  total_FitErr,   100.*total_FitErr  / total_Fit  );
+    Printf(". background Bfit      : %04d ± %.4f (i.e. ± %5.2f %%)", bck_Fit,    bck_FitErr,     100.*bck_FitErr    / bck_Fit    );
+    Printf(". signal S+B - Bfit    : %04d ± %.4f (i.e. ± %5.2f %%)", fFitResult, lErrFitResult,  100.*lErrFitResult / fFitResult );
+    Printf("chi²/NDF : %5.3f/%d = %5.3f", fFitGauss->GetChisquare(), fFitGauss->GetNDF(), fFitGauss->GetChisquare()/fFitGauss->GetNDF() );
+    Printf(" ");
+    
+    
     fLabel->SetTextSize(0.03);
     fLabel->DrawLatex(labelX, labelY, Form("Total = %d", total_Fit));
     fLabel->DrawLatex(labelX, labelY - 1.0 * labelYStep, Form("%s = %d", MCMultiLingual::Instance().tr("Background"), bck_Fit));
-    fLabel->DrawLatex(labelX, labelY - 2.0 * labelYStep, Form("#color[%d]{#rightarrow Signal: %d}", kGreen + 1, fFitResult));
-    fLabel->DrawLatex(labelX, labelY - 3.0 * labelYStep, Form("#mu_{Gauss} : %6.4f #pm %6.4f GeV/c^{2}", fFitGauss->GetParameter(1), fFitGauss->GetParError(1)));
+    fLabel->DrawLatex(labelX, labelY - 2.0 * labelYStep, Form("#color[%d]{#rightarrow Signal: %d #pm %d #scale[0.7]{(i.e. #pm %5.2f%)}}", kGreen + 1, fFitResult, (Int_t)lErrFitResult, 100.*lErrFitResult/fFitResult));
+    fLabel->DrawLatex(labelX, labelY - 3.0 * labelYStep, Form("#mu_{Gauss} : %6.4f #pm %6.4f GeV/#it{c}^{2}", fFitGauss->GetParameter(1), fFitGauss->GetParError(1)));
     fLabel->SetTextSize(0.03);
     // fLabel->DrawLatex(labelX, labelY - 4.0 * labelYStep, Form("     #color[%d]{ NOTE : %s}", kGray + 1, fMassInfo.Data()));
-    fLabel->DrawLatex(labelX, labelY - 4.0 * labelYStep, Form("#sigma_{Gauss} : %5.3f #pm %5.3f  MeV/c^{2}", fFitGauss->GetParameter(2) * 1000, fFitGauss->GetParError(1) * 1000));
+    fLabel->DrawLatex(labelX, labelY - 4.0 * labelYStep, Form("#sigma_{Gauss} : %5.3f #pm %5.3f  MeV/#it{c}^{2}", fFitGauss->GetParameter(2) * 1000, fFitGauss->GetParError(1) * 1000));
+    fLabel->DrawLatex(labelX, labelY - 5.0 * labelYStep, Form("#chi^{2}/NDF : %5.3f/%d = %5.3f", fFitGauss->GetChisquare(), fFitGauss->GetNDF(), fFitGauss->GetChisquare()/fFitGauss->GetNDF() ));
 
     if (!fFitPoly)
         fFitPoly = new TF1("fitPoly", "[0]*x*x+[1]*x+[2]", minRange, maxRange);
@@ -364,9 +388,9 @@ TString MCExerciseS2::FormatText(const TString &text, Bool_t tit)
     TString rv(text);
     if (tit)
     {
-        rv.ReplaceAll("K0s_", "[ K^{0}s, ");               // K0s_pp_MB  --> K0s, pp_MB
-        rv.ReplaceAll("AntiLambda_", "[ #bar{#Lambda}, "); // NOTE : replace first AntiLambda over Lambda ... to avoid undesirable replacement
-        rv.ReplaceAll("Lambda_", "[ #Lambda, ");
+        rv.ReplaceAll("K0s_", "K^{0}s, ");               // K0s_pp_MB  --> K0s, pp_MB
+        rv.ReplaceAll("AntiLambda_", "#bar{#Lambda}, "); // NOTE : replace first AntiLambda over Lambda ... to avoid undesirable replacement
+        rv.ReplaceAll("Lambda_", "#Lambda, ");
     }
     else
     {
@@ -380,9 +404,9 @@ TString MCExerciseS2::FormatText(const TString &text, Bool_t tit)
     TPRegexp lRegex("([0-9]{2})([0-9]{2})"); // regex pattern : locate 2 groups of 2 numbers 0010 -> (00)(10)
     lRegex.Substitute(rv, "$1-$2");          // add an hyphen in between : 00-10
     if (!rv.Contains("MB"))
-        rv.Append("% ]"); // for Pb-Pb centrality
+        rv.Append("%"); // for Pb-Pb centrality
     else
-        rv.Append(" ]");
+        rv.Append(" ");
     return rv;
 }
 
@@ -402,12 +426,12 @@ void MCExerciseS2::LoadHisto(Int_t iPart, Int_t iHist)
     fMinvHisto->Rebin(2);
     fMinvHisto->SetStats(kFALSE);
     fMinvHisto->SetLineWidth(2);
-    lXTitle = ml.tr("Invariant Mass (GeV/c^{2})");
-    lYTitle = TString::Format("%s %4.2f MeV/c^{2}",
+    lXTitle = ml.tr("Invariant Mass (GeV/#it{c}^{2})");
+    lYTitle = TString::Format("%s %4.2f MeV/#it{c}^{2}",
                               ml.tr("Counts per bin of "),
                               fMinvHisto->GetXaxis()->GetBinWidth(1) * 1000.);
     fCurrentLabel = FormatText(lStrID);
-    lHistTitle = lHistTitle + fCurrentLabel;
+    lHistTitle = lHistTitle + " - " + fCurrentLabel;
 
     Double_t lZoomXmin = 0.0;
     Double_t lZoomXmax = 2.0;
@@ -416,25 +440,25 @@ void MCExerciseS2::LoadHisto(Int_t iPart, Int_t iHist)
     {
         lZoomXmin = 0.25;
         lZoomXmax = 1.0;
-        lXTitle = lXTitle + " m(#pi^{+}#pi^{-}) (GeV/c^{2})";
+        lXTitle = "#it{m}(#pi^{+}#pi^{-}), " + lXTitle;
         lColor = kAzure + 2;
-        fMassInfo = "m_{PDG}( K^{0}s ) #approx 0.498 GeV/c^{2}";
+        fMassInfo = "m_{PDG}( K^{0}s ) #approx 0.498 GeV/#it{c}^{2}";
     }
     else if (lStrID.BeginsWith("Lambda"))
     {
         lZoomXmin = 1.0;
         lZoomXmax = 2.0;
-        lXTitle = lXTitle + " m(p^{+}#pi^{-}) (GeV/c^{2})";
+        lXTitle = "#it{m}(p^{+}#pi^{-}), " + lXTitle;
         lColor = kRed + 1;
-        fMassInfo = "m_{PDG}( #Lambda ) #approx 1.116 GeV/c^{2}";
+        fMassInfo = "m_{PDG}( #Lambda ) #approx 1.116 GeV/#it{c}^{2}";
     }
     else if (lStrID.BeginsWith("AntiLambda"))
     {
         lZoomXmin = 1.0;
         lZoomXmax = 2.0;
-        lXTitle = lXTitle + " m(#bar{p}^{#kern[+0.2]{-}}#pi^{+}) (GeV/c^{2})";
+        lXTitle = "#it{m}(#bar{p}^{#kern[+0.2]{-}}#pi^{+}), "  + lXTitle;;
         lColor = kOrange + 1;
-        fMassInfo = "m_{PDG}( #bar{#Lambda} ) #approx 1.116 GeV/c^{2}";
+        fMassInfo = "m_{PDG}( #bar{#Lambda} ) #approx 1.116 GeV/#it{c}^{2}";
     }
     fMinvHisto->SetTitle(lHistTitle.Data());
     fMinvHisto->GetXaxis()->SetTitle(lXTitle.Data());
@@ -467,7 +491,7 @@ void MCExerciseS2::MakeHistograms()
         // Kaons
         fMinvHistK = new TH1D("hMinvHistK", "Kaons", 50, 0.4, 0.6);
         fMinvHistK->SetLineColor(2);
-        fMinvHistK->GetXaxis()->SetTitle(ml.tr("Invariant Mass (GeV/c^{2})"));
+        fMinvHistK->GetXaxis()->SetTitle(ml.tr("Invariant Mass (GeV/#it{c}^{2})"));
         fMinvHistK->GetYaxis()->SetTitle(ml.tr("Momentum"));
         fMinvHistK->SetLineColor(2);
         fMinvHistK->SetFillColor(0);
@@ -475,7 +499,7 @@ void MCExerciseS2::MakeHistograms()
         // Xi
         fMinvHistX = new TH1D("hMinvHistX", "Xis", 50, 1.2, 1.4);
         fMinvHistX->SetLineColor(2);
-        fMinvHistX->GetXaxis()->SetTitle(ml.tr("Invariant Mass (GeV/c^{2})"));
+        fMinvHistX->GetXaxis()->SetTitle(ml.tr("Invariant Mass (GeV/#it{c}^{2})"));
         fMinvHistX->GetYaxis()->SetTitle(ml.tr("Momentum"));
         fMinvHistX->SetLineColor(3);
         fMinvHistX->SetFillColor(0);
@@ -483,7 +507,7 @@ void MCExerciseS2::MakeHistograms()
         // Lambda
         fMinvHistL = new TH1D("hMinvHistL", "Lambdas", 50, 1.0, 1.2);
         fMinvHistL->SetLineColor(2);
-        fMinvHistL->GetXaxis()->SetTitle(ml.tr("Invariant Mass (GeV/c^{2})"));
+        fMinvHistL->GetXaxis()->SetTitle(ml.tr("Invariant Mass (GeV/#it{c}^{2})"));
         fMinvHistL->GetYaxis()->SetTitle(ml.tr("Momentum"));
         fMinvHistL->SetLineColor(4);
         fMinvHistL->SetFillColor(0);
@@ -491,14 +515,14 @@ void MCExerciseS2::MakeHistograms()
         // Anti-Lambda
         fMinvHistAL = new TH1D("hMinvHistAL", "Anti-Lambdas", 50, 1.0, 1.2);
         fMinvHistAL->SetLineColor(2);
-        fMinvHistAL->GetXaxis()->SetTitle(ml.tr("Invariant Mass (GeV/c^{2})"));
+        fMinvHistAL->GetXaxis()->SetTitle(ml.tr("Invariant Mass (GeV/#it{c}^{2})"));
         fMinvHistAL->GetYaxis()->SetTitle(ml.tr("Momentum"));
         fMinvHistAL->SetLineColor(9);
         fMinvHistAL->SetFillColor(0);
 
         // All
         fMinvHistALL = new TH1D("hMinvHistALL", ml.tr("Invariant Mass - final result"), 20, 0.0, 2.0);
-        fMinvHistALL->GetXaxis()->SetTitle(ml.tr("Invariant Mass (GeV/c^{2})"));
+        fMinvHistALL->GetXaxis()->SetTitle(ml.tr("Invariant Mass (GeV/#it{c}^{2})"));
         fMinvHistALL->GetYaxis()->SetTitle(ml.tr("Momentum"));
         fMinvHistALL->SetFillColor(0);
     }

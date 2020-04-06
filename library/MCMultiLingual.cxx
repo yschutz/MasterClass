@@ -98,8 +98,8 @@ Using these buttons, one can choose the mode:\n\n\
    fEnglish.push_back("R-Phi View");
 
    // MCExeciseS1
-   fFrancais.push_back("Masse Invariante (GeV/c^{2})");
-   fEnglish.push_back("Invariant Mass (GeV/c^{2})");
+   fFrancais.push_back("Masse Invariante (GeV/#it{c}^{2})");
+   fEnglish.push_back("Invariant Mass (GeV/#it{c}^{2})");
    fFrancais.push_back("Masse Invariante - resultat final");
    fEnglish.push_back("Invariant Mass - final result");
 
